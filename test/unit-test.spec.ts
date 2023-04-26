@@ -1,4 +1,4 @@
-import { isPrimeNumber, ErrorMessages } from '../src/my-library';
+import { isPrimeNumber, ErrorMessages } from '../src/SpyScroller';
 
 describe('Demo test', () => {
   it('Should detect prime numbers', () => {

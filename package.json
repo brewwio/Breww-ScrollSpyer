@@ -2,8 +2,8 @@
   "name": "framework-for-building-front-end-libraries",
   "version": "1.3.0",
   "description": "A framework for building front-end libraries using TS and SCSS",
-  "main": "./dist/my-library.js",
-  "types": "./dist/my-library.d.ts",
+  "main": "./dist/SpyScroller.js",
+  "types": "./dist/SpyScroller.d.ts",
   "files": [
     "dist"
   ],
@@ -44,7 +44,7 @@
     "autoprefixer": "^10.4.8",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
-    "cypress": "^10.7.0",
+    "cypress": "^10.11.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.4.0",

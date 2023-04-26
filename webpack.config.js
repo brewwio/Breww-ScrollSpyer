@@ -4,12 +4,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const config = {
   target: 'web',
   entry: {
-    index: './src/my-library.ts',
+    index: './src/SpyScroller.ts',
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'my-library.js',
-    library: 'MyLibrary',
+    filename: 'SpyScroller.js',
+    library: 'SpyScroller',
     libraryTarget: 'umd',
     globalObject: 'this',
     umdNamedDefine: true,

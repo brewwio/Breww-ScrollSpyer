@@ -1,11 +1,9 @@
-enum ErrorMessages {
-  INVALID_NUMBER = 'Number must be greater then 1',
-}
+import  {ErrorMessages} from './ErrorMessages';
 
 // * A prime number is a natural number greater than 1 that is not a product of two smaller natural numbers.
 const isPrimeNumber = (num: number): boolean | never => {
   let isPrime = true;
-  console.log("bitch")
+  console.log("dumb")
   if (num <= 1) {
     throw new Error(ErrorMessages.INVALID_NUMBER);
   }
