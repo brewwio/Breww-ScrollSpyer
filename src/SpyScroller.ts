@@ -49,7 +49,7 @@ class SpyScroller {
 
     this.options = {
       sectionSelector: options.sectionSelector ?? "section",
-      targetSelector: options.targetSelector ?? "a",
+      targetSelector: options.targetSelector ?? "[data-jump]",
       topOffset: options.topOffset ?? 0,
       hrefAttribute: options.hrefAttribute ?? "href",
       activeClass: Array.isArray(options.activeClass)
@@ -139,18 +139,31 @@ class SpyScroller {
   }
   
 
-  
-  private getActiveMenuItem(
-    section: HTMLElement
-  ): HTMLAnchorElement | undefined {
+  private getActiveMenuItem(section: HTMLElement): HTMLAnchorElement | undefined {
     if (!section) {
       return;
     }
-    const sectionId = section.getAttribute("id");
-    return this.menuList.querySelector<HTMLAnchorElement>(
-      `[${this.options.hrefAttribute}="#${sectionId}"]`
+  
+    let sectionId = section.getAttribute("id");
+    let attribute = this.options.targetSelector;
+  
+
+    if (document.querySelectorAll('[data-jump]').length > 0 && this.options.targetSelector === '[data-jump]') {
+      attribute = 'data-jump';
+      const items = document.querySelectorAll('[data-jump]')
+     return Array.from(items).find(
+    item => item.getAttribute(attribute) === sectionId
+  ) as HTMLAnchorElement;
+    }else{
+      return this.menuList.querySelector(
+        `[${this.options.hrefAttribute}="#${sectionId}"]`
     );
+    }
+  
+    // Find the active menu item based on the attribute
+   
   }
+  
 
   private removeActiveLink(options: { ignore?: HTMLAnchorElement } = {}): void {
     this.menuList.querySelectorAll<HTMLAnchorElement>(this.options.targetSelector).forEach(item => item.classList.remove(...this.options.activeClass));
@@ -158,19 +171,17 @@ class SpyScroller {
   }
 
   private makeActiveLink(menuItem: HTMLAnchorElement): void {
-    if (!this.options.activeClass.some(className => menuItem.classList.contains(className))) {
+    if (menuItem.matches(this.options.targetSelector) && !this.options.activeClass.some(className => menuItem.classList.contains(className))) {
       menuItem.classList.add(...this.options.activeClass);
     }
     menuItem.scrollIntoView({ behavior: "smooth" });
   }
-
-
   
 
   private onScroll(): void {
     const section = this.currentActiveSection();
     const menuItem = this.getActiveMenuItem(section);
-
+    console.log(menuItem)
     if (menuItem) {
       this.removeActiveLink({ ignore: menuItem });
       this.makeActiveLink(menuItem);

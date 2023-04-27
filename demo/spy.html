@@ -78,15 +78,17 @@
 		<header class="header">
 			<nav>
 				<ul class="nav">
-					<li><a href="#section1">Section 1</a></li>
-
-					<li><a href="#section2">Section 2</a></li>
-
-					<li><a href="#section3">Section 3</a></li>
-
-					<li><a href="#section4">Section 4</a></li>
+				  <li data-jump="section1"><a href="#section1">Section 1</a></li>
+				  <li data-jump="section2"><a href="#section2">Section 2</a></li>
+				  <li data-jump="section3"><a href="#section3">Section 3</a></li>
+				  <li data-jump="section4"><a href="#section4">Section 4</a></li>
+				  <!-- <li ><a href="#section1">Section 1</a></li>
+				  <li ><a href="#section2">Section 2</a></li>
+				  <li ><a href="#section3">Section 3</a></li>
+				  <li ><a href="#section4">Section 4</a></li> -->
 				</ul>
-			</nav>
+			  </nav>
+			  
 		</header>
 
 		<main>
@@ -116,15 +118,16 @@
 		<script>
 			const { SpyScroller } = window.SpyScroller;
 			const options = {
-				sectionSelector: 'section',  // Query selector to your sections
-				targetSelector: 'a', // Query selector to your elements that will be added `active` class
-				topOffset:80,                  // Menu item will active before scroll to a matched section 100px
-				activeClass:  ['activer', 'highlight'],
-				onLastScrollInView: () => test(),
-				onFirstScrollInView: () => console.log('first section in view'),
-				opacity: { enabled: true, opacityDistanceFromCenter: 100 },
-				smoothScroll:false
-			}
+  sectionSelector: 'section',  // Query selector to your sections
+  targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
+  topOffset: 80,                  // Menu item will active before scroll to a matched section 100px
+  activeClass: ['activer', 'highlight'],
+  onLastScrollInView: () => test(),
+  onFirstScrollInView: () => console.log('first section in view'),
+  opacity: { enabled: true, opacityDistanceFromCenter: 100 },
+  smoothScroll: false,
+
+}
 			console.log(SpyScroller)
 			const x = new SpyScroller('nav',options);
 				function test()
@@ -146,7 +149,10 @@
 			margin: auto;
 		}
 		.activer {
-			color: red;
+			color: red !important;
+		}
+		.activer a{
+			color: red !important;
 		}
 	</style>
 </html>
