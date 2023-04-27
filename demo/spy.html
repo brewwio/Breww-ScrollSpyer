@@ -118,10 +118,12 @@
 			const options = {
 				sectionSelector: 'section',  // Query selector to your sections
 				targetSelector: 'a', // Query selector to your elements that will be added `active` class
-				topOffset:	0,                  // Menu item will active before scroll to a matched section 100px
+				topOffset:80,                  // Menu item will active before scroll to a matched section 100px
 				activeClass:  ['activer', 'highlight'],
 				onLastScrollInView: () => test(),
 				onFirstScrollInView: () => console.log('first section in view'),
+				opacity: { enabled: true, opacityDistanceFromCenter: 100 },
+				smoothScroll:true
 			}
 			console.log(SpyScroller)
 			const x = new SpyScroller('nav',options);

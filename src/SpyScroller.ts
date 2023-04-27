@@ -11,6 +11,11 @@ interface ISpyScrollerOptions {
     | null;
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
+    opacity: {
+      enabled: boolean;
+      opacityDistanceFromCenter: number;
+    };
+    smoothScroll:boolean
 }
 
 class SpyScroller {
@@ -55,6 +60,11 @@ class SpyScroller {
       onActive: options.onActive ?? null,
       onLastScrollInView: options.onLastScrollInView ?? null,
       onFirstScrollInView: options.onFirstScrollInView ?? null, 
+      opacity: {
+        enabled: options.opacity?.enabled ?? false,
+        opacityDistanceFromCenter: options.opacity?.opacityDistanceFromCenter ?? 50
+      },
+      smoothScroll: options.smoothScroll ?? false
     };
 
     this.sections = document.querySelectorAll<HTMLElement>(
@@ -63,8 +73,25 @@ class SpyScroller {
 
     this.onSectionScroll = this.onSectionScroll.bind(this);
     this.boundOnScroll = this.onScroll.bind(this);
-    window.addEventListener("scroll", this.boundOnScroll);
+    window.addEventListener("scroll", () => {
+      this.boundOnScroll();
+      if (this.options.opacity?.enabled) this.onSectionScroll();
+    });
+    if (this.options.smoothScroll) this.setMoothScroll();
   }
+
+  private setMoothScroll(): void {
+    const links = document.querySelectorAll<HTMLElement>(this.options.targetSelector);
+  
+    for (let i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', (event: any) => {
+        event.preventDefault();
+        const href = links[i].getAttribute('href');
+        document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  }
+  
 
   private getCurrentSection(): HTMLElement | undefined {
     for (let i = 0; i < this.sections.length; i++) {
@@ -80,39 +107,46 @@ class SpyScroller {
       }
     }
   }
-
-
+  
   private onSectionScroll(): void {
     const windowHeight = window.innerHeight;
-    const scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + (document.documentElement && document.documentElement.scrollTop || 0);
-
+    const scrollPosition =
+      window.scrollY ||
+      window.pageYOffset ||
+      (document.body.scrollTop +
+        (document.documentElement && document.documentElement.scrollTop || 0));
+  
     this.sections.forEach((section) => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
       const sectionBottom = sectionTop + sectionHeight;
-
-      // Calculate the distance from the section to the center of the viewport
-      const distanceToCenter =
-        windowHeight / 2 - (sectionTop + sectionHeight / 2 - scrollPosition);
-
-      // Calculate the maximum distance from the center of the viewport that should be faded out
-      const maxDistanceToCenter = windowHeight / 2 + sectionHeight / 2;
-
-      // Calculate the opacity based on the distance from the center of the viewport
+  
+      const distanceFromTop = Math.abs(scrollPosition - sectionTop);
+      const distanceFromBottom = Math.abs(scrollPosition + windowHeight - sectionBottom);
+  
       let opacity = 1;
-      if (distanceToCenter > maxDistanceToCenter) {
-        opacity = 0;
-      } else if (distanceToCenter > 0) {
-        opacity = 1 - distanceToCenter / maxDistanceToCenter;
-      }
-
-      // Set the opacity of the section
-      section.style.opacity = `${opacity}`;
-
-      
+      let opacityDistanceFromCenter = this.options.opacity.opacityDistanceFromCenter
+      // If the section is within 100px from the top or bottom of the viewport, maintain an opacity of 1
+      if (distanceFromTop <= opacityDistanceFromCenter || distanceFromBottom <= opacityDistanceFromCenter) {
+        opacity = 1;
+      } else {
+        const distanceToCenter = windowHeight / 2 - (sectionTop + sectionHeight / 2 - scrollPosition);
+  
+        // If the section is within 100px from the center of the viewport, maintain an opacity of 1
+        if (Math.abs(distanceToCenter) <= opacityDistanceFromCenter) {
+          opacity = 1;
+        } else {
+          const maxDistanceToCenter = windowHeight / 2 + sectionHeight / 2 - opacityDistanceFromCenter;
+          const distanceRatio = Math.min(1, Math.abs(distanceToCenter) / maxDistanceToCenter);
+          opacity = 1 - distanceRatio;
+        }
+      } 
+      section.style.opacity = opacity.toString();
     });
   }
+  
 
+  
   private getCurrentMenuItem(
     section: HTMLElement
   ): HTMLAnchorElement | undefined {
@@ -138,6 +172,7 @@ class SpyScroller {
         this.options.onActive(menuItem, section);
       }
     }
+    menuItem.scrollIntoView({ behavior: "smooth" });
   }
 
   private removeCurrentActive(
@@ -189,11 +224,17 @@ class SpyScroller {
 
   //PUBLIC METHODS
   public bind(): void {
-    window.addEventListener("scroll", this.boundOnScroll);
+    window.addEventListener("scroll", () => {
+      this.boundOnScroll();
+      if (this.options.opacity?.enabled) this.onSectionScroll();
+    });
   }
 
   public unbind(): void {
-    window.removeEventListener("scroll", this.boundOnScroll);
+    window.removeEventListener("scroll", () => {
+      this.boundOnScroll();
+      if (this.options.opacity?.enabled) this.onSectionScroll();
+    });
   }
 }
 

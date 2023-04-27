@@ -8,6 +8,11 @@ interface ISpyScrollerOptions {
     onActive: ((menuItem: HTMLAnchorElement, section: HTMLElement) => void) | null;
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
+    opacity: {
+        enabled: boolean;
+        opacityDistanceFromCenter: number;
+    };
+    smoothScroll: boolean;
 }
 declare class SpyScroller {
     private readonly boundOnScroll;
@@ -16,6 +21,7 @@ declare class SpyScroller {
     private readonly sections;
     isLastSection: boolean;
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
+    private setMoothScroll;
     private getCurrentSection;
     private onSectionScroll;
     private getCurrentMenuItem;
