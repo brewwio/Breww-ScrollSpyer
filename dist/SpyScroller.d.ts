@@ -5,7 +5,6 @@ interface ISpyScrollerOptions {
     topOffset: number;
     hrefAttribute: string;
     activeClass: string[];
-    onActive: ((menuItem: HTMLAnchorElement, section: HTMLElement) => void) | null;
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
     opacity: {
@@ -22,11 +21,11 @@ declare class SpyScroller {
     isLastSection: boolean;
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
     private setMoothScroll;
-    private getCurrentSection;
+    private currentActiveSection;
     private onSectionScroll;
-    private getCurrentMenuItem;
-    private setActive;
-    private removeCurrentActive;
+    private getActiveMenuItem;
+    private removeActiveLink;
+    private makeActiveLink;
     private onScroll;
     bind(): void;
     unbind(): void;

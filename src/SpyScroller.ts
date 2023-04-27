@@ -6,9 +6,7 @@ interface ISpyScrollerOptions {
   topOffset: number;
   hrefAttribute: string;
   activeClass: string[];
-  onActive:
-    | ((menuItem: HTMLAnchorElement, section: HTMLElement) => void)
-    | null;
+
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
     opacity: {
@@ -57,7 +55,6 @@ class SpyScroller {
       activeClass: Array.isArray(options.activeClass)
         ? options.activeClass
         : ["active"],
-      onActive: options.onActive ?? null,
       onLastScrollInView: options.onLastScrollInView ?? null,
       onFirstScrollInView: options.onFirstScrollInView ?? null, 
       opacity: {
@@ -93,19 +90,15 @@ class SpyScroller {
   }
   
 
-  private getCurrentSection(): HTMLElement | undefined {
-    for (let i = 0; i < this.sections.length; i++) {
-      const section = this.sections[i];
+  private currentActiveSection(): HTMLElement | undefined {
+    const currentPosition =
+      (document.documentElement.scrollTop || document.body.scrollTop) +
+      this.options.topOffset;
+    return Array.from(this.sections).find(section => {
       const startAt = section.offsetTop;
       const endAt = startAt + section.offsetHeight;
-      const currentPosition =
-        (document.documentElement.scrollTop || document.body.scrollTop) +
-        this.options.topOffset;
-      const isInView = currentPosition >= startAt && currentPosition < endAt;
-      if (isInView) {
-        return section;
-      }
-    }
+      return currentPosition >= startAt && currentPosition < endAt;
+    });
   }
   
   private onSectionScroll(): void {
@@ -147,56 +140,40 @@ class SpyScroller {
   
 
   
-  private getCurrentMenuItem(
+  private getActiveMenuItem(
     section: HTMLElement
   ): HTMLAnchorElement | undefined {
     if (!section) {
       return;
     }
-
     const sectionId = section.getAttribute("id");
     return this.menuList.querySelector<HTMLAnchorElement>(
       `[${this.options.hrefAttribute}="#${sectionId}"]`
     );
   }
 
-  private setActive(menuItem: HTMLAnchorElement, section: HTMLElement): void {
-    const hasActiveClass = this.options.activeClass.some((className) =>
-      menuItem.classList.contains(className)
-    );
+  private removeActiveLink(options: { ignore?: HTMLAnchorElement } = {}): void {
+    this.menuList.querySelectorAll<HTMLAnchorElement>(this.options.targetSelector).forEach(item => item.classList.remove(...this.options.activeClass));
 
-    if (!hasActiveClass) {
+  }
+
+  private makeActiveLink(menuItem: HTMLAnchorElement): void {
+    if (!this.options.activeClass.some(className => menuItem.classList.contains(className))) {
       menuItem.classList.add(...this.options.activeClass);
-
-      if (this.options.onActive) {
-        this.options.onActive(menuItem, section);
-      }
     }
     menuItem.scrollIntoView({ behavior: "smooth" });
   }
 
-  private removeCurrentActive(
-    options: { ignore: HTMLAnchorElement | null } = { ignore: null }
-  ): void {
-    const { hrefAttribute, targetSelector } = this.options;
-    const menuItems = this.menuList.querySelectorAll<HTMLAnchorElement>(
-      `${targetSelector}:not([${hrefAttribute}="${options.ignore?.getAttribute(
-        hrefAttribute
-      )}"])`
-    );
 
-    menuItems.forEach((item) =>
-      item.classList.remove(...this.options.activeClass)
-    );
-  }
+  
 
   private onScroll(): void {
-    const section = this.getCurrentSection();
-    const menuItem = this.getCurrentMenuItem(section);
+    const section = this.currentActiveSection();
+    const menuItem = this.getActiveMenuItem(section);
 
     if (menuItem) {
-      this.removeCurrentActive({ ignore: menuItem });
-      this.setActive(menuItem, section);
+      this.removeActiveLink({ ignore: menuItem });
+      this.makeActiveLink(menuItem);
     }
     if (this.options.onLastScrollInView) {
       const lastSection = this.sections[this.sections.length - 1];
