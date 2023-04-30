@@ -81,11 +81,13 @@
 				  <li data-jump="section1"><a href="#section1">Section 1</a></li>
 				  <li data-jump="section2"><a href="#section2">Section 2</a></li>
 				  <li data-jump="section3"><a href="#section3">Section 3</a></li>
-				  <li data-jump="section4"><a href="#section4">Section 4</a></li>
-				  <!-- <li ><a href="#section1">Section 1</a></li>
-				  <li ><a href="#section2">Section 2</a></li>
-				  <li ><a href="#section3">Section 3</a></li>
-				  <li ><a href="#section4">Section 4</a></li> -->
+				  <li data-jump="section4" data-submenu="true">
+					<a href="#section4">Section 4</a>
+					<ul>
+					  <li data-jump="section4-1"><a href="#section4-1">Section 4-1</a></li>
+					  <li data-jump="section4-2"><a href="#section4-2">Section 4-2</a></li>
+					</ul>
+				  </li>
 				</ul>
 			  </nav>
 			  
@@ -103,9 +105,16 @@
 			<section id="section3" class="section">
 				<h3>rity have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a 3</h3>
 			</section>
-
-			<section id="section4" class="section" style="opacity: 0;">
+		
+			<section id="section4" class="section" >
 				<h4>ry to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of " 4</h4>
+				
+			</section>
+			<section id="section4-1" class="section" >
+				<h4>4-1 ry to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of " 4</h4>
+			</section>
+			<section id="section4-2" class="section" >
+				<h4>4-2 ry to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of " 4</h4>
 			</section>
 		</main>
 
@@ -118,29 +127,23 @@
 		<script>
 			const { SpyScroller } = window.SpyScroller;
 			const options = {
-  sectionSelector: 'section',  // Query selector to your sections
-  targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
-  topOffset: 80,                  // Menu item will active before scroll to a matched section 100px
-  activeClass: ['activer', 'highlight'],
-  onLastScrollInView: () => test(),
-  onFirstScrollInView: () => console.log('first section in view'),
-  opacity: { enabled: true, opacityDistanceFromCenter: 100 },
-  smoothScroll: false,
+			sectionSelector: 'section',  // Query selector to your sections
+			targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
+			topOffset: 100,                  // Menu item will active before scroll to a matched section 100px
+			activeClass: ['activer', 'highlight'],
+			onLastScrollInView: () => test(),
+			onFirstScrollInView: () => console.log('first section in view'),
+			opacity: { enabled: true, opacityDistanceFromCenter: 100 },
+			smoothScroll: false,
 
-}
+			}
 			console.log(SpyScroller)
 			const x = new SpyScroller('nav',options);
 				function test()
 				{
 					console.log('last section in view')
 				}
-			// Remove all event listeners after 20 seconds.
-			// This is just for demo purposes
-			// This stops the ScrollSpy functionality.
-
-			// setTimeout(() => {
-			// 	instance.unbind();
-			// }, 20000);
+		
 		</script>
 	</body>
 	<style>
@@ -149,10 +152,11 @@
 			margin: auto;
 		}
 		.activer {
-			color: red !important;
-		}
-		.activer a{
-			color: red !important;
-		}
+  color: red !important;
+}
+.nav > li.activer > a ,li.activer > a{
+  color: red !important;
+  background-color: red !important;
+}
 	</style>
 </html>
