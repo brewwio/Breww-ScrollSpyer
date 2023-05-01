@@ -1,5 +1,17 @@
-import { ErrorMessages } from "./ErrorMessages";
+// _____   _____    _____   _          __  _          __ 
+// |  _  \ |  _  \  | ____| | |        / / | |        / / 
+// | |_| | | |_| |  | |__   | |  __   / /  | |  __   / /  
+// |  _  { |  _  /  |  __|  | | /  | / /   | | /  | / /   
+// | |_| | | | \ \  | |___  | |/   |/ /    | |/   |/ /    
+// |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/     
+//                                                    .io
 
+
+
+
+import { ErrorMessages } from "./ErrorMessages";
+import { BrewwAnimationHandler } from './BrewwAnimationHandler';
+import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
 interface ISpyScrollerOptions {
   // The selector for the section elements that are linked to the menu items
@@ -18,8 +30,10 @@ interface ISpyScrollerOptions {
   // A callback function to be executed when the first section is in view (optional)
   onFirstScrollInView?: () => void;
   // An option to enable or disable the opacity effect for the menu items based on their distance from the center
-  opacity: {
+  animation: {
+    type: string,
     enabled: boolean;
+    animateTwoWay: boolean,
     opacityDistanceFromCenter: number;
   };
   // An option to enable or disable smooth scrolling when clicking on a menu item
@@ -31,8 +45,9 @@ class SpyScroller {
   private readonly menuList: HTMLElement;
   private readonly options: ISpyScrollerOptions;
   private readonly sections: NodeListOf<HTMLElement>;
+  private lastActiveSection:HTMLElement
   public isLastSection: boolean = false;
-
+  
   // Define a constructor for the SpyScroller class
   constructor(
     // The menu element or its selector that contains the menu items
@@ -69,9 +84,11 @@ class SpyScroller {
       activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
       onLastScrollInView: options.onLastScrollInView ?? null,
       onFirstScrollInView: options.onFirstScrollInView ?? null,
-      opacity: {
-        enabled: options.opacity?.enabled ?? false,
-        opacityDistanceFromCenter: options.opacity?.opacityDistanceFromCenter ?? 50,
+      animation: {
+        type: options.animation?.type ?? "breww-opacity",
+        enabled: options.animation?.enabled ?? false,
+        animateTwoWay: options.animation?.animateTwoWay ?? true,
+        opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
       },
       smoothScroll: options.smoothScroll ?? false,
     };
@@ -85,7 +102,7 @@ class SpyScroller {
     // Add an event listener to the window object that calls these methods when the user scrolls
     window.addEventListener("scroll", () => {
       this.boundOnScroll();
-      if (this.options.opacity?.enabled) this.onSectionScroll();
+      if (this.options.animation?.enabled) this.onSectionScroll();
     });
     // If smoothScroll option is enabled, call the setMoothScroll method to enable smooth scrolling behavior
     if (this.options.smoothScroll) this.setMoothScroll();
@@ -107,22 +124,24 @@ class SpyScroller {
     const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
     return Array.from(this.sections).find((section) => {
       const startAt = section.offsetTop;
-      const endAt = startAt + section.offsetHeight;
-      return currentPosition >= startAt && currentPosition < endAt;
+      const endAt = startAt + section.offsetHeight;    
+     return currentPosition >= startAt && currentPosition < endAt;
     });
   }
 
+  
   /**
    * On scroll event handler to adjust the opacity of sections based on their position in the viewport.
    * @since Version 1.0.0
    * @returns void
    */
-  
+
   private onSectionScroll(): void {
     const windowHeight = window.innerHeight;
     const scrollPosition =
       window.scrollY || window.pageYOffset || document.body.scrollTop + ((document.documentElement && document.documentElement.scrollTop) || 0);
-
+     
+      
     this.sections.forEach((section) => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
@@ -130,27 +149,13 @@ class SpyScroller {
 
       const distanceFromTop = Math.abs(scrollPosition - sectionTop);
       const distanceFromBottom = Math.abs(scrollPosition + windowHeight - sectionBottom);
-
-      let opacity = 1;
-      let opacityDistanceFromCenter = this.options.opacity.opacityDistanceFromCenter;
-      // If the section is within 100pxdefault or based on topOffset  from the top or bottom of the viewport, maintain an opacity of 1
-      if (distanceFromTop <= opacityDistanceFromCenter || distanceFromBottom <= opacityDistanceFromCenter) {
-        opacity = 1;
-      } else {
-        const distanceToCenter = windowHeight / 2 - (sectionTop + sectionHeight / 2 - scrollPosition);
-
-        // If the section is within 100px from the center of the viewport, maintain an opacity of 1
-        if (Math.abs(distanceToCenter) <= opacityDistanceFromCenter) {
-          opacity = 1;
-        } else {
-          const maxDistanceToCenter = windowHeight / 2 + sectionHeight / 2 - opacityDistanceFromCenter;
-          const distanceRatio = Math.min(1, Math.abs(distanceToCenter) / maxDistanceToCenter);
-          opacity = 1 - distanceRatio;
-        }
-      }
-      section.style.opacity = opacity.toString();
+   
+     
     });
+  
+    return
   }
+
 
 
   /**
@@ -159,7 +164,7 @@ class SpyScroller {
    * @param section The currently active section
    * @returns The HTML anchor element of the corresponding menu item
    */
-  
+
   private getActiveMenuItem(section: HTMLElement): HTMLAnchorElement | undefined {
     if (!section) {
       return;
@@ -167,7 +172,6 @@ class SpyScroller {
 
     let sectionId = section.getAttribute("id");
     let attribute = this.options.targetSelector;
-
     if (this.options.targetSelector === "[data-jump]") {
       attribute = "data-jump";
       const items = document.querySelectorAll("[data-jump]");
@@ -183,7 +187,7 @@ class SpyScroller {
       .forEach((item) => item.classList.remove(...this.options.activeClass));
   }
 
-  
+
   /**
    * Check if the menuItem is a match to the targetSelector and doesn't contain activeClass,
    * if true, add the activeClass to the menuItem and call handleSubmenu function.
@@ -200,7 +204,7 @@ class SpyScroller {
     menuItem.scrollIntoView({ behavior: "smooth" }); // scroll the menuItem into view with smooth behavior
   }
 
-  
+
   /**
    * Check if the menuItem is a submenu and add the active class to its parent <li> element if needed.
    * @param menuItem - the HTMLAnchorElement that represents the menu item to be checked.
@@ -237,9 +241,12 @@ class SpyScroller {
   private onScroll(): void {
     // Get the current active section based on the scroll position and the top offset
     const section = this.currentActiveSection();
+    if(this.lastActiveSection == section) return
+    this.lastActiveSection = section
     // Get the corresponding menu item for the active section
     const menuItem = this.getActiveMenuItem(section);
-
+    if (this.options.animation.animateTwoWay) BrewwAnimationHandler.revertAnimation(this.sections);
+    BrewwAnimationHandler.initAnimation(section);
     if (menuItem) {
       // Remove the active class from all menu items except the current one
       this.removeActiveLink({ ignore: menuItem });
@@ -278,8 +285,7 @@ class SpyScroller {
       }
     }
   }
-  
-  
+
   /**
    * Method open To All
    * Add an event listener to the window object that calls the boundOnScroll and onSectionScroll methods when the user scrolls.
@@ -292,7 +298,8 @@ class SpyScroller {
       // Call the boundOnScroll method to update the active menu item based on the current section
       this.boundOnScroll();
       // If opacity option is enabled, call the onSectionScroll method to update the opacity of the menu items based on the scroll position
-      if (this.options.opacity?.enabled) this.onSectionScroll();
+      if (this.options.animation?.enabled) this.onSectionScroll();
+
     });
   }
 
@@ -307,7 +314,7 @@ class SpyScroller {
     window.removeEventListener("scroll", () => {
       // Stop calling the boundOnScroll and onSectionScroll methods when the user scrolls
       this.boundOnScroll();
-      if (this.options.opacity?.enabled) this.onSectionScroll();
+      if (this.options.animation?.enabled) this.onSectionScroll();
     });
   }
 }

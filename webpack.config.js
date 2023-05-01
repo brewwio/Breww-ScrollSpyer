@@ -1,5 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const config = {
   target: 'web',
@@ -23,6 +24,10 @@ const config = {
       cleanStaleWebpackAssets: false,
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')],
     }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
   ],
   module: {
     rules: [
@@ -41,7 +46,7 @@ const config = {
       {
         test: /\.s?css$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           {

@@ -1,4 +1,5 @@
 import { ErrorMessages } from "./ErrorMessages";
+import './sass/BrewwAnimation.scss';
 interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;
@@ -7,8 +8,10 @@ interface ISpyScrollerOptions {
     activeClass: string[];
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
-    opacity: {
+    animation: {
+        type: string;
         enabled: boolean;
+        animateTwoWay: boolean;
         opacityDistanceFromCenter: number;
     };
     smoothScroll: boolean;
@@ -18,6 +21,7 @@ declare class SpyScroller {
     private readonly menuList;
     private readonly options;
     private readonly sections;
+    private lastActiveSection;
     isLastSection: boolean;
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
     private setMoothScroll;
