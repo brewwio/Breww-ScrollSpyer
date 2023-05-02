@@ -1,3 +1,4 @@
+import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
 declare class BrewwAnimationHandler {
     /**
      *
@@ -6,7 +7,7 @@ declare class BrewwAnimationHandler {
     @since 1.0.0
     @returns void
     **/
-    static initAnimation(section: HTMLElement): void;
+    private initAnimation;
     /**
       Reverts the animation applied to the given elements by removing the corresponding CSS class.
       @param elements - A NodeList containing the elements to revert the animation on.
@@ -14,5 +15,6 @@ declare class BrewwAnimationHandler {
       @returns void
     **/
     static revertAnimation(elements: NodeListOf<HTMLElement>): void;
+    animateInitiater(animationObject: AnimationOptions, section: HTMLElement, sections: NodeListOf<HTMLElement>): void;
 }
 export { BrewwAnimationHandler };

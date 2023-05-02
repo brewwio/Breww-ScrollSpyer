@@ -1,4 +1,5 @@
 import { ErrorMessages } from "./ErrorMessages";
+import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
 import './sass/BrewwAnimation.scss';
 interface ISpyScrollerOptions {
     sectionSelector: string;
@@ -8,12 +9,7 @@ interface ISpyScrollerOptions {
     activeClass: string[];
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
-    animation: {
-        type: string;
-        enabled: boolean;
-        animateTwoWay: boolean;
-        opacityDistanceFromCenter: number;
-    };
+    animation: AnimationOptions;
     smoothScroll: boolean;
 }
 declare class SpyScroller {
@@ -61,6 +57,8 @@ declare class SpyScroller {
      * @since Version 1.0.0
      */
     private onScroll;
+    private executeLastSectionCallbackIfInView;
+    private executeFistSectionCallbackIfInView;
     /**
      * Method open To All
      * Add an event listener to the window object that calls the boundOnScroll and onSectionScroll methods when the user scrolls.

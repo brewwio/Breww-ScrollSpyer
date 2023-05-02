@@ -6,7 +6,7 @@
 // |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/     
 //                                                    .io
 
-
+import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
 class BrewwAnimationHandler {
     /**
      * 
@@ -16,7 +16,7 @@ class BrewwAnimationHandler {
     @returns void
     **/
   
-    public static initAnimation(section: HTMLElement) {
+    private initAnimation(section: HTMLElement) {
       const animLibrary = section.getAttribute('anim-library');
       const animtype = section.getAttribute('breww-anim');
       if (animLibrary && animLibrary.trim() !== '') {
@@ -42,6 +42,13 @@ class BrewwAnimationHandler {
           section.classList.remove(animtype.trim());
         }
       });
+    }
+
+    
+    public animateInitiater(animationObject:AnimationOptions,section: HTMLElement,sections: NodeListOf<HTMLElement> )
+    {     
+      if (animationObject.animateTwoWay) BrewwAnimationHandler.revertAnimation(sections);
+      this.initAnimation(section);  
     }
 
   }

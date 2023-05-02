@@ -11,6 +11,8 @@
 
 import { ErrorMessages } from "./ErrorMessages";
 import { BrewwAnimationHandler } from './BrewwAnimationHandler';
+import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
+const BrewwAnimationHandlerObj = new BrewwAnimationHandler();
 import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
 interface ISpyScrollerOptions {
@@ -30,12 +32,7 @@ interface ISpyScrollerOptions {
   // A callback function to be executed when the first section is in view (optional)
   onFirstScrollInView?: () => void;
   // An option to enable or disable the opacity effect for the menu items based on their distance from the center
-  animation: {
-    type: string,
-    enabled: boolean;
-    animateTwoWay: boolean,
-    opacityDistanceFromCenter: number;
-  };
+  animation: AnimationOptions,
   // An option to enable or disable smooth scrolling when clicking on a menu item
   smoothScroll: boolean;
 }
@@ -51,10 +48,30 @@ class SpyScroller {
   // Define a constructor for the SpyScroller class
   constructor(
     // The menu element or its selector that contains the menu items
-    menu: string | HTMLElement = "#navMain",
+    menu: string | HTMLElement = "#navMenu",
     // The options object that configures the behavior of the SpyScroller instance (optional)
     options: Partial<ISpyScrollerOptions> = {}
   ) {
+
+     // Set the options property by merging the default values with the provided options
+     this.options = {
+      sectionSelector: options.sectionSelector ?? "section",
+      targetSelector: options.targetSelector ?? "[data-jump]",
+      topOffset: options.topOffset ?? 0,
+      hrefAttribute: options.hrefAttribute ?? "href",
+      activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
+      onLastScrollInView: options.onLastScrollInView ?? null,
+      onFirstScrollInView: options.onFirstScrollInView ?? null,
+      animation: {
+        type: options.animation?.type ?? "breww-opacity",
+        enabled: options.animation?.enabled ?? false,
+        animateTwoWay: options.animation?.animateTwoWay ?? true,
+        opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
+      },
+      smoothScroll: options.smoothScroll ?? false,
+    };
+
+
     // Validate the menu argument and throw an error if it is empty or invalid
     if (!menu) {
       throw new Error("First argument cannot be empty");
@@ -73,25 +90,7 @@ class SpyScroller {
     // Throw an error if no menu element is found
     if (!this.menuList) {
       throw new Error(`No menu element found for selector "${menu}"`);
-    }
-
-    // Set the options property by merging the default values with the provided options
-    this.options = {
-      sectionSelector: options.sectionSelector ?? "section",
-      targetSelector: options.targetSelector ?? "[data-jump]",
-      topOffset: options.topOffset ?? 0,
-      hrefAttribute: options.hrefAttribute ?? "href",
-      activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
-      onLastScrollInView: options.onLastScrollInView ?? null,
-      onFirstScrollInView: options.onFirstScrollInView ?? null,
-      animation: {
-        type: options.animation?.type ?? "breww-opacity",
-        enabled: options.animation?.enabled ?? false,
-        animateTwoWay: options.animation?.animateTwoWay ?? true,
-        opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
-      },
-      smoothScroll: options.smoothScroll ?? false,
-    };
+    }   
 
     // Get all the section elements from the document using the sectionSelector option
     this.sections = document.querySelectorAll<HTMLElement>(this.options.sectionSelector);
@@ -239,52 +238,47 @@ class SpyScroller {
    */
 
   private onScroll(): void {
-    // Get the current active section based on the scroll position and the top offset
     const section = this.currentActiveSection();
     if(this.lastActiveSection == section) return
     this.lastActiveSection = section
-    // Get the corresponding menu item for the active section
+
     const menuItem = this.getActiveMenuItem(section);
-    if (this.options.animation.animateTwoWay) BrewwAnimationHandler.revertAnimation(this.sections);
-    BrewwAnimationHandler.initAnimation(section);
-    if (menuItem) {
-      // Remove the active class from all menu items except the current one
-      this.removeActiveLink({ ignore: menuItem });
-      // Check if the current menu item is a submenu and add the active class to its parent if needed
+    if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections);
+  
+    if (menuItem) {    
+      this.removeActiveLink({ ignore: menuItem });     
       this.ActiveLinkChecker(menuItem);
     }
-    // If a callback function is provided for the last section in view, execute it
+    
     if (this.options.onLastScrollInView) {
-      // Get the last section element
-      const lastSection = this.sections[this.sections.length - 1];
-      // Get its top and bottom positions
-      const startAt = lastSection.offsetTop;
-      const endAt = startAt + lastSection.offsetHeight;
-      // Get the current scroll position with the top offset
-      const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
-      // Check if the current scroll position is within the last section's range
-      const isInView = currentPosition >= startAt && currentPosition < endAt;
-
-      if (isInView) {
-        // Call the callback function
-        this.options.onLastScrollInView();
-      }
+      this.executeLastSectionCallbackIfInView(section)
     }
-    // If a callback function is provided for the first section in view, execute it
-    if (this.options.onFirstScrollInView) {
-      // Get the first section element
-      const firstSection = this.sections[0];
-      // Get its top position
-      const firstSectionTop = firstSection.offsetTop;
-      // Get the current scroll position
-      const scrollTop = window.pageYOffset;
 
-      if (scrollTop <= firstSectionTop) {
-        // Call the callback function
-        this.options.onFirstScrollInView();
-      }
+    if (this.options.onFirstScrollInView) {
+      this.executeFistSectionCallbackIfInView(section)
     }
   }
+
+
+  private executeLastSectionCallbackIfInView(section: HTMLElement) {
+      const lastSection = this.sections[this.sections.length - 1];
+      const startAt = lastSection.offsetTop;
+      const endAt = startAt + lastSection.offsetHeight;
+      const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;      
+      if (currentPosition >= startAt && currentPosition < endAt) {
+        this.options.onLastScrollInView();
+      }
+  }
+
+  private executeFistSectionCallbackIfInView(section: HTMLElement) {
+    const firstSection = this.sections[0];
+    const firstSectionTop = firstSection.offsetTop;
+    const scrollTop = window.pageYOffset;
+
+    if (scrollTop <= firstSectionTop) {
+     this.options.onFirstScrollInView();
+    }
+}
 
   /**
    * Method open To All

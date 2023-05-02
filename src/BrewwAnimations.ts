@@ -32,4 +32,4 @@ class BrewwAnimations {
 
 }
 
-export { BrewwAnimations };
+export { BrewwAnimations};
