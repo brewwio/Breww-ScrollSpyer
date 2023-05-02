@@ -8,6 +8,7 @@ interface ISpyScrollerOptions {
     topOffset: number;
     hrefAttribute: string;
     activeClass: string[];
+    onSectionChange?: (section: HTMLElement) => void;
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
     animation: AnimationOptions;
@@ -59,6 +60,7 @@ declare class SpyScroller {
      * @since Version 1.0.0
      */
     private onScroll;
+    private executeSectionChanged;
     private executeLastSectionCallbackIfInView;
     private executeFistSectionCallbackIfInView;
     /**

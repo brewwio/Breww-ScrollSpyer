@@ -27,7 +27,7 @@ interface ISpyScrollerOptions {
   hrefAttribute: string;
   // The class name(s) to be added to the active menu item element
   activeClass: string[];
-
+  onSectionChange?: (section: HTMLElement) => void
   // A callback function to be executed when the last section is in view
   onLastScrollInView: (() => void) | null;
   // A callback function to be executed when the first section is in view (optional)
@@ -64,6 +64,7 @@ class SpyScroller {
       activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
       onLastScrollInView: options.onLastScrollInView ?? null,
       onFirstScrollInView: options.onFirstScrollInView ?? null,
+      onSectionChange: options.onSectionChange ?? null,
       animation: {
         enabled: options.animation?.enabled ?? false,
         animateTwoWay: options.animation?.animateTwoWay ?? true,
@@ -248,6 +249,8 @@ class SpyScroller {
     if(this.lastActiveSection == section) return
     this.lastActiveSection = section
 
+    this.executeSectionChanged(section);
+
     const menuItem = this.getActiveMenuItem(section);
     if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
   
@@ -265,6 +268,9 @@ class SpyScroller {
     }
   }
 
+  private executeSectionChanged(section : HTMLElement): void {
+  this.options.onSectionChange( section );
+  }
 
   private executeLastSectionCallbackIfInView(section: HTMLElement) {
       const lastSection = this.sections[this.sections.length - 1];

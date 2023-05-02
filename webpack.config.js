@@ -5,11 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const config = {
   target: 'web',
   entry: {
-    index: './src/SpyScroller.ts',
+    SpyScroller: './src/SpyScroller.ts',
+    AnimateCss : './src/Animation/Animate-css.ts',
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'SpyScroller.js',
+    filename: '[name].js',
     library: 'SpyScroller',
     libraryTarget: 'umd',
     globalObject: 'this',

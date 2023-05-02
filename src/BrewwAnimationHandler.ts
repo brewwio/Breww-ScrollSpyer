@@ -9,9 +9,6 @@
 import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
 import {AnimationType_Interface} from "./Common_interfaces/AnimationType_Interface";
 
-//Animations classes
-import { AnimateCSS } from "./Animate_Plugins/Animate-css";
-
 class BrewwAnimationHandler {
    
     private initAnimation(section: HTMLElement) {

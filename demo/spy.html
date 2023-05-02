@@ -136,6 +136,7 @@
 				animation: { enabled: true, opacityDistanceFromCenter: 300, animateTwoWay:true },
 				animationType: {animLibrary:'animate__animated',animType:'anim-type'},
 				smoothScroll: false,
+				onSectionChange:(section)=>console.log(section)
 			}
 			console.log(SpyScroller)
 			const x = new SpyScroller('#nav',options);
