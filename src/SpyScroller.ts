@@ -12,6 +12,7 @@
 import { ErrorMessages } from "./ErrorMessages";
 import { BrewwAnimationHandler } from './BrewwAnimationHandler';
 import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
+import {AnimationType_Interface} from "./Common_interfaces/AnimationType_Interface";
 const BrewwAnimationHandlerObj = new BrewwAnimationHandler();
 import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
@@ -33,6 +34,7 @@ interface ISpyScrollerOptions {
   onFirstScrollInView?: () => void;
   // An option to enable or disable the opacity effect for the menu items based on their distance from the center
   animation: AnimationOptions,
+  animationType:AnimationType_Interface,
   // An option to enable or disable smooth scrolling when clicking on a menu item
   smoothScroll: boolean;
 }
@@ -63,12 +65,16 @@ class SpyScroller {
       onLastScrollInView: options.onLastScrollInView ?? null,
       onFirstScrollInView: options.onFirstScrollInView ?? null,
       animation: {
-        type: options.animation?.type ?? "breww-opacity",
         enabled: options.animation?.enabled ?? false,
         animateTwoWay: options.animation?.animateTwoWay ?? true,
         opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
       },
       smoothScroll: options.smoothScroll ?? false,
+      animationType: {
+        enabled: options.animationType?.enabled ?? false,
+        animLibrary: options.animationType?.animLibrary ?? "attribute",
+        animType: options.animationType?.animType ?? "attribute",
+      }
     };
 
 
@@ -243,7 +249,7 @@ class SpyScroller {
     this.lastActiveSection = section
 
     const menuItem = this.getActiveMenuItem(section);
-    if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections);
+    if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
   
     if (menuItem) {    
       this.removeActiveLink({ ignore: menuItem });     

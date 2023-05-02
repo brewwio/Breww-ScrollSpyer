@@ -1,5 +1,6 @@
 import { ErrorMessages } from "./ErrorMessages";
 import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
+import { AnimationType_Interface } from "./Common_interfaces/AnimationType_Interface";
 import './sass/BrewwAnimation.scss';
 interface ISpyScrollerOptions {
     sectionSelector: string;
@@ -10,6 +11,7 @@ interface ISpyScrollerOptions {
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
     animation: AnimationOptions;
+    animationType: AnimationType_Interface;
     smoothScroll: boolean;
 }
 declare class SpyScroller {

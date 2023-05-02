@@ -7,6 +7,7 @@
 //                                                    .io
 
 import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
+import {AnimationType_Interface} from "./Common_interfaces/AnimationType_Interface";
 class BrewwAnimationHandler {
     /**
      * 
@@ -18,7 +19,7 @@ class BrewwAnimationHandler {
   
     private initAnimation(section: HTMLElement) {
       const animLibrary = section.getAttribute('anim-library');
-      const animtype = section.getAttribute('breww-anim');
+      const animtype = section.getAttribute('anim-type');
       if (animLibrary && animLibrary.trim() !== '') {
         section.classList.add(animLibrary.trim());
         section.classList.add(animtype.trim());
@@ -37,18 +38,20 @@ class BrewwAnimationHandler {
       elements.forEach((element) => {
         const section = element;
         const animLibrary = section.getAttribute('anim-library');
-        const animtype = section.getAttribute('breww-anim');
+        const animtype = section.getAttribute('anim-type');
         if (animLibrary && animLibrary.trim() !== '') {
           section.classList.remove(animtype.trim());
         }
       });
     }
 
-    
-    public animateInitiater(animationObject:AnimationOptions,section: HTMLElement,sections: NodeListOf<HTMLElement> )
+
+    public animateInitiater(animationObject:AnimationOptions,section: HTMLElement,sections: NodeListOf<HTMLElement>,animationType:AnimationType_Interface )
     {     
-      if (animationObject.animateTwoWay) BrewwAnimationHandler.revertAnimation(sections);
-      this.initAnimation(section);  
+       
+        if (animationObject.animateTwoWay) BrewwAnimationHandler.revertAnimation(sections);
+        this.initAnimation(section);  
+     
     }
 
   }
