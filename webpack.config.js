@@ -6,13 +6,19 @@ const config = {
   target: 'web',
   entry: {
     SpyScroller: './src/SpyScroller.ts',
-    AnimateCss : './src/Animation/Animate-css.ts',
+    AnimateCss: './src/Animation/AnimateCss.ts',
+  },
+  optimization: {
+    minimize: false,
   },
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: '[name].js',
-    library: 'SpyScroller',
-    libraryTarget: 'umd',
+    library: {
+      name: '[name]',
+      type: 'umd',
+      export: 'default'
+    },
     globalObject: 'this',
     umdNamedDefine: true,
   },
@@ -36,9 +42,6 @@ const config = {
         test: /\.ts(x?)$/,
         exclude: [/node_modules/, /test/],
         use: [
-          {
-            loader: "swc-loader"
-          },
           {
             loader: 'ts-loader',
           },

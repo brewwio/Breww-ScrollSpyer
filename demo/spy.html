@@ -94,7 +94,7 @@
 		</header>
 
 		<main>
-			<section id="section1"  anim-library="animate__animated"  anim-type="animate__bounce"  class="section">
+			<section id="section1"    anim-type="animate__bounce"  class="section">
 				<h1>SLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</h1>
 			</section>
 
@@ -121,11 +121,11 @@
 		<footer>
 			<p>&copy; 2018 Three 11 | License MIT</p>
 		</footer>
-
+		<script src="../dist/AnimateCss.js"></script>
         <script src="../dist/SpyScroller.js"></script>
 
 		<script>
-			const { SpyScroller } = window.SpyScroller;
+			
 			const options = {
 				sectionSelector: 'section',  // Query selector to your sections
 				targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
@@ -133,17 +133,16 @@
 				activeClass: ['activer', 'highlight'],
 				onLastScrollInView: () => test(),
 				onFirstScrollInView: () => console.log('first section in view'),
-				animation: { enabled: true, opacityDistanceFromCenter: 300, animateTwoWay:true },
-				animationType: {animLibrary:'animate__animated',animType:'anim-type'},
+				animation: { enabled: true, opacityDistanceFromCenter: 300, animType:'anim-type' },
 				smoothScroll: false,
-				onSectionChange:(section)=>console.log(section)
+				onSectionChange: (section, sections, animationOptions) => {
+					AnimateCss.animateTwoWay(section,sections,animationOptions);
+  				}
 			}
 			console.log(SpyScroller)
 			const x = new SpyScroller('#nav',options);
-				function test()
-				{
-					console.log('front last section in view')
-				}
+		
+				
 		
 		</script>
 	</body>

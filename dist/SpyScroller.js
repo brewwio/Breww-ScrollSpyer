@@ -1,1 +1,284 @@
-!function(t,e){"object"==typeof exports&&"object"==typeof module?module.exports=e():"function"==typeof define&&define.amd?define("SpyScroller",[],e):"object"==typeof exports?exports.SpyScroller=e():t.SpyScroller=e()}(this,(()=>(()=>{"use strict";var t,e={d:(t,o)=>{for(var n in o)e.o(o,n)&&!e.o(t,n)&&Object.defineProperty(t,n,{enumerable:!0,get:o[n]})},o:(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r:t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})}},o={};function n(t,e){return null!=e&&"undefined"!=typeof Symbol&&e[Symbol.hasInstance]?!!e[Symbol.hasInstance](t):t instanceof e}e.r(o),e.d(o,{ErrorMessages:()=>t,SpyScroller:()=>a}),function(t){t.INVALID_NUMBER="Number must be greater then 1"}(t||(t={}));var i,r=new((i=function(){}).prototype.initAnimation=function(t){var e=t.getAttribute("anim-library"),o=t.getAttribute("anim-type");e&&""!==e.trim()&&(t.classList.add(e.trim()),t.classList.add(o.trim()))},i.revertAnimation=function(t){t.forEach((function(t){var e=t,o=e.getAttribute("anim-library"),n=e.getAttribute("anim-type");o&&""!==o.trim()&&e.classList.remove(n.trim())}))},i.prototype.animateInitiater=function(t,e,o,n){return console.log(n.animLibrary),"attribute"!=n.animLibrary&&"attribute"!=n.animType?(t.animateTwoWay&&i.revertAnimation(o),void this.initAnimation(e)):"animate__animated"==e.getAttribute("anim-library")?(console.log("y"),t.animateTwoWay&&i.revertAnimation(o),void this.initAnimation(e)):void 0},i.prototype.animateLibrarySwitcher=function(t){switch(t){case"animate__animated":return"initAnimationAnimateCss";case"library2":return"method2";case"library3":return"method3";default:return""}},i),a=function(){var t=function(t,e){void 0===t&&(t="#navMenu"),void 0===e&&(e={});var o,i,r,a,l,s,c,u,d,p,m,f,h,v,y,S,b,w,g,A,L=this;if(this.isLastSection=!1,this.options={sectionSelector:null!==(o=e.sectionSelector)&&void 0!==o?o:"section",targetSelector:null!==(i=e.targetSelector)&&void 0!==i?i:"[data-jump]",topOffset:null!==(r=e.topOffset)&&void 0!==r?r:0,hrefAttribute:null!==(a=e.hrefAttribute)&&void 0!==a?a:"href",activeClass:Array.isArray(e.activeClass)?e.activeClass:["active"],onLastScrollInView:null!==(l=e.onLastScrollInView)&&void 0!==l?l:null,onFirstScrollInView:null!==(s=e.onFirstScrollInView)&&void 0!==s?s:null,onSectionChange:null!==(c=e.onSectionChange)&&void 0!==c?c:null,animation:{enabled:null!==(d=null===(u=e.animation)||void 0===u?void 0:u.enabled)&&void 0!==d&&d,animateTwoWay:null===(m=null===(p=e.animation)||void 0===p?void 0:p.animateTwoWay)||void 0===m||m,opacityDistanceFromCenter:null!==(h=null===(f=e.animation)||void 0===f?void 0:f.opacityDistanceFromCenter)&&void 0!==h?h:50},smoothScroll:null!==(v=e.smoothScroll)&&void 0!==v&&v,animationType:{enabled:null!==(S=null===(y=e.animationType)||void 0===y?void 0:y.enabled)&&void 0!==S&&S,animLibrary:null!==(w=null===(b=e.animationType)||void 0===b?void 0:b.animLibrary)&&void 0!==w?w:"attribute",animType:null!==(A=null===(g=e.animationType)||void 0===g?void 0:g.animType)&&void 0!==A?A:"attribute"}},!t)throw new Error("First argument cannot be empty");if("string"!=typeof t&&!n(t,HTMLElement))throw new TypeError("menu can be either string or an instance of HTMLElement");if("object"!=typeof e)throw new TypeError("options can only be of type object");if(this.menuList=n(t,HTMLElement)?t:document.querySelector(t),!this.menuList)throw new Error('No menu element found for selector "'.concat(t,'"'));this.sections=document.querySelectorAll(this.options.sectionSelector),this.onSectionScroll=this.onSectionScroll.bind(this),this.boundOnScroll=this.onScroll.bind(this),window.addEventListener("scroll",(function(){var t;L.boundOnScroll(),(null===(t=L.options.animation)||void 0===t?void 0:t.enabled)&&L.onSectionScroll()})),this.options.smoothScroll&&this.setMoothScroll()};return t.prototype.setMoothScroll=function(){for(var t=document.querySelectorAll(this.options.targetSelector),e=function(e){t[e].addEventListener("click",(function(o){o.preventDefault();var n=t[e].getAttribute("href");document.querySelector(n).scrollIntoView({behavior:"smooth"})}))},o=0;o<t.length;o++)e(o)},t.prototype.currentActiveSection=function(){var t=(document.documentElement.scrollTop||document.body.scrollTop)+this.options.topOffset;return Array.from(this.sections).find((function(e){var o=e.offsetTop,n=o+e.offsetHeight;return t>=o&&t<n}))},t.prototype.onSectionScroll=function(){var t=window.innerHeight,e=window.scrollY||window.pageYOffset||document.body.scrollTop+(document.documentElement&&document.documentElement.scrollTop||0);this.sections.forEach((function(o){var n=o.offsetTop,i=n+o.offsetHeight;Math.abs(e-n),Math.abs(e+t-i)}))},t.prototype.getActiveMenuItem=function(t){if(t){var e=t.getAttribute("id"),o=this.options.targetSelector;if("[data-jump]"===this.options.targetSelector){o="data-jump";var n=document.querySelectorAll("[data-jump]");return Array.from(n).find((function(t){return t.getAttribute(o)===e}))}return this.menuList.querySelector('[href="#'.concat(e,'"]'))}},t.prototype.removeActiveLink=function(t){var e=this;void 0===t&&(t={}),this.menuList.querySelectorAll(this.options.targetSelector).forEach((function(t){var o;return(o=t.classList).remove.apply(o,e.options.activeClass)}))},t.prototype.ActiveLinkChecker=function(t){var e;t.matches(this.options.targetSelector)&&!this.options.activeClass.some((function(e){return t.classList.contains(e)}))&&((e=t.classList).add.apply(e,this.options.activeClass),this.handleSubmenu(t)),t.scrollIntoView({behavior:"smooth"})},t.prototype.handleSubmenu=function(t){var e,o=t.closest("li");if(o){var n=o.closest("ul");if(n&&n.closest("li")){var i=n.closest("li");if(i)return(e=i.classList).add.apply(e,this.options.activeClass),!0}}return!1},t.prototype.onScroll=function(){var t=this.currentActiveSection();if(this.lastActiveSection!=t){this.lastActiveSection=t,this.executeSectionChanged(t);var e=this.getActiveMenuItem(t);this.options.animation.enabled&&r.animateInitiater(this.options.animation,t,this.sections,this.options.animationType),e&&(this.removeActiveLink({ignore:e}),this.ActiveLinkChecker(e)),this.options.onLastScrollInView&&this.executeLastSectionCallbackIfInView(t),this.options.onFirstScrollInView&&this.executeFistSectionCallbackIfInView(t)}},t.prototype.executeSectionChanged=function(t){this.options.onSectionChange(t)},t.prototype.executeLastSectionCallbackIfInView=function(t){var e=this.sections[this.sections.length-1],o=e.offsetTop,n=o+e.offsetHeight,i=(document.documentElement.scrollTop||document.body.scrollTop)+this.options.topOffset;i>=o&&i<n&&this.options.onLastScrollInView()},t.prototype.executeFistSectionCallbackIfInView=function(t){var e=this.sections[0].offsetTop;window.pageYOffset<=e&&this.options.onFirstScrollInView()},t.prototype.bind=function(){var t=this;window.addEventListener("scroll",(function(){var e;t.boundOnScroll(),(null===(e=t.options.animation)||void 0===e?void 0:e.enabled)&&t.onSectionScroll()}))},t.prototype.unbind=function(){var t=this;window.removeEventListener("scroll",(function(){var e;t.boundOnScroll(),(null===(e=t.options.animation)||void 0===e?void 0:e.enabled)&&t.onSectionScroll()}))},t}();return o})()));
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("SpyScroller", [], factory);
+	else if(typeof exports === 'object')
+		exports["SpyScroller"] = factory();
+	else
+		root["SpyScroller"] = factory();
+})(this, () => {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "default": () => (/* binding */ src_SpyScroller)
+});
+
+// UNUSED EXPORTS: ErrorMessages, SpyScroller
+
+;// CONCATENATED MODULE: ./src/ErrorMessages.ts
+var ErrorMessages;
+(function (ErrorMessages) {
+    ErrorMessages["INVALID_NUMBER"] = "Number must be greater then 1";
+})(ErrorMessages || (ErrorMessages = {}));
+
+
+;// CONCATENATED MODULE: ./src/SpyScroller.ts
+// _____   _____    _____   _          __  _          __ 
+// |  _  \ |  _  \  | ____| | |        / / | |        / / 
+// | |_| | | |_| |  | |__   | |  __   / /  | |  __   / /  
+// |  _  { |  _  /  |  __|  | | /  | / /   | | /  | / /   
+// | |_| | | | \ \  | |___  | |/   |/ /    | |/   |/ /    
+// |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/     
+//                                                    .io
+
+
+var SpyScroller = /** @class */ (function () {
+    // Define a constructor for the SpyScroller class
+    function SpyScroller(
+    // The menu element or its selector that contains the menu items
+    menu, 
+    // The options object that configures the behavior of the SpyScroller instance (optional)
+    options) {
+        if (menu === void 0) { menu = "#navMenu"; }
+        if (options === void 0) { options = {}; }
+        var _this = this;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+        this.isLastSection = false;
+        // Set the options property by merging the default values with the provided options
+        this.options = {
+            sectionSelector: (_a = options.sectionSelector) !== null && _a !== void 0 ? _a : "section",
+            targetSelector: (_b = options.targetSelector) !== null && _b !== void 0 ? _b : "[data-jump]",
+            topOffset: (_c = options.topOffset) !== null && _c !== void 0 ? _c : 0,
+            hrefAttribute: (_d = options.hrefAttribute) !== null && _d !== void 0 ? _d : "href",
+            activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
+            onLastScrollInView: (_e = options.onLastScrollInView) !== null && _e !== void 0 ? _e : null,
+            onFirstScrollInView: (_f = options.onFirstScrollInView) !== null && _f !== void 0 ? _f : null,
+            onSectionChange: (_g = options.onSectionChange) !== null && _g !== void 0 ? _g : null,
+            animation: {
+                animType: (_j = (_h = options.animation) === null || _h === void 0 ? void 0 : _h.animType) !== null && _j !== void 0 ? _j : "attribute",
+                enabled: (_l = (_k = options.animation) === null || _k === void 0 ? void 0 : _k.enabled) !== null && _l !== void 0 ? _l : false,
+                animateTwoWay: (_o = (_m = options.animation) === null || _m === void 0 ? void 0 : _m.animateTwoWay) !== null && _o !== void 0 ? _o : true,
+                opacityDistanceFromCenter: (_q = (_p = options.animation) === null || _p === void 0 ? void 0 : _p.opacityDistanceFromCenter) !== null && _q !== void 0 ? _q : 50,
+            },
+            smoothScroll: (_r = options.smoothScroll) !== null && _r !== void 0 ? _r : false,
+        };
+        // Validate the menu argument and throw an error if it is empty or invalid
+        if (!menu) {
+            throw new Error("First argument cannot be empty");
+        }
+        if (!(typeof menu === "string" || menu instanceof HTMLElement)) {
+            throw new TypeError("menu can be either string or an instance of HTMLElement");
+        }
+        // Validate the options argument and throw an error if it is not an object
+        if (typeof options !== "object") {
+            throw new TypeError("options can only be of type object");
+        }
+        // Get the menu element from the menu argument or query the document for it
+        this.menuList = menu instanceof HTMLElement ? menu : document.querySelector(menu);
+        // Throw an error if no menu element is found
+        if (!this.menuList) {
+            throw new Error("No menu element found for selector \"".concat(menu, "\""));
+        }
+        // Get all the section elements from the document using the sectionSelector option
+        this.sections = document.querySelectorAll(this.options.sectionSelector);
+        // Bind the onSectionScroll and boundOnScroll methods to the current instance
+        this.boundOnScroll = this.onScroll.bind(this);
+        // Add an event listener to the window object that calls these methods when the user scrolls
+        window.addEventListener("scroll", function () {
+            _this.boundOnScroll();
+        });
+        // If smoothScroll option is enabled, call the setMoothScroll method to enable smooth scrolling behavior
+        if (this.options.smoothScroll)
+            this.setMoothScroll();
+    }
+    SpyScroller.prototype.setMoothScroll = function () {
+        var links = document.querySelectorAll(this.options.targetSelector);
+        var _loop_1 = function (i) {
+            links[i].addEventListener("click", function (event) {
+                event.preventDefault();
+                var href = links[i].getAttribute("href");
+                document.querySelector(href).scrollIntoView({ behavior: "smooth" });
+            });
+        };
+        for (var i = 0; i < links.length; i++) {
+            _loop_1(i);
+        }
+    };
+    SpyScroller.prototype.currentActiveSection = function () {
+        var currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+        return Array.from(this.sections).find(function (section) {
+            var startAt = section.offsetTop;
+            var endAt = startAt + section.offsetHeight;
+            return currentPosition >= startAt && currentPosition < endAt;
+        });
+    };
+    /**
+     * Returns the active menu item based on the current active section
+     * @since Version 1.0.0
+     * @param section The currently active section
+     * @returns The HTML anchor element of the corresponding menu item
+     */
+    SpyScroller.prototype.getActiveMenuItem = function (section) {
+        if (!section) {
+            return;
+        }
+        var sectionId = section.getAttribute("id");
+        var attribute = this.options.targetSelector;
+        if (this.options.targetSelector === "[data-jump]") {
+            attribute = "data-jump";
+            var items = document.querySelectorAll("[data-jump]");
+            return Array.from(items).find(function (item) { return item.getAttribute(attribute) === sectionId; });
+        }
+        else {
+            return this.menuList.querySelector("[href=\"#".concat(sectionId, "\"]"));
+        }
+    };
+    SpyScroller.prototype.removeActiveLink = function (options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        this.menuList
+            .querySelectorAll(this.options.targetSelector)
+            .forEach(function (item) {
+            var _a;
+            return (_a = item.classList).remove.apply(_a, _this.options.activeClass);
+        });
+    };
+    /**
+     * Check if the menuItem is a match to the targetSelector and doesn't contain activeClass,
+     * if true, add the activeClass to the menuItem and call handleSubmenu function.
+     * @param menuItem - the HTMLAnchorElement to be checked.
+     * @returns void
+     * @since Version 1.0.0
+     */
+    SpyScroller.prototype.ActiveLinkChecker = function (menuItem) {
+        var _a;
+        if (menuItem.matches(this.options.targetSelector) && !this.options.activeClass.some(function (className) { return menuItem.classList.contains(className); })) {
+            (_a = menuItem.classList).add.apply(_a, this.options.activeClass);
+            this.handleSubmenu(menuItem); // call handleSubmenu function to check for submenu and add active class
+        }
+        menuItem.scrollIntoView({ behavior: "smooth" }); // scroll the menuItem into view with smooth behavior
+    };
+    /**
+     * Check if the menuItem is a submenu and add the active class to its parent <li> element if needed.
+     * @param menuItem - the HTMLAnchorElement that represents the menu item to be checked.
+     * @returns boolean - true if the menuItem is a submenu and its parent <li> element was updated, false otherwise.
+     * @since Version 1.0.0
+     */
+    SpyScroller.prototype.handleSubmenu = function (menuItem) {
+        var _a;
+        // Check if the current section is nested inside a <ul> tag
+        var parentLi = menuItem.closest("li");
+        if (parentLi) {
+            var parentUl = parentLi.closest("ul");
+            if (parentUl && parentUl.closest("li")) {
+                var parentLi_1 = parentUl.closest("li");
+                if (parentLi_1) {
+                    // Add the active class to the parent <li> element
+                    (_a = parentLi_1.classList).add.apply(_a, this.options.activeClass);
+                    // Return true to indicate that the submenu was handled
+                    return true;
+                }
+            }
+        }
+        // Return false to indicate that the submenu was not handled
+        return false;
+    };
+    /**
+     * Perform actions based on the current scroll position and the active section and menu item.
+     * @returns void
+     * @since Version 1.0.0
+     */
+    SpyScroller.prototype.onScroll = function () {
+        var section = this.currentActiveSection();
+        if (this.lastActiveSection == section)
+            return;
+        this.lastActiveSection = section;
+        this.executeSectionChanged(section, this.sections);
+        var menuItem = this.getActiveMenuItem(section);
+        //if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
+        if (menuItem) {
+            this.removeActiveLink({ ignore: menuItem });
+            this.ActiveLinkChecker(menuItem);
+        }
+        if (this.options.onLastScrollInView) {
+            this.executeLastSectionCallbackIfInView(section);
+        }
+        if (this.options.onFirstScrollInView) {
+            this.executeFistSectionCallbackIfInView(section);
+        }
+    };
+    SpyScroller.prototype.executeSectionChanged = function (section, sections) {
+        this.options.onSectionChange(section, sections, this.options.animation);
+    };
+    SpyScroller.prototype.executeLastSectionCallbackIfInView = function (section) {
+        var lastSection = this.sections[this.sections.length - 1];
+        var startAt = lastSection.offsetTop;
+        var endAt = startAt + lastSection.offsetHeight;
+        var currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+        if (currentPosition >= startAt && currentPosition < endAt) {
+            this.options.onLastScrollInView();
+        }
+    };
+    SpyScroller.prototype.executeFistSectionCallbackIfInView = function (section) {
+        var firstSection = this.sections[0];
+        var firstSectionTop = firstSection.offsetTop;
+        var scrollTop = window.pageYOffset;
+        if (scrollTop <= firstSectionTop) {
+            this.options.onFirstScrollInView();
+        }
+    };
+    /**
+     * Method open To All
+     * Add an event listener to the window object that calls the boundOnScroll and onSectionScroll methods when the user scrolls.
+     * @returns void
+     * @since Version 1.0.0
+     */
+    SpyScroller.prototype.bind = function () {
+        this.boundOnScroll = this.onScroll.bind(this);
+        window.addEventListener("scroll", this.boundOnScroll);
+    };
+    /**
+     * Remove the event listener from the window object that was added by the bind method.
+     * @returns void
+     * @since Version 1.0.0
+     */
+    SpyScroller.prototype.unbind = function () {
+        window.removeEventListener("scroll", this.boundOnScroll);
+        this.boundOnScroll = null;
+    };
+    return SpyScroller;
+}());
+/* harmony default export */ const src_SpyScroller = (SpyScroller);
+
+
+__webpack_exports__ = __webpack_exports__["default"];
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
