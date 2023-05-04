@@ -68,5 +68,17 @@ export default class SpyScroller {
      * @since Version 1.0.0
      */
     unbind(): void;
+    getCurrentSection(isChild?: boolean): {
+        currentActiveSectionElement: HTMLElement;
+        currentActiveSectionIndex: number;
+        currentSectionId: string;
+        currentSectionDataList: NamedNodeMap;
+        currentSectionClassList: DOMTokenList;
+        currentSectionChildElementCount: number;
+        currentSectionFirstChild: Element;
+        currentSectionLastChild: Element;
+        currentSectiionChildElementNclass: any;
+    };
+    private currentSectionChild;
 }
 export { SpyScroller, ErrorMessages };

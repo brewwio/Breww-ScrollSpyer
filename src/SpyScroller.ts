@@ -26,7 +26,7 @@ interface ISpyScrollerOptions {
   hrefAttribute: string;
   // The class name(s) to be added to the active menu item element
   activeClass: string[];
-  onSectionChange?: (section: HTMLElement, sections : NodeListOf<HTMLElement>, animation:object, ) => void
+  onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object,) => void
   // A callback function to be executed when the last section is in view
   onLastScrollInView: (() => void) | null;
   // A callback function to be executed when the first section is in view (optional)
@@ -43,7 +43,7 @@ export default class SpyScroller {
   private readonly menuList: HTMLElement;
   private readonly options: ISpyScrollerOptions;
   private readonly sections: NodeListOf<HTMLElement>;
-  private lastActiveSection:HTMLElement
+  private lastActiveSection: HTMLElement
   public isLastSection: boolean = false;
 
   // Define a constructor for the SpyScroller class
@@ -54,8 +54,8 @@ export default class SpyScroller {
     options: Partial<ISpyScrollerOptions> = {}
   ) {
 
-     // Set the options property by merging the default values with the provided options
-     this.options = {
+    // Set the options property by merging the default values with the provided options
+    this.options = {
       sectionSelector: options.sectionSelector ?? "section",
       targetSelector: options.targetSelector ?? "[data-jump]",
       topOffset: options.topOffset ?? 0,
@@ -71,7 +71,7 @@ export default class SpyScroller {
         opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
       },
       smoothScroll: options.smoothScroll ?? false,
-     
+
     };
 
 
@@ -93,14 +93,14 @@ export default class SpyScroller {
     // Throw an error if no menu element is found
     if (!this.menuList) {
       throw new Error(`No menu element found for selector "${menu}"`);
-    }   
+    }
 
     // Get all the section elements from the document using the sectionSelector option
     this.sections = document.querySelectorAll<HTMLElement>(this.options.sectionSelector);
 
     // Bind the onSectionScroll and boundOnScroll methods to the current instance
     this.boundOnScroll = this.onScroll.bind(this);
-   
+    this.bind()
     // If smoothScroll option is enabled, call the setMoothScroll method to enable smooth scrolling behavior
     if (this.options.smoothScroll) this.setMoothScroll();
   }
@@ -121,8 +121,8 @@ export default class SpyScroller {
     const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
     return Array.from(this.sections).find((section) => {
       const startAt = section.offsetTop;
-      const endAt = startAt + section.offsetHeight;    
-     return currentPosition >= startAt && currentPosition < endAt;
+      const endAt = startAt + section.offsetHeight;
+      return currentPosition >= startAt && currentPosition < endAt;
     });
   }
 
@@ -208,19 +208,19 @@ export default class SpyScroller {
 
   private onScroll(): void {
     const section = this.currentActiveSection();
-    if(this.lastActiveSection == section) return
+    if (this.lastActiveSection == section) return
     this.lastActiveSection = section
 
-    this.executeSectionChanged(section,this.sections);
+    this.executeSectionChanged(section, this.sections);
 
     const menuItem = this.getActiveMenuItem(section);
     //if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
-  
-    if (menuItem) {    
-      this.removeActiveLink({ ignore: menuItem });     
+
+    if (menuItem) {
+      this.removeActiveLink({ ignore: menuItem });
       this.ActiveLinkChecker(menuItem);
     }
-    
+
     if (this.options.onLastScrollInView) {
       this.executeLastSectionCallbackIfInView(section)
     }
@@ -230,18 +230,18 @@ export default class SpyScroller {
     }
   }
 
-  private executeSectionChanged(section : HTMLElement, sections : NodeListOf<HTMLElement>): void {
-  this.options.onSectionChange( section,sections,this.options.animation );
+  private executeSectionChanged(section: HTMLElement, sections: NodeListOf<HTMLElement>): void {
+    this.options.onSectionChange(section, sections, this.options.animation);
   }
 
   private executeLastSectionCallbackIfInView(section: HTMLElement) {
-      const lastSection = this.sections[this.sections.length - 1];
-      const startAt = lastSection.offsetTop;
-      const endAt = startAt + lastSection.offsetHeight;
-      const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;      
-      if (currentPosition >= startAt && currentPosition < endAt) {
-        this.options.onLastScrollInView();
-      }
+    const lastSection = this.sections[this.sections.length - 1];
+    const startAt = lastSection.offsetTop;
+    const endAt = startAt + lastSection.offsetHeight;
+    const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+    if (currentPosition >= startAt && currentPosition < endAt) {
+      this.options.onLastScrollInView();
+    }
   }
 
   private executeFistSectionCallbackIfInView(section: HTMLElement) {
@@ -250,9 +250,9 @@ export default class SpyScroller {
     const scrollTop = window.pageYOffset;
 
     if (scrollTop <= firstSectionTop) {
-     this.options.onFirstScrollInView();
+      this.options.onFirstScrollInView();
     }
-}
+  }
 
   /**
    * Method open To All
@@ -274,9 +274,50 @@ export default class SpyScroller {
    */
 
   public unbind(): void {
-   
+
     window.removeEventListener("scroll", this.boundOnScroll);
     this.boundOnScroll = null;
+  }
+
+  public getCurrentSection(isChild: boolean = false) {  
+
+    let childObject : any = null;
+    if (isChild)  childObject = this.currentSectionChild();
+        
+    let sectioninfo = {
+      currentActiveSectionElement: this.currentActiveSection(),
+      currentActiveSectionIndex: Array.from(this.sections).indexOf(this.currentActiveSection()),
+      currentSectionId: this.currentActiveSection().getAttribute("id"),
+      currentSectionDataList: this.currentActiveSection().attributes,
+      currentSectionClassList: this.currentActiveSection().classList,
+      currentSectionChildElementCount: this.currentActiveSection().childElementCount,
+      currentSectionFirstChild: this.currentActiveSection().firstElementChild,
+      currentSectionLastChild: this.currentActiveSection().lastElementChild,
+      currentSectiionChildElementNclass:  childObject
+    };
+
+    return sectioninfo;
+  }
+
+
+  private currentSectionChild()
+  {
+    const children = this.currentActiveSection().children;
+    const childObjects: { tag: string, attributes: { [key: string]: string }, classes: string[] }[] = [];
+
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+
+      const attributes: { [key: string]: string } = {};
+      for (let j = 0; j < child.attributes.length; j++) {
+        const attribute = child.attributes[j];
+        attributes[attribute.name] = attribute.value;
+      }
+
+      const classes = Array.from(child.classList);
+      const childObject = { tag: child.tagName, attributes, classes };
+      childObjects.push(childObject);
+    }
   }
 }
 

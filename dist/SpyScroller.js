@@ -67,7 +67,6 @@ var SpyScroller = /** @class */ (function () {
     options) {
         if (menu === void 0) { menu = "#navMenu"; }
         if (options === void 0) { options = {}; }
-        var _this = this;
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
         this.isLastSection = false;
         // Set the options property by merging the default values with the provided options
@@ -109,10 +108,7 @@ var SpyScroller = /** @class */ (function () {
         this.sections = document.querySelectorAll(this.options.sectionSelector);
         // Bind the onSectionScroll and boundOnScroll methods to the current instance
         this.boundOnScroll = this.onScroll.bind(this);
-        // Add an event listener to the window object that calls these methods when the user scrolls
-        window.addEventListener("scroll", function () {
-            _this.boundOnScroll();
-        });
+        this.bind();
         // If smoothScroll option is enabled, call the setMoothScroll method to enable smooth scrolling behavior
         if (this.options.smoothScroll)
             this.setMoothScroll();
@@ -271,6 +267,40 @@ var SpyScroller = /** @class */ (function () {
     SpyScroller.prototype.unbind = function () {
         window.removeEventListener("scroll", this.boundOnScroll);
         this.boundOnScroll = null;
+    };
+    SpyScroller.prototype.getCurrentSection = function (isChild) {
+        if (isChild === void 0) { isChild = false; }
+        var childObject = null;
+        if (isChild) {
+            childObject = this.currentSectionChild();
+        }
+        var sectioninfo = {
+            currentActiveSectionElement: this.currentActiveSection(),
+            currentActiveSectionIndex: Array.from(this.sections).indexOf(this.currentActiveSection()),
+            currentSectionId: this.currentActiveSection().getAttribute("id"),
+            currentSectionDataList: this.currentActiveSection().attributes,
+            currentSectionClassList: this.currentActiveSection().classList,
+            currentSectionChildElementCount: this.currentActiveSection().childElementCount,
+            currentSectionFirstChild: this.currentActiveSection().firstElementChild,
+            currentSectionLastChild: this.currentActiveSection().lastElementChild,
+            currentSectiionChildElementNclass: childObject
+        };
+        return sectioninfo;
+    };
+    SpyScroller.prototype.currentSectionChild = function () {
+        var children = this.currentActiveSection().children;
+        var childObjects = [];
+        for (var i = 0; i < children.length; i++) {
+            var child = children[i];
+            var attributes = {};
+            for (var j = 0; j < child.attributes.length; j++) {
+                var attribute = child.attributes[j];
+                attributes[attribute.name] = attribute.value;
+            }
+            var classes = Array.from(child.classList);
+            var childObject = { tag: child.tagName, attributes: attributes, classes: classes };
+            childObjects.push(childObject);
+        }
     };
     return SpyScroller;
 }());
