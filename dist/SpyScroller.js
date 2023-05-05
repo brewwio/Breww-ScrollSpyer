@@ -67,25 +67,25 @@ var SpyScroller = /** @class */ (function () {
     options) {
         if (menu === void 0) { menu = "#navMenu"; }
         if (options === void 0) { options = {}; }
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
         this.isLastSection = false;
         // Set the options property by merging the default values with the provided options
         this.options = {
             sectionSelector: (_a = options.sectionSelector) !== null && _a !== void 0 ? _a : "section",
             targetSelector: (_b = options.targetSelector) !== null && _b !== void 0 ? _b : "[data-jump]",
-            topOffset: (_c = options.topOffset) !== null && _c !== void 0 ? _c : 100,
-            hrefAttribute: (_d = options.hrefAttribute) !== null && _d !== void 0 ? _d : "href",
+            topOffset: { min: 0, max: 0, values: [{ topOffset: 500 }] },
+            hrefAttribute: (_c = options.hrefAttribute) !== null && _c !== void 0 ? _c : "href",
             activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
-            onLastScrollInView: (_e = options.onLastScrollInView) !== null && _e !== void 0 ? _e : null,
-            onFirstScrollInView: (_f = options.onFirstScrollInView) !== null && _f !== void 0 ? _f : null,
-            onSectionChange: (_g = options.onSectionChange) !== null && _g !== void 0 ? _g : null,
+            onLastScrollInView: (_d = options.onLastScrollInView) !== null && _d !== void 0 ? _d : null,
+            onFirstScrollInView: (_e = options.onFirstScrollInView) !== null && _e !== void 0 ? _e : null,
+            onSectionChange: (_f = options.onSectionChange) !== null && _f !== void 0 ? _f : null,
             animation: {
-                animType: (_j = (_h = options.animation) === null || _h === void 0 ? void 0 : _h.animType) !== null && _j !== void 0 ? _j : "attribute",
-                enabled: (_l = (_k = options.animation) === null || _k === void 0 ? void 0 : _k.enabled) !== null && _l !== void 0 ? _l : false,
-                animateTwoWay: (_o = (_m = options.animation) === null || _m === void 0 ? void 0 : _m.animateTwoWay) !== null && _o !== void 0 ? _o : true,
-                opacityDistanceFromCenter: (_q = (_p = options.animation) === null || _p === void 0 ? void 0 : _p.opacityDistanceFromCenter) !== null && _q !== void 0 ? _q : 50,
+                animType: (_h = (_g = options.animation) === null || _g === void 0 ? void 0 : _g.animType) !== null && _h !== void 0 ? _h : "attribute",
+                enabled: (_k = (_j = options.animation) === null || _j === void 0 ? void 0 : _j.enabled) !== null && _k !== void 0 ? _k : false,
+                animateTwoWay: (_m = (_l = options.animation) === null || _l === void 0 ? void 0 : _l.animateTwoWay) !== null && _m !== void 0 ? _m : true,
+                opacityDistanceFromCenter: (_p = (_o = options.animation) === null || _o === void 0 ? void 0 : _o.opacityDistanceFromCenter) !== null && _p !== void 0 ? _p : 50,
             },
-            smoothScroll: (_r = options.smoothScroll) !== null && _r !== void 0 ? _r : false,
+            smoothScroll: (_q = options.smoothScroll) !== null && _q !== void 0 ? _q : false,
         };
         // Validate the menu argument and throw an error if it is empty or invalid
         if (!menu) {
@@ -138,22 +138,20 @@ var SpyScroller = /** @class */ (function () {
     };
     SpyScroller.prototype.getTopOffset = function () {
         var screenWidth = window.innerWidth;
-        var topOffset = 0;
-        if (typeof this.options.topOffset === 'number') {
-            topOffset = this.options.topOffset;
-        }
-        else if (typeof this.options.topOffset === 'object') {
-            var _a = this.options.topOffset, min = _a.min, max = _a.max, values = _a.values;
-            if (screenWidth >= min && screenWidth <= max) {
-                for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
-                    var option = values_1[_i];
-                    if ((option.minWidth === undefined || screenWidth >= option.minWidth) &&
-                        (option.maxWidth === undefined || screenWidth <= option.maxWidth)) {
-                        topOffset = option.topOffset;
-                    }
+        var topOffset = 200;
+        if (Array.isArray(this.options.topOffset)) {
+            for (var _i = 0, _a = this.options.topOffset; _i < _a.length; _i++) {
+                var option = _a[_i];
+                if ((!option.minWidth || screenWidth >= option.minWidth) &&
+                    (!option.maxWidth || screenWidth <= option.maxWidth)) {
+                    topOffset = option.topOffset;
                 }
             }
         }
+        else if (typeof this.options.topOffset === 'number') {
+            topOffset = this.options.topOffset;
+        }
+        console.log("topoffset" + topOffset);
         return topOffset;
     };
     SpyScroller.prototype.getOffset = function (element, horizontal) {

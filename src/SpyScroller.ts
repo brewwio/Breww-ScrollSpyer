@@ -67,8 +67,7 @@ export default class SpyScroller {
     this.options = {
       sectionSelector: options.sectionSelector ?? "section",
       targetSelector: options.targetSelector ?? "[data-jump]",
-      topOffset: { min: number, max: number, values: { maxWidth?: number, minWidth?: number, topOffset: number }[] } | number = 100,
-
+      topOffset: { min: 0, max: 0, values: [{ topOffset: 500 }] },
       hrefAttribute: options.hrefAttribute ?? "href",
       activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
       onLastScrollInView: options.onLastScrollInView ?? null,
@@ -140,27 +139,24 @@ export default class SpyScroller {
   
   private getTopOffset(): number {
     const screenWidth = window.innerWidth;
-    let topOffset = 0;
-    
-    if (typeof this.options.topOffset === 'number') {
-      topOffset = this.options.topOffset;
-    } else if (typeof this.options.topOffset === 'object') {
-      const { min, max, values } = this.options.topOffset;
-      
-      if (screenWidth >= min && screenWidth <= max) {
-        for (const option of values) {
-          if (
-            (option.minWidth === undefined || screenWidth >= option.minWidth) &&
-            (option.maxWidth === undefined || screenWidth <= option.maxWidth)
-          ) {
-            topOffset = option.topOffset;
-          }
+    let topOffset = 200;
+  
+    if (Array.isArray(this.options.topOffset)) {
+      for (const option of this.options.topOffset) {
+        if (
+          (!option.minWidth || screenWidth >= option.minWidth) &&
+          (!option.maxWidth || screenWidth <= option.maxWidth)
+        ) {
+          topOffset = option.topOffset;
         }
       }
+    } else if (typeof this.options.topOffset === 'number') {
+      topOffset = this.options.topOffset;
     }
-    
+  console.log("topoffset"+topOffset)
     return topOffset;
   }
+  
   
   
   private getOffset(element: HTMLElement, horizontal = false): number {
