@@ -1,6 +1,5 @@
 import { ErrorMessages } from "./ErrorMessages";
-import { AnimationOptions } from "./Common_interfaces/Animation_Interface";
-import { AnimationType_Interface } from "./Common_interfaces/AnimationType_Interface";
+import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
 import './sass/BrewwAnimation.scss';
 interface ISpyScrollerOptions {
     sectionSelector: string;
@@ -8,15 +7,14 @@ interface ISpyScrollerOptions {
     topOffset: number;
     hrefAttribute: string;
     activeClass: string[];
-    onSectionChange?: (section: HTMLElement) => void;
+    onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
     onLastScrollInView: (() => void) | null;
     onFirstScrollInView?: () => void;
-    animation: AnimationOptions;
-    animationType: AnimationType_Interface;
+    animation: AnimationOptionsInterface;
     smoothScroll: boolean;
 }
-declare class SpyScroller {
-    private readonly boundOnScroll;
+export default class SpyScroller {
+    private boundOnScroll;
     private readonly menuList;
     private readonly options;
     private readonly sections;
@@ -25,12 +23,6 @@ declare class SpyScroller {
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
     private setMoothScroll;
     private currentActiveSection;
-    /**
-     * On scroll event handler to adjust the opacity of sections based on their position in the viewport.
-     * @since Version 1.0.0
-     * @returns void
-     */
-    private onSectionScroll;
     /**
      * Returns the active menu item based on the current active section
      * @since Version 1.0.0
@@ -76,5 +68,17 @@ declare class SpyScroller {
      * @since Version 1.0.0
      */
     unbind(): void;
+    getCurrentSection(isChild?: boolean): {
+        currentActiveSectionElement: HTMLElement;
+        currentActiveSectionIndex: number;
+        currentSectionId: string;
+        currentSectionDataList: NamedNodeMap;
+        currentSectionClassList: DOMTokenList;
+        currentSectionChildElementCount: number;
+        currentSectionFirstChild: Element;
+        currentSectionLastChild: Element;
+        currentSectiionChildElementNclass: any;
+    };
+    private currentSectionChild;
 }
 export { SpyScroller, ErrorMessages };
