@@ -4,7 +4,15 @@ import './sass/BrewwAnimation.scss';
 interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;
-    topOffset: number;
+    topOffset: number | {
+        min: number;
+        max: number;
+        values: {
+            maxWidth?: number;
+            minWidth?: number;
+            topOffset: number;
+        }[];
+    };
     hrefAttribute: string;
     activeClass: string[];
     onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
@@ -23,6 +31,8 @@ export default class SpyScroller {
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
     private setMoothScroll;
     private currentActiveSection;
+    private getTopOffset;
+    private getOffset;
     /**
      * Returns the active menu item based on the current active section
      * @since Version 1.0.0

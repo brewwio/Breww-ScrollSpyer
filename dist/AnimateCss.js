@@ -36,6 +36,9 @@ var __webpack_exports__ = {};
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+
+
+ // import the specific CSS file you need
 var AnimateCss = /** @class */ (function () {
     function AnimateCss() {
     }
@@ -81,7 +84,16 @@ var AnimateCss = /** @class */ (function () {
         }
         AnimateCss.initAnimation(section);
     };
-    AnimateCss.animLibrary = 'animate__animated';
+    // constructor() {
+    //   try {
+    //     const _ = require('animate.css');
+    //     // or import _ from 'lodash'; for ES6 modules
+    //     console.log('lodash is installed');
+    //   } catch (error) {
+    //     console.log('lodash is not installed');
+    //   }
+    // }
+    AnimateCss.animLibrary = 'animated';
     return AnimateCss;
 }());
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AnimateCss);

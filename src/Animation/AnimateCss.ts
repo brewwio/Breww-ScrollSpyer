@@ -1,6 +1,19 @@
 import { AnimationOptionsInterface } from "../Common_interfaces/Animation_Interface";
+import 'animate.css/source/_vars.css';
+import 'animate.css/source/_base.css';
+import 'animate.css/source/attention_seekers/headShake.css'; // import the specific CSS file you need
 class AnimateCss {
-  private static animLibrary = 'animate__animated';
+  // constructor() {
+    
+  //   try {
+  //     const _ = require('animate.css');
+  //     // or import _ from 'lodash'; for ES6 modules
+  //     console.log('lodash is installed');
+  //   } catch (error) {
+  //     console.log('lodash is not installed');
+  //   }
+  // }
+  private static animLibrary = 'animated';
   private static fadeUpAnimation(element: HTMLElement) {
     // implementation here
   }
@@ -18,6 +31,7 @@ class AnimateCss {
     }
   }
 
+  
   private static revertAnimation(sections: NodeListOf<HTMLElement>) {
     const sectionsArray = Array.from(sections);
     sectionsArray.forEach((section) => {

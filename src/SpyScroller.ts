@@ -21,7 +21,16 @@ interface ISpyScrollerOptions {
   // The selector for the menu item elements that are linked to the sections
   targetSelector: string;
   // The offset from the top of the window to determine the active section
-  topOffset: number;
+  topOffset: number | {
+    min: number,
+    max: number,
+    values: {
+      maxWidth?: number,
+      minWidth?: number,
+      topOffset: number
+    }[]
+  };
+  
   // The attribute name that contains the href value of the menu item elements
   hrefAttribute: string;
   // The class name(s) to be added to the active menu item element
@@ -58,7 +67,8 @@ export default class SpyScroller {
     this.options = {
       sectionSelector: options.sectionSelector ?? "section",
       targetSelector: options.targetSelector ?? "[data-jump]",
-      topOffset: options.topOffset ?? 0,
+      topOffset: { min: number, max: number, values: { maxWidth?: number, minWidth?: number, topOffset: number }[] } | number = 100,
+
       hrefAttribute: options.hrefAttribute ?? "href",
       activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
       onLastScrollInView: options.onLastScrollInView ?? null,
@@ -118,14 +128,53 @@ export default class SpyScroller {
   }
 
   private currentActiveSection(): HTMLElement | undefined {
-    const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+    const currentPosition =
+      (document.documentElement.scrollTop || document.body.scrollTop) +
+      this.getTopOffset();
     return Array.from(this.sections).find((section) => {
-      const startAt = section.offsetTop;
+      const startAt = this.getOffset(section);
       const endAt = startAt + section.offsetHeight;
       return currentPosition >= startAt && currentPosition < endAt;
     });
   }
-
+  
+  private getTopOffset(): number {
+    const screenWidth = window.innerWidth;
+    let topOffset = 0;
+    
+    if (typeof this.options.topOffset === 'number') {
+      topOffset = this.options.topOffset;
+    } else if (typeof this.options.topOffset === 'object') {
+      const { min, max, values } = this.options.topOffset;
+      
+      if (screenWidth >= min && screenWidth <= max) {
+        for (const option of values) {
+          if (
+            (option.minWidth === undefined || screenWidth >= option.minWidth) &&
+            (option.maxWidth === undefined || screenWidth <= option.maxWidth)
+          ) {
+            topOffset = option.topOffset;
+          }
+        }
+      }
+    }
+    
+    return topOffset;
+  }
+  
+  
+  private getOffset(element: HTMLElement, horizontal = false): number {
+    if (!element) {
+      return 0;
+    }
+    const parentElement = element.offsetParent as HTMLElement;
+    return (
+      this.getOffset(parentElement, horizontal) +
+      (horizontal ? element.offsetLeft : element.offsetTop)
+    );
+  }
+  
+  
   /**
    * Returns the active menu item based on the current active section
    * @since Version 1.0.0
@@ -235,23 +284,23 @@ export default class SpyScroller {
   }
 
   private executeLastSectionCallbackIfInView(section: HTMLElement) {
-    const lastSection = this.sections[this.sections.length - 1];
-    const startAt = lastSection.offsetTop;
-    const endAt = startAt + lastSection.offsetHeight;
-    const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
-    if (currentPosition >= startAt && currentPosition < endAt) {
-      this.options.onLastScrollInView();
-    }
+    // const lastSection = this.sections[this.sections.length - 1];
+    // const startAt = lastSection.offsetTop;
+    // const endAt = startAt + lastSection.offsetHeight;
+    // const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+    // if (currentPosition >= startAt && currentPosition < endAt) {
+    //   this.options.onLastScrollInView();
+    // }
   }
 
   private executeFistSectionCallbackIfInView(section: HTMLElement) {
-    const firstSection = this.sections[0];
-    const firstSectionTop = firstSection.offsetTop;
-    const scrollTop = window.pageYOffset;
+    // const firstSection = this.sections[0];
+    // const firstSectionTop = firstSection.offsetTop;
+    // const scrollTop = window.pageYOffset;
 
-    if (scrollTop <= firstSectionTop) {
-      this.options.onFirstScrollInView();
-    }
+    // if (scrollTop <= firstSectionTop) {
+    //   this.options.onFirstScrollInView();
+    // }
   }
 
   /**

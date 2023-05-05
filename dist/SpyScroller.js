@@ -73,7 +73,7 @@ var SpyScroller = /** @class */ (function () {
         this.options = {
             sectionSelector: (_a = options.sectionSelector) !== null && _a !== void 0 ? _a : "section",
             targetSelector: (_b = options.targetSelector) !== null && _b !== void 0 ? _b : "[data-jump]",
-            topOffset: (_c = options.topOffset) !== null && _c !== void 0 ? _c : 0,
+            topOffset: (_c = options.topOffset) !== null && _c !== void 0 ? _c : 100,
             hrefAttribute: (_d = options.hrefAttribute) !== null && _d !== void 0 ? _d : "href",
             activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
             onLastScrollInView: (_e = options.onLastScrollInView) !== null && _e !== void 0 ? _e : null,
@@ -127,12 +127,43 @@ var SpyScroller = /** @class */ (function () {
         }
     };
     SpyScroller.prototype.currentActiveSection = function () {
-        var currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+        var _this = this;
+        var currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) +
+            this.getTopOffset();
         return Array.from(this.sections).find(function (section) {
-            var startAt = section.offsetTop;
+            var startAt = _this.getOffset(section);
             var endAt = startAt + section.offsetHeight;
             return currentPosition >= startAt && currentPosition < endAt;
         });
+    };
+    SpyScroller.prototype.getTopOffset = function () {
+        var screenWidth = window.innerWidth;
+        var topOffset = 0;
+        if (typeof this.options.topOffset === 'number') {
+            topOffset = this.options.topOffset;
+        }
+        else if (typeof this.options.topOffset === 'object') {
+            var _a = this.options.topOffset, min = _a.min, max = _a.max, values = _a.values;
+            if (screenWidth >= min && screenWidth <= max) {
+                for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+                    var option = values_1[_i];
+                    if ((option.minWidth === undefined || screenWidth >= option.minWidth) &&
+                        (option.maxWidth === undefined || screenWidth <= option.maxWidth)) {
+                        topOffset = option.topOffset;
+                    }
+                }
+            }
+        }
+        return topOffset;
+    };
+    SpyScroller.prototype.getOffset = function (element, horizontal) {
+        if (horizontal === void 0) { horizontal = false; }
+        if (!element) {
+            return 0;
+        }
+        var parentElement = element.offsetParent;
+        return (this.getOffset(parentElement, horizontal) +
+            (horizontal ? element.offsetLeft : element.offsetTop));
     };
     /**
      * Returns the active menu item based on the current active section
@@ -233,21 +264,21 @@ var SpyScroller = /** @class */ (function () {
         this.options.onSectionChange(section, sections, this.options.animation);
     };
     SpyScroller.prototype.executeLastSectionCallbackIfInView = function (section) {
-        var lastSection = this.sections[this.sections.length - 1];
-        var startAt = lastSection.offsetTop;
-        var endAt = startAt + lastSection.offsetHeight;
-        var currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
-        if (currentPosition >= startAt && currentPosition < endAt) {
-            this.options.onLastScrollInView();
-        }
+        // const lastSection = this.sections[this.sections.length - 1];
+        // const startAt = lastSection.offsetTop;
+        // const endAt = startAt + lastSection.offsetHeight;
+        // const currentPosition = (document.documentElement.scrollTop || document.body.scrollTop) + this.options.topOffset;
+        // if (currentPosition >= startAt && currentPosition < endAt) {
+        //   this.options.onLastScrollInView();
+        // }
     };
     SpyScroller.prototype.executeFistSectionCallbackIfInView = function (section) {
-        var firstSection = this.sections[0];
-        var firstSectionTop = firstSection.offsetTop;
-        var scrollTop = window.pageYOffset;
-        if (scrollTop <= firstSectionTop) {
-            this.options.onFirstScrollInView();
-        }
+        // const firstSection = this.sections[0];
+        // const firstSectionTop = firstSection.offsetTop;
+        // const scrollTop = window.pageYOffset;
+        // if (scrollTop <= firstSectionTop) {
+        //   this.options.onFirstScrollInView();
+        // }
     };
     /**
      * Method open To All
@@ -271,9 +302,8 @@ var SpyScroller = /** @class */ (function () {
     SpyScroller.prototype.getCurrentSection = function (isChild) {
         if (isChild === void 0) { isChild = false; }
         var childObject = null;
-        if (isChild) {
+        if (isChild)
             childObject = this.currentSectionChild();
-        }
         var sectioninfo = {
             currentActiveSectionElement: this.currentActiveSection(),
             currentActiveSectionIndex: Array.from(this.sections).indexOf(this.currentActiveSection()),
