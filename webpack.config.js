@@ -6,7 +6,7 @@ const config = {
   target: 'web',
   entry: {
     SpyScroller: './src/SpyScroller.ts',
-    AnimateCss: './src/Animation/AnimateCss.ts',
+    AnimateCss: './src/Animation/Animate-css/AnimateCss.ts',
   },
   optimization: {
     minimize: false,

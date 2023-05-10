@@ -1,7 +1,6 @@
-import { AnimationOptionsInterface } from "../Common_interfaces/Animation_Interface";
+import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Interface";
 import 'animate.css/source/_vars.css';
 import 'animate.css/source/_base.css';
-import 'animate.css/source/attention_seekers/headShake.css';
 declare class AnimateCss {
     private static animLibrary;
     private static fadeUpAnimation;

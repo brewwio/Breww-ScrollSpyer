@@ -12,8 +12,8 @@
 import { ErrorMessages } from "./ErrorMessages";
 
 import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
-
-import './sass/BrewwAnimation.scss';
+import 'animate.css/source/attention_seekers/headShake.css';
+// import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
 interface ISpyScrollerOptions {
   // The selector for the section elements that are linked to the menu items

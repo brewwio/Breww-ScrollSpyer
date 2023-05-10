@@ -1,7 +1,10 @@
-import { AnimationOptionsInterface } from "../Common_interfaces/Animation_Interface";
+import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Interface";
 import 'animate.css/source/_vars.css';
+
 import 'animate.css/source/_base.css';
-import 'animate.css/source/attention_seekers/headShake.css'; // import the specific CSS file you need
+
+ // import the specific CSS file you need
+
 class AnimateCss {
   // constructor() {
     
@@ -22,8 +25,12 @@ class AnimateCss {
     console.log(section);
   }
 
-  private static initAnimation(section: HTMLElement) {
-  
+  private static async initAnimation(section: HTMLElement) {
+    // async function loadCSS() {
+    //   const cssModule = await import('animate.css/source/attention_seekers/headShake.css');
+    //   console.log(cssModule.default); // The CSS module content
+    // }
+    // const cssModule = await loadCSS();
     const animtype = section.getAttribute('anim-type');
     if (animtype && animtype.trim() !== '') {
       section.classList.add(AnimateCss.animLibrary);

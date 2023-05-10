@@ -1,6 +1,6 @@
 import { ErrorMessages } from "./ErrorMessages";
 import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
-import './sass/BrewwAnimation.scss';
+import 'animate.css/source/attention_seekers/headShake.css';
 interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;
