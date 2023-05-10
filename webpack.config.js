@@ -13,11 +13,11 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: '[name].js',
+    filename: 'js/[name].[chunkhash].js', // Updated filename to include chunk hash
     library: {
       name: '[name]',
       type: 'umd',
-      export: 'default'
+      export: 'default',
     },
     globalObject: 'this',
     umdNamedDefine: true,
@@ -32,8 +32,11 @@ const config = {
       cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './dist')],
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: ({ chunk }) => {
+        const folderName = path.basename(chunk.name);
+        return `styles/${folderName}/${folderName}.css`;
+      },
+      chunkFilename: 'styles/chunks/[name]/[id].[chunkhash].css',
     }),
   ],
   module: {
@@ -70,7 +73,15 @@ module.exports = (env, argv) => {
   if (argv.mode === 'development') {
     // * add some development rules here
   } else if (argv.mode === 'production') {
-    // * add some prod rules here
+    config.plugins.push(
+      new MiniCssExtractPlugin({
+        filename: ({ chunk }) => {
+          const folderName = path.basename(chunk.name);
+          return `styles/${folderName}/${folderName}.[chunkhash].css`;
+        },
+        chunkFilename: 'styles/chunks/[name]/[id].[chunkhash].css',
+      }),
+    );
   } else {
     throw new Error('Specify env');
   }

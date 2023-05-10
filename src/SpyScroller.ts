@@ -12,7 +12,7 @@
 import { ErrorMessages } from "./ErrorMessages";
 
 import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
-import 'animate.css/source/attention_seekers/headShake.css';
+
 // import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
 interface ISpyScrollerOptions {

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "typeRoots": ["@types", "./node_modules/@types"],
-    "module": "es6",
+    "module": "esnext",
     "target": "es5",
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -9,7 +9,8 @@
     "outDir": "dist",
     "esModuleInterop": true,
     "baseUrl": "./",
-    "declaration": true
+    "declaration": true,
+    
   },
   "include": ["src/**/*"],
   "exclude": ["test/**/*"]

@@ -2,20 +2,11 @@ import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Int
 import 'animate.css/source/_vars.css';
 
 import 'animate.css/source/_base.css';
-
+import {applyCss} from  './herper'
  // import the specific CSS file you need
 
 class AnimateCss {
-  // constructor() {
-    
-  //   try {
-  //     const _ = require('animate.css');
-  //     // or import _ from 'lodash'; for ES6 modules
-  //     console.log('lodash is installed');
-  //   } catch (error) {
-  //     console.log('lodash is not installed');
-  //   }
-  // }
+  
   private static animLibrary = 'animated';
   private static fadeUpAnimation(element: HTMLElement) {
     // implementation here
@@ -35,7 +26,9 @@ class AnimateCss {
     if (animtype && animtype.trim() !== '') {
       section.classList.add(AnimateCss.animLibrary);
       section.classList.add(animtype.trim());
+      applyCss(animtype.trim())
     }
+
   }
 
   

@@ -57,7 +57,6 @@ var ErrorMessages;
 // |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/     
 //                                                    .io
 
-
 var SpyScroller = /** @class */ (function () {
     // Define a constructor for the SpyScroller class
     function SpyScroller(
