@@ -13,7 +13,7 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: 'js/[name].[chunkhash].js', // Updated filename to include chunk hash
+    filename: 'js/[name].js', // Updated filename to include chunk hash
     library: {
       name: '[name]',
       type: 'umd',
