@@ -4,7 +4,7 @@ const babel = require('rollup-plugin-babel');
 const sass = require('rollup-plugin-sass');
 const postcss = require('rollup-plugin-postcss');
 const typescript = require('@rollup/plugin-typescript')
-const concat = require('rollup-plugin-concat');;
+
 const del = require('del');
 const terser = require('@rollup/plugin-terser');
 const copy = require('rollup-plugin-copy');
@@ -15,18 +15,12 @@ module.exports = [
     input: 'src/SpyScroller.ts', // Entry point for SpyScroller
     output: [
       {
-        file: './dist/browser/SpyScroller.js', // Non-minified version
-        format: 'umd',
+        file: './dist/esm/SpyScroller.js', // Non-minified version
+        format: 'esm',
         name: 'SpyScroller',
         sourcemap: !isProduction,
       },
-      {
-        file: './dist/browser/min/SpyScroller.min.js', // Minified version
-        format: 'umd',
-        name: 'SpyScroller',
-        sourcemap: !isProduction,
-        plugins: [isProduction && terser()],
-      },
+    
     ],
     plugins: [
       babel({
@@ -42,11 +36,11 @@ module.exports = [
       typescript({
         tsconfig: './tsconfig.json',
         sourceMap: true,
-        outDir: './dist/browser', // Update the outDir to be inside the Rollup dir option
+        outDir: './dist/esm',
       }),
       copy({
         targets: [
-          { src: 'node_modules/animate.css/source/attention_seekers/*.css', dest: 'dist/browser/css' },
+          { src: 'node_modules/animate.css/source/attention_seekers/*.css', dest: 'dist/esm/css' },
         ],
       }),
       
@@ -59,6 +53,7 @@ module.exports = [
       dir: './dist/esm', // Output folder for AnimateCss
       format: 'es',
     },
+    
     plugins: [
       babel({
         exclude: 'node_modules/**',

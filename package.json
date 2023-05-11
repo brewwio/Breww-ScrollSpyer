@@ -1,10 +1,10 @@
 {
-  "name": "framework-for-building-front-end-libraries",
-  "version": "1.3.0",
+  "name": "breww-spyer",
+  "version": "6.0.5",
   "type": "module",
   "description": "A framework for building front-end libraries using TS and SCSS",
-  "main": "./dist/SpyScroller.js",
-  "types": "./dist/SpyScroller.d.ts",
+  "main": "./dist/esm/SpyScroller.js",
+  "types": "./dist/esm/SpyScroller.d.ts",
   "files": [
     "dist"
   ],
