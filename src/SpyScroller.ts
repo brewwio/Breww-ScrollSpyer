@@ -9,43 +9,37 @@
 
 
 
-import { ErrorMessages } from "./ErrorMessages";
+
 
 import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
 
 // import './sass/BrewwAnimation.scss';
 // Define an interface for the options of the SpyScroller class
 interface ISpyScrollerOptions {
-  // The selector for the section elements that are linked to the menu items
   sectionSelector: string;
-  // The selector for the menu item elements that are linked to the sections
   targetSelector: string;
-  // The offset from the top of the window to determine the active section
-  topOffset: number | {
-    min: number,
-    max: number,
-    values: {
-      maxWidth?: number,
-      minWidth?: number,
-      topOffset: number
-    }[]
+  topOffset: {
+    min?: number;
+    max?: number;
+    values?: {
+      maxWidth?: number;
+      minWidth?: number;
+      topOffset: number;
+    }[];
   };
-  
-  // The attribute name that contains the href value of the menu item elements
   hrefAttribute: string;
-  // The class name(s) to be added to the active menu item element
   activeClass: string[];
-  onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object,) => void
-  // A callback function to be executed when the last section is in view
-  onLastScrollInView: (() => void) | null;
-  // A callback function to be executed when the first section is in view (optional)
+  onSectionChange?: (
+    section: HTMLElement,
+    sections: NodeListOf<HTMLElement>,
+    animation: object
+  ) => void;
+  onLastScrollInView?: (() => void) | null;
   onFirstScrollInView?: () => void;
-  // An option to enable or disable the opacity effect for the menu items based on their distance from the center
-  animation: AnimationOptionsInterface,
-
-  // An option to enable or disable smooth scrolling when clicking on a menu item
+  animation?: Partial<AnimationOptionsInterface>;
   smoothScroll: boolean;
 }
+
 
 export default class SpyScroller {
   private boundOnScroll: () => void;
@@ -366,4 +360,4 @@ export default class SpyScroller {
   }
 }
 
-export { SpyScroller, ErrorMessages };
+export { SpyScroller };

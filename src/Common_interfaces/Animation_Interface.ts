@@ -1,6 +1,8 @@
+// File: AnimationOptionsInterface.ts
+
 export interface AnimationOptionsInterface {
-    enabled: boolean;
-    animateTwoWay: boolean;
-    opacityDistanceFromCenter: number;
-    animType: string;
-  }
+  animType?: string;
+  enabled?: boolean;
+  animateTwoWay?: boolean;
+  opacityDistanceFromCenter?: number;
+}

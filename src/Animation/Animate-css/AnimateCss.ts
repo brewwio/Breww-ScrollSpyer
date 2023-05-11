@@ -3,11 +3,12 @@ import 'animate.css/source/_vars.css';
 
 import 'animate.css/source/_base.css';
 import {applyCss} from  './herper'
+const animLibrary = 'animated';
  // import the specific CSS file you need
 
 class AnimateCss {
   
-  private static animLibrary = 'animated';
+
   private static fadeUpAnimation(element: HTMLElement) {
     // implementation here
   }
@@ -24,7 +25,7 @@ class AnimateCss {
     // const cssModule = await loadCSS();
     const animtype = section.getAttribute('anim-type');
     if (animtype && animtype.trim() !== '') {
-      section.classList.add(AnimateCss.animLibrary);
+      section.classList.add(animLibrary);
       section.classList.add(animtype.trim());
       applyCss(animtype.trim())
     }
