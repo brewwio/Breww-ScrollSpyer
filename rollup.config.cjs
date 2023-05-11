@@ -1,13 +1,14 @@
-
 const commonjs = require('rollup-plugin-commonjs');
 const resolve = require('rollup-plugin-node-resolve');
 const babel = require('rollup-plugin-babel');
 const sass = require('rollup-plugin-sass');
 const postcss = require('rollup-plugin-postcss');
-const typescript = require('@rollup/plugin-typescript');
+const typescript = require('@rollup/plugin-typescript')
+const concat = require('rollup-plugin-concat');;
 const del = require('del');
 const terser = require('@rollup/plugin-terser');
-const isProduction = 'production';
+const copy = require('rollup-plugin-copy');
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = [
   {
@@ -15,19 +16,22 @@ module.exports = [
     output: [
       {
         file: './dist/browser/SpyScroller.js', // Non-minified version
-        format: 'es',
+        format: 'umd',
+        name: 'SpyScroller',
         sourcemap: !isProduction,
       },
       {
         file: './dist/browser/min/SpyScroller.min.js', // Minified version
-        format: 'es',
+        format: 'umd',
+        name: 'SpyScroller',
         sourcemap: !isProduction,
-        plugins: [terser()]
+        plugins: [isProduction && terser()],
       },
     ],
     plugins: [
       babel({
         exclude: 'node_modules/**',
+        babelHelpers: 'bundled',
       }),
       resolve(),
       commonjs(),
@@ -37,15 +41,22 @@ module.exports = [
       postcss(),
       typescript({
         tsconfig: './tsconfig.json',
-        outDir: 'dist/browser',
+        sourceMap: true,
+        outDir: './dist/browser', // Update the outDir to be inside the Rollup dir option
       }),
+      copy({
+        targets: [
+          { src: 'node_modules/animate.css/source/attention_seekers/*.css', dest: 'dist/browser/css' },
+        ],
+      }),
+      
     ],
     external: [],
   },
   {
     input: 'src/Animation/Animate-css/AnimateCss.ts', // Entry point for AnimateCss
     output: {
-      dir: './dist/esm', // Output folder for ES module build
+      dir: './dist/esm', // Output folder for AnimateCss
       format: 'es',
     },
     plugins: [
@@ -59,8 +70,9 @@ module.exports = [
       }),
       postcss(),
       typescript({
-        tsconfig: './tsconfig.json', // Specify the path to your tsconfig.json file
-        outDir: 'dist/esm', // Output directory for TypeScript compilation
+        tsconfig: './tsconfig.json',
+        sourceMap: true, // Generate source maps
+        outDir: './dist/esm', // Update the outDir to be inside the Rollup dir option
       }),
       isProduction && terser(),
     ],
