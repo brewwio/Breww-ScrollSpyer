@@ -1,15 +1,22 @@
 {
   "name": "breww-spyer",
-  "version": "6.0.5",
-  "type": "module",
+  "version": "6.1.1",
   "description": "A framework for building front-end libraries using TS and SCSS",
-  "main": "./dist/esm/SpyScroller.js",
-  "types": "./dist/esm/SpyScroller.d.ts",
+  "main": "./dist/js/SpyScroller.js",
+  "types": "./dist/SpyScroller.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.cjs"
+    "build:dev": "webpack --mode=development --watch --progress",
+    "build:prod": "webpack --mode=production",
+    "prepublishOnly": "webpack --mode=production",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -29,10 +36,6 @@
   },
   "homepage": "https://github.com/GeorgianStan/framework-for-building-libraries#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.21.5",
-    "@rollup/plugin-babel": "^6.0.3",
-    "@rollup/plugin-terser": "^0.4.1",
-    "@rollup/plugin-typescript": "^11.1.0",
     "@swc/cli": "^0.1.57",
     "@swc/core": "^1.2.249",
     "@types/jest": "^26.0.22",
@@ -41,7 +44,6 @@
     "autoprefixer": "^10.4.8",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.3",
-    "css-modules-typescript-loader": "^4.0.1",
     "cypress": "^10.11.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
@@ -51,23 +53,14 @@
     "postcss": "^8.2.10",
     "postcss-loader": "^5.2.0",
     "prettier": "^2.7.1",
-    "rollup": "^3.21.6",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-combine": "^2.1.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-sass": "^1.12.19",
-    "rollup-plugin-terser": "^7.0.2",
     "sass": "^1.62.1",
     "sass-loader": "^13.2.2",
     "style-loader": "^2.0.0",
     "swc-loader": "^0.2.3",
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.1.0",
-    "typescript": "^4.9.5",
-    "webpack": "^5.82.0",
+    "typescript": "^4.8.3",
+    "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
