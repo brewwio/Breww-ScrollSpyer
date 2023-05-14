@@ -7,7 +7,7 @@
 //                                                    .io
 
 
-class BrewwAnimations {
+export default class BrewwAnimations {
 
   /**  
   Sets the opacity of the given section based on scroll position and distance from the center of the viewport.
@@ -32,4 +32,3 @@ class BrewwAnimations {
 
 }
 
-export { BrewwAnimations};

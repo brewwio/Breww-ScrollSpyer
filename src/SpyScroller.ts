@@ -360,4 +360,3 @@ export default class SpyScroller {
   }
 }
 
-export { SpyScroller };

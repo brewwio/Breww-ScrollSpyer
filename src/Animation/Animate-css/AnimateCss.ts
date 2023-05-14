@@ -2,11 +2,12 @@ import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Int
 import 'animate.css/source/_vars.css';
 
 import 'animate.css/source/_base.css';
-import {applyCss} from  './herper'
+//import {applyCss} from  './helper'
 const animLibrary = 'animated';
  // import the specific CSS file you need
 
-class AnimateCss {
+ 
+  export default class AnimateCss {
   
 
   private static fadeUpAnimation(element: HTMLElement) {
@@ -27,7 +28,7 @@ class AnimateCss {
     if (animtype && animtype.trim() !== '') {
       section.classList.add(animLibrary);
       section.classList.add(animtype.trim());
-      applyCss(animtype.trim())
+    //  applyCss(animtype.trim())
     }
 
   }
@@ -43,7 +44,7 @@ class AnimateCss {
     });
   }
 
-  public static animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions:AnimationOptionsInterface) {
+  public  animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions:AnimationOptionsInterface) {
     if(!animationOptions.enabled) return false
     if (!(section instanceof HTMLElement)) {
       throw new Error("First argument must be of type HTMLElement");
@@ -56,7 +57,7 @@ class AnimateCss {
     AnimateCss.initAnimation(section);   
   }
 
-  public static animateOneWay(section: HTMLElement, animationOptions:AnimationOptionsInterface) {
+  public  animateOneWay(section: HTMLElement, animationOptions:AnimationOptionsInterface) {
     if(!animationOptions.enabled) return false
     if (!(section instanceof HTMLElement)) {
       throw new Error("First argument must be of type HTMLElement");
@@ -65,4 +66,3 @@ class AnimateCss {
   }
 }
 
-export default AnimateCss;

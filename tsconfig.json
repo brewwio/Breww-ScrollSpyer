@@ -5,13 +5,15 @@
     "target": "es5",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": false,
+    "sourceMap": true,
     "outDir": "dist",
     "esModuleInterop": true,
     "baseUrl": "./",
     "declaration": true,
-    
+    "declarationDir": "dist",
+    "allowJs": true
   },
-  "include": ["src/**/*"],
+  
+  "include": ["src/**/*.ts"],
   "exclude": ["test/**/*"]
 }
