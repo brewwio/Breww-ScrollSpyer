@@ -2,7 +2,7 @@ import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Int
 import 'animate.css/source/_vars.css';
 
 import 'animate.css/source/_base.css';
-//import {applyCss} from  './helper'
+// import {applyCss} from  './helper'
 const animLibrary = 'animated';
  // import the specific CSS file you need
 
@@ -28,7 +28,7 @@ const animLibrary = 'animated';
     if (animtype && animtype.trim() !== '') {
       section.classList.add(animLibrary);
       section.classList.add(animtype.trim());
-    //  applyCss(animtype.trim())
+      // applyCss(animtype.trim())
     }
 
   }
