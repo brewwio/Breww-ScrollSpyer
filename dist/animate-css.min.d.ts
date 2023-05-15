@@ -1,5 +1,11 @@
-import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Interface";
-export default class AnimateCss {
+// File: AnimationOptionsInterface.ts
+interface AnimationOptionsInterface {
+    animType?: string;
+    enabled?: boolean;
+    animateTwoWay?: boolean;
+    opacityDistanceFromCenter?: number;
+}
+declare class AnimateCss {
     private static fadeUpAnimation;
     private static fadeDownAnimation;
     private static initAnimation;
@@ -7,3 +13,4 @@ export default class AnimateCss {
     animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions: AnimationOptionsInterface): boolean;
     animateOneWay(section: HTMLElement, animationOptions: AnimationOptionsInterface): boolean;
 }
+export { AnimateCss as default };
