@@ -1,10 +1,10 @@
 {
-  "name": "breww-spyer",
-  "version": "6.4.1",
+  "name": "@breww/scroll-spyer",
+  "version": "6.7.0",
   "description": "A framework for building front-end libraries using TS and SCSS",
-  "main": "./dist/cjs/index.js",
+  "main": "./dist/cjs/index",
   "type": "commonjs",
-  "module": "./dist/esm/src/index.js",
+  "module": "./dist/esm/src/index",
   "files": [
     "dist"
   ],
@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/GeorgianStan/framework-for-building-libraries#readme",
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-dynamic-import-vars": "^2.0.3",
@@ -86,13 +87,16 @@
     "@types/node": "^20.1.4",
     "animate.css": "^4.1.1",
     "bundle-declarations-webpack-plugin": "^4.0.1",
+    "chokidar": "^3.5.3",
     "dotenv": "^16.0.3",
     "glob": "^10.2.3",
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^2.7.5",
     "postcss-extract-media-query": "^3.0.0",
     "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-copy-watch": "^0.0.1",
     "rollup-plugin-import-css": "^3.2.1",
-    "rollup-plugin-stylelint": "^1.0.0"
+    "rollup-plugin-stylelint": "^1.0.0",
+    "rollup-plugin-typescript2": "^0.34.1"
   }
 }

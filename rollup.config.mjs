@@ -6,9 +6,10 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import ts from 'rollup-plugin-ts';
 import copy from 'rollup-plugin-copy';
-import styles from 'rollup-plugin-styles';
-require('dotenv').config();
+import postcss from 'rollup-plugin-postcss';
+import alias from '@rollup/plugin-alias';
 
+require('dotenv').config();
 export default {
   input: 'src/index.ts',
   output: [
@@ -21,8 +22,15 @@ export default {
       dir: 'dist/cjs',
       format: 'cjs',
     },
+    
   ],
   plugins: [
+    alias({
+      entries: [
+        { find: '@breww/scroll-spyer', replacement: 'src/index.ts' },
+        // Add other aliases as needed
+      ],
+    }),
     eslint({
       include: '**/*.js',
       throwOnError: true,
@@ -32,32 +40,22 @@ export default {
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',
     }),
-    resolve({
-      browser: true,
-      alias: {
-        '@breww-spyer/animator': './src/Animation/Animate-css/Style/index.js',
-      },
-    }),
+  
     copy({
       targets: [
-        { src: 'src/*.css', dest: 'dist/style' },
+        { src: 'src/styles/Animate-Css', dest: 'dist/styles' },
       ],
+      verbose: true,
+    }),
+    postcss({
+      extract: true,
+      minimize: true,
+      sourceMap: false,
+      plugins: [],
     }),
     commonjs(),
     json(),
     terser(),
-    styles({
-      mode: 'extract',
-      minimize: true,
-      sourceMap: false,
-      url: { inline: false },
-      modules: false,
-      autoModules: true,
-      emitFiles: true,
-      modulesFileName: 'styles.css',
-      sass: false,
-      less: false,
-      stylus: false,
-    }),
+    
   ],
 };

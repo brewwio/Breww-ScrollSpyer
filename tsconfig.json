@@ -10,8 +10,10 @@
     "esModuleInterop": true,
     "baseUrl": "./",
     "declaration": true,
+    "lib": ["ESNext", "DOM"],
     "declarationDir": "dist",
     "allowJs": true
+  
   },
   
   "include": ["src/**/*.ts"],

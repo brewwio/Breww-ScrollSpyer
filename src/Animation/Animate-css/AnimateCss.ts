@@ -1,7 +1,7 @@
 import { AnimationOptionsInterface } from "../../Common_interfaces/Animation_Interface";
-import 'animate.css/source/_vars.css';
+// import 'animate.css/source/_vars.css';
 
-import 'animate.css/source/_base.css';
+// import 'animate.css/source/_base.css';
 // import {applyCss} from  './helper'
 const animLibrary = 'animated';
  // import the specific CSS file you need

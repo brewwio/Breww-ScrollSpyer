@@ -1,5 +1,5 @@
-declare module 'breww-spyer/Animation/Animate-css/AnimateCss' {
-  import { AnimationOptionsInterface } from "breww-spyer/Common_interfaces/Animation_Interface";
+declare module '@breww/scroll-spyer/Animation/Animate-css/AnimateCss' {
+  import { AnimationOptionsInterface } from "@breww/scroll-spyer/Common_interfaces/Animation_Interface";
   import 'animate.css/source/_vars.css';
   import 'animate.css/source/_base.css';
   export class AnimateCss {
@@ -12,11 +12,11 @@ declare module 'breww-spyer/Animation/Animate-css/AnimateCss' {
   }
 
 }
-declare module 'breww-spyer/Animation/Animate-css/herper' {
+declare module '@breww/scroll-spyer/Animation/Animate-css/herper' {
   export function applyCss(className: string): void;
 
 }
-declare module 'breww-spyer/Common_interfaces/Animation_Interface' {
+declare module '@breww/scroll-spyer/Common_interfaces/Animation_Interface' {
   export interface AnimationOptionsInterface {
       animType?: string;
       enabled?: boolean;
@@ -25,8 +25,8 @@ declare module 'breww-spyer/Common_interfaces/Animation_Interface' {
   }
 
 }
-declare module 'breww-spyer/SpyScroller' {
-  import { AnimationOptionsInterface } from "breww-spyer/Common_interfaces/Animation_Interface";
+declare module '@breww/scroll-spyer/SpyScroller' {
+  import { AnimationOptionsInterface } from "@breww/scroll-spyer/Common_interfaces/Animation_Interface";
   interface ISpyScrollerOptions {
       sectionSelector: string;
       targetSelector: string;
@@ -120,7 +120,7 @@ declare module 'breww-spyer/SpyScroller' {
   export {};
 
 }
-declare module 'breww-spyer' {
-  import main = require('breww-spyer/index');
+declare module '@breww/scroll-spyer' {
+  import main = require('@breww/scroll-spyer/index');
   export = main;
 }
