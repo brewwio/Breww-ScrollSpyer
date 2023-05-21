@@ -67,7 +67,8 @@ export default [
     output: {
       file: 'dist/browser/animate-css.min.js',
       format: 'iife',
-      plugins: [terser()],
+      name: 'AnimateCss',
+      // plugins: [terser()],
     },
     plugins: [
       eslint({
@@ -96,7 +97,7 @@ export default [
       file: 'dist/browser/spyscroll.min.js',
       format: 'iife',
       name: 'SpyScroll',
-      plugins: [terser()],
+      // plugins: [terser()],
     },
     plugins: [
       eslint({

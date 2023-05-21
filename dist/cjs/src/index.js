@@ -1,1 +1,1 @@
-"use strict";var e=require("./SpyScroller.js"),r=require("./Animation/Animate-css/AnimateCss.js"),s=require("./BrewwAnimations.js");exports.SpyScroller=e,exports.AnimateCss=r,exports.BrewwAnimations=s;
+"use strict";var e=require("./SpyScroller.js"),r=require("./Animation/Animate-css/AnimateCss.js"),i=require("./Animation/BrewwAnimation/BrewwAnimations.js");exports.SpyScroller=e,exports.AnimateCss=r,exports.BrewwAnimations=i;

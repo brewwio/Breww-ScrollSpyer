@@ -32,12 +32,17 @@ interface ISpyScrollerOptions {
   onSectionChange?: (
     section: HTMLElement,
     sections: NodeListOf<HTMLElement>,
-    animation: object
+    animation: object,
+ 
   ) => void;
+  easing: {
+    enabled?: boolean;
+    type?: string;
+  },
   onLastScrollInView?: (() => void) | null;
   onFirstScrollInView?: () => void;
   animation?: Partial<AnimationOptionsInterface>;
-  smoothScroll: boolean;
+ 
 }
 
 
@@ -70,10 +75,12 @@ export default class SpyScroller {
       animation: {
         animType: options.animation?.animType ?? "attribute",
         enabled: options.animation?.enabled ?? false,
-        animateTwoWay: options.animation?.animateTwoWay ?? true,
-        opacityDistanceFromCenter: options.animation?.opacityDistanceFromCenter ?? 50,
       },
-      smoothScroll: options.smoothScroll ?? false,
+      easing: {
+        enabled: options.easing?.enabled ?? false,
+        type: options.easing?.type ?? '',
+      },
+
 
     };
 
@@ -91,6 +98,11 @@ export default class SpyScroller {
       throw new TypeError("options can only be of type object");
     }
 
+      // Validate the options argument and throw an error if it is not an object
+      if (typeof this.options.animation !== "object") {
+        throw new TypeError("animation in options can only be of type object");
+      }
+
     // Get the menu element from the menu argument or query the document for it
     this.menuList = menu instanceof HTMLElement ? menu : document.querySelector(menu);
     // Throw an error if no menu element is found
@@ -104,21 +116,90 @@ export default class SpyScroller {
     // Bind the onSectionScroll and boundOnScroll methods to the current instance
     this.boundOnScroll = this.onScroll.bind(this);
     this.bind()
-    // If smoothScroll option is enabled, call the setMoothScroll method to enable smooth scrolling behavior
-    if (this.options.smoothScroll) this.setMoothScroll();
+    if (this.options.easing.enabled) this.easing()
+    
+  
+    // If smoothScroll option is enabled, call the easing method to enable smooth scrolling behavior
+    
   }
 
-  private setMoothScroll(): void {
-    const links = document.querySelectorAll<HTMLElement>(this.options.targetSelector);
 
-    for (let i = 0; i < links.length; i++) {
-      links[i].addEventListener("click", (event: any) => {
-        event.preventDefault();
-        const href = links[i].getAttribute("href");
-        document.querySelector(href).scrollIntoView({ behavior: "smooth" });
-      });
+  private easeInOutQuad(t : any) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+  private easing(): void {
+    if (this.options.targetSelector === "[data-jump]")
+    {
+      const items = document.querySelectorAll("[data-jump]");
+      items.forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      const refId = item.getAttribute("data-jump")   
+      console.log( document.getElementById(refId))
+      this.scrollTo( document.getElementById(refId),  1000, this.easeInOutQuad);
+  
+    });
+  });
+  }else{
+    
+  }
+}
+  
+  //   this.menuList
+  // .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
+  // .forEach((item) => {
+  //   item.addEventListener("click", (event) => {
+  //     event.preventDefault();
+
+  //     console.log(    item)
+  //   });
+ 
+
+  // if (this.options.targetSelector === "[data-jump]") {
+  //   attribute = "data-jump";
+  //   const items = document.querySelectorAll("[data-jump]");
+  //   return Array.from(items).find((item) => item.getAttribute(attribute) === sectionId) as HTMLAnchorElement;
+  // } else {
+  //   return this.menuList.querySelector(`[href="#${sectionId}"]`);
+  // }
+  // }
+  
+  
+  
+
+  
+  
+  private scrollTo(target : any, duration : any, easing : any) {
+    const start = window.pageYOffset;
+    const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+
+    const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+    const destinationOffset = typeof target === 'number' ? target : target.offsetTop;
+    const destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
+
+    if ('requestAnimationFrame' in window === false) {
+      window.scroll(0, destinationOffsetToScroll);
+      return;
     }
+
+    function scroll() {
+      const now = 'now' in window.performance ? performance.now() : new Date().getTime();
+      const time = Math.min(1, ((now - startTime) / duration));
+      const timeFunction = easing(time);
+      window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
+
+      if (window.pageYOffset === destinationOffsetToScroll) {
+        return;
+      }
+
+      requestAnimationFrame(scroll);
+    }
+
+    scroll();
   }
+
+  
 
   private currentActiveSection(): HTMLElement | undefined {
     const currentPosition =

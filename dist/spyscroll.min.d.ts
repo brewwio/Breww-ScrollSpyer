@@ -20,10 +20,13 @@ interface ISpyScrollerOptions {
     hrefAttribute: string;
     activeClass: string[];
     onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
+    easing: {
+        enabled?: boolean;
+        type?: string;
+    };
     onLastScrollInView?: (() => void) | null;
     onFirstScrollInView?: () => void;
     animation?: Partial<AnimationOptionsInterface>;
-    smoothScroll: boolean;
 }
 declare class SpyScroller {
     private boundOnScroll;
@@ -34,7 +37,24 @@ declare class SpyScroller {
     isLastSection: boolean;
     // Define a constructor for the SpyScroller class
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
-    private setMoothScroll;
+    private easeInOutQuad;
+    private easing;
+    //   this.menuList
+    // .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
+    // .forEach((item) => {
+    //   item.addEventListener("click", (event) => {
+    //     event.preventDefault();
+    //     console.log(    item)
+    //   });
+    // if (this.options.targetSelector === "[data-jump]") {
+    //   attribute = "data-jump";
+    //   const items = document.querySelectorAll("[data-jump]");
+    //   return Array.from(items).find((item) => item.getAttribute(attribute) === sectionId) as HTMLAnchorElement;
+    // } else {
+    //   return this.menuList.querySelector(`[href="#${sectionId}"]`);
+    // }
+    // }
+    private scrollTo;
     private currentActiveSection;
     private getTopOffset;
     private getOffset;

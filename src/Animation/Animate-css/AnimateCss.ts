@@ -18,12 +18,8 @@ const animLibrary = 'animated';
     console.log(section);
   }
 
-  private static async initAnimation(section: HTMLElement) {
-    // async function loadCSS() {
-    //   const cssModule = await import('animate.css/source/attention_seekers/headShake.css');
-    //   console.log(cssModule.default); // The CSS module content
-    // }
-    // const cssModule = await loadCSS();
+  private static async initAnimation(section: HTMLElement , animationOptions:AnimationOptionsInterface) {
+    
     const animtype = section.getAttribute('anim-type');
     if (animtype && animtype.trim() !== '') {
       section.classList.add(animLibrary);
@@ -54,7 +50,7 @@ const animLibrary = 'animated';
       throw new Error("Second argument must be of type NodeListOf<HTMLElement> and cannot be empty");
     }
     AnimateCss.revertAnimation(sections);
-    AnimateCss.initAnimation(section);   
+    AnimateCss.initAnimation(section,animationOptions);   
   }
 
   public  animateOneWay(section: HTMLElement, animationOptions:AnimationOptionsInterface) {
@@ -62,7 +58,7 @@ const animLibrary = 'animated';
     if (!(section instanceof HTMLElement)) {
       throw new Error("First argument must be of type HTMLElement");
     }
-    AnimateCss.initAnimation(section);
+    AnimateCss.initAnimation(section,animationOptions);   
   }
 }
 

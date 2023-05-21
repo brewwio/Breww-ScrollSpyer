@@ -1,0 +1,121 @@
+.puffIn {
+    animation-name: puffIn;
+}
+@-webkit-keyframes puffIn {
+    0% {
+        opacity: 0;
+        transform-origin: 50% 50%;
+        transform: scale(2, 2);
+        filter: blur(2px);
+   }
+    100% {
+        opacity: 1;
+        transform-origin: 50% 50%;
+        transform: scale(1, 1);
+        filter: blur(0px);
+   }
+}
+@keyframes puffIn {
+    0% {
+        opacity: 0;
+        transform-origin: 50% 50%;
+        transform: scale(2, 2);
+        filter: blur(2px);
+   }
+    100% {
+        opacity: 1;
+        transform-origin: 50% 50%;
+        transform: scale(1, 1);
+        filter: blur(0px);
+   }
+}
+
+.rotateRight {
+    -webkit-animation-name: rotateRight;
+    animation-name: rotateRight;
+
+}
+
+@-webkit-keyframes rotateRight {
+    0% {
+        opacity: 0 !important;
+        -webkit-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -webkit-transform: perspective(800px) rotateY(180deg) translateZ(150px);
+        transform: perspective(800px) rotateY(180deg) translateZ(150px);
+   }
+    100% {
+        opacity: 1 !important;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: perspective(800px) rotateY(0deg) translate3d(0px);
+        transform: perspective(800px) rotateY(0deg) translate3d(0px);
+   }
+}
+
+@keyframes rotateRight {
+    0% {
+        opacity: 0;
+        -webkit-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -webkit-transform: perspective(800px) rotateY(180deg) translateZ(150px);
+        transform: perspective(800px) rotateY(180deg) translateZ(150px);
+   }
+    100% {
+        opacity: 1;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: perspective(800px) rotateY(0deg) translate3d(0px);
+        transform: perspective(800px) rotateY(0deg) translate3d(0px);
+   }
+}
+
+.slideDownReturn {
+   opacity: 0;
+    -webkit-animation-name: slideDownReturn;
+    animation-name: slideDownReturn;
+}
+@-webkit-keyframes slideDownReturn {
+    0% {
+        opacity: 0.2;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%);
+   }
+   50% {
+    opacity: 0.5;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: translateY(50%);
+    transform: translateY(50%);
+}
+    100% {
+        opacity: 1;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: translateY(0%);
+        transform: translateY(0%);
+   }
+}
+/* @keyframes rotateRight {
+    0% {
+        opacity: 0;
+        -webkit-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -webkit-transform: perspective(800px) rotateY(180deg) translateZ(150px);
+        transform: perspective(800px) rotateY(180deg) translateZ(150px);
+      
+   }
+    100% {
+        opacity: 1;
+        -webkit-transform-origin: 0 0;
+        transform-origin: 0 0;
+        -webkit-transform: perspective(800px) rotateY(0deg) translate3d(0px);
+        transform: perspective(800px) rotateY(0deg) translate3d(0px);
+   }
+} */
+
+
+
+
