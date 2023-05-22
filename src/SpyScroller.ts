@@ -18,15 +18,12 @@ import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interfa
 interface ISpyScrollerOptions {
   sectionSelector: string;
   targetSelector: string;
-  topOffset: {
-    min?: number;
-    max?: number;
-    values?: {
+  topOffset: {    
       maxWidth?: number;
       minWidth?: number;
-      topOffset: number;
-    }[];
-  };
+      topOffset: number;  
+  }[];
+  
   hrefAttribute: string;
   activeClass: string[];
   onSectionChange?: (
@@ -53,6 +50,7 @@ export default class SpyScroller {
   private readonly sections: NodeListOf<HTMLElement>;
   private lastActiveSection: HTMLElement
   public isLastSection: boolean = false;
+  private readonly Navmenu: HTMLElement;
 
   // Define a constructor for the SpyScroller class
   constructor(
@@ -66,7 +64,8 @@ export default class SpyScroller {
     this.options = {
       sectionSelector: options.sectionSelector ?? "section",
       targetSelector: options.targetSelector ?? "[data-jump]",
-      topOffset: { min: 0, max: 0, values: [{ topOffset: 500 }] },
+      topOffset: Array.isArray(options.topOffset) ? options.topOffset : [{ topOffset: 500 }],
+
       hrefAttribute: options.hrefAttribute ?? "href",
       activeClass: Array.isArray(options.activeClass) ? options.activeClass : ["active"],
       onLastScrollInView: options.onLastScrollInView ?? null,
@@ -105,6 +104,7 @@ export default class SpyScroller {
 
     // Get the menu element from the menu argument or query the document for it
     this.menuList = menu instanceof HTMLElement ? menu : document.querySelector(menu);
+    this.Navmenu = menu instanceof HTMLElement ? menu : document.querySelector(menu);
     // Throw an error if no menu element is found
     if (!this.menuList) {
       throw new Error(`No menu element found for selector "${menu}"`);
@@ -123,81 +123,79 @@ export default class SpyScroller {
     
   }
 
-
-  private easeInOutQuad(t : any) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
   private easing(): void {
-    if (this.options.targetSelector === "[data-jump]")
-    {
-      const items = document.querySelectorAll("[data-jump]");
-      items.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      event.preventDefault();
-      const refId = item.getAttribute("data-jump")   
-      console.log( document.getElementById(refId))
-      this.scrollTo( document.getElementById(refId),  1000, this.easeInOutQuad);
-  
-    });
-  });
-  }else{
+    if (this.options.targetSelector === "[data-jump]") {
+      this.menuList
+        .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
+        .forEach((item: HTMLAnchorElement) => {
+          item.addEventListener("click", (event) => {
+            const target = (event.target as Element).closest("[data-jump]");
+            if (!target) return;
     
+            event.preventDefault();
+            const refId = target.getAttribute("data-jump");
+            console.log(document.getElementById(refId));
+            this.scrollTo(document.getElementById(refId), 1000, this.options.easing.type);
+          });
+        });
+    }
+    
+    else{
+
+    this.menuList.querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
+    .forEach((item: HTMLAnchorElement) => {
+  
+      item.addEventListener("click", (event: Event) => {
+        event.preventDefault();
+        console.log((item.getAttribute('href').replace('#','')))
+        this.scrollTo( document.getElementById(item.getAttribute('href').replace('#','')),  1000,this.options.easing.type);
+        
+      });
+    });
   }
 }
   
-  //   this.menuList
-  // .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
-  // .forEach((item) => {
-  //   item.addEventListener("click", (event) => {
-  //     event.preventDefault();
-
-  //     console.log(    item)
-  //   });
  
-
-  // if (this.options.targetSelector === "[data-jump]") {
-  //   attribute = "data-jump";
-  //   const items = document.querySelectorAll("[data-jump]");
-  //   return Array.from(items).find((item) => item.getAttribute(attribute) === sectionId) as HTMLAnchorElement;
-  // } else {
-  //   return this.menuList.querySelector(`[href="#${sectionId}"]`);
-  // }
-  // }
-  
-  
-  
-
-  
-  
-  private scrollTo(target : any, duration : any, easing : any) {
+  private scrollTo(target: any, duration: number, easing: any) {
     const start = window.pageYOffset;
     const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
-
-    const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+  
+    const documentHeight = Math.max(
+      document.body.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.clientHeight,
+      document.documentElement.scrollHeight,
+      document.documentElement.offsetHeight
+    );
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
     const destinationOffset = typeof target === 'number' ? target : target.offsetTop;
     const destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
-
+  
     if ('requestAnimationFrame' in window === false) {
       window.scroll(0, destinationOffsetToScroll);
       return;
     }
-
+  
     function scroll() {
       const now = 'now' in window.performance ? performance.now() : new Date().getTime();
-      const time = Math.min(1, ((now - startTime) / duration));
-      const timeFunction = easing(time);
+      const elapsed = now - startTime;
+      const time = Math.min(1, elapsed / duration);
+  
+      const startValue = 0; // Adjust this value according to your needs
+      const amountOfChange = 1; // Adjust this value according to your needs
+      const timeFunction = easing(time, startValue, amountOfChange, 1);
       window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
-
-      if (window.pageYOffset === destinationOffsetToScroll) {
+  
+      if (window.pageYOffset === destinationOffsetToScroll || elapsed > duration) {
         return;
       }
-
+  
       requestAnimationFrame(scroll);
     }
-
+  
     scroll();
   }
+  
 
   
 
@@ -214,24 +212,26 @@ export default class SpyScroller {
   
   private getTopOffset(): number {
     const screenWidth = window.innerWidth;
-    let topOffset = 200;
-  
+    let topOffset: number;
+  console.log(this.options.topOffset)
     if (Array.isArray(this.options.topOffset)) {
+     
       for (const option of this.options.topOffset) {
         if (
           (!option.minWidth || screenWidth >= option.minWidth) &&
           (!option.maxWidth || screenWidth <= option.maxWidth)
         ) {
           topOffset = option.topOffset;
+          break; // Added break statement to exit the loop once the matching option is found
         }
       }
     } else if (typeof this.options.topOffset === 'number') {
       topOffset = this.options.topOffset;
     }
-  console.log("topoffset"+topOffset)
+  
+    console.log("topOffset: " + topOffset);
     return topOffset;
   }
-  
   
   
   private getOffset(element: HTMLElement, horizontal = false): number {

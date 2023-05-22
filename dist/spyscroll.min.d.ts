@@ -9,14 +9,10 @@ interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;
     topOffset: {
-        min?: number;
-        max?: number;
-        values?: {
-            maxWidth?: number;
-            minWidth?: number;
-            topOffset: number;
-        }[];
-    };
+        maxWidth?: number;
+        minWidth?: number;
+        topOffset: number;
+    }[];
     hrefAttribute: string;
     activeClass: string[];
     onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
@@ -35,25 +31,10 @@ declare class SpyScroller {
     private readonly sections;
     private lastActiveSection;
     isLastSection: boolean;
+    private readonly Navmenu;
     // Define a constructor for the SpyScroller class
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
-    private easeInOutQuad;
     private easing;
-    //   this.menuList
-    // .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
-    // .forEach((item) => {
-    //   item.addEventListener("click", (event) => {
-    //     event.preventDefault();
-    //     console.log(    item)
-    //   });
-    // if (this.options.targetSelector === "[data-jump]") {
-    //   attribute = "data-jump";
-    //   const items = document.querySelectorAll("[data-jump]");
-    //   return Array.from(items).find((item) => item.getAttribute(attribute) === sectionId) as HTMLAnchorElement;
-    // } else {
-    //   return this.menuList.querySelector(`[href="#${sectionId}"]`);
-    // }
-    // }
     private scrollTo;
     private currentActiveSection;
     private getTopOffset;

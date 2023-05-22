@@ -92,6 +92,35 @@ export default [
     ],
   },
   {
+    input: 'src/Animation/BrewwAnimation/BrewwAnimations.ts',
+    output: {
+      file: 'dist/browser/BrewwAnimations.js',
+      format: 'iife',
+      name: 'BrewwAnimations',
+      // plugins: [terser()],
+    },
+    plugins: [
+      eslint({
+        include: '**/*.js',
+        throwOnError: true,
+      }),
+      ts(),
+      babel({
+        babelHelpers: 'bundled',
+        exclude: 'node_modules/**',
+      }),
+      
+      postcss({
+        extract: true,
+        minimize: true,
+        sourceMap: false,
+        plugins: [],
+      }),
+      commonjs(),
+      json(),
+    ],
+  },
+  {
     input: 'src/SpyScroller.ts',
     output: {
       file: 'dist/browser/spyscroll.min.js',

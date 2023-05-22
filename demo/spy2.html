@@ -123,25 +123,29 @@
 			<p>&copy; 2018 Three 11 | License MIT</p>
 		</footer>
 		<script src="../dist/browser/animate-css.min.js"></script>
+		<script src="../dist/browser/BrewwAnimations.js"></script>
 		<script src="../dist/browser/spyscroll.min.js"></script>
 
 		<script>
 			 
 			 var animate = new AnimateCss();
+		
 			const options = {
 				sectionSelector: 'section',  // Query selector to your sections
 				targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
 				topOffset: [
-					{ maxWidth: 767, topOffset: 500 },
-					{ minWidth: 768, maxWidth: 991, topOffset: 650 },
-					{ minWidth: 992, maxWidth: 1199, topOffset: 200 },				
-				],
-				easing:{enabled: true},
+					{ maxWidth: 767, topOffset: 1800 },
+					{ minWidth: 768, maxWidth: 991, topOffset: 1850 },
+					{ minWidth: 992, maxWidth: 4999, topOffset: 400 },
+					],
+				easing: {
+				enabled: true,
+				type: BrewwAnimations.easeOutBounce
+				},
 				activeClass: ['activer', 'highlight'],
 				onLastScrollInView: () => test(),
 				onFirstScrollInView: () => console.log('first section in view'),
 				animation: { enabled: true, opacityDistanceFromCenter: 100, animType:'anim-type' },
-				smoothScroll: false,
 				onSectionChange: (section, sections, animationOptions) => {
 					//your code here only for pro devs
 					animate.animateTwoWay(section,sections,animationOptions);
@@ -149,7 +153,7 @@
 				
 			}
 			
-			const x = new SpyScroll('#nav',options);
+			const x = new SpyScroll(document.getElementById('nav'),options);
 			x.getCurrentSection()
 		
 				
