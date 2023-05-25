@@ -129,7 +129,7 @@
 		<script>
 			 
 			 var animate = new AnimateCss();
-		
+			let sec ;
 			const options = {
 				sectionSelector: 'section',  // Query selector to your sections
 				targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
@@ -144,19 +144,30 @@
 				},
 				activeClass: ['activer', 'highlight'],
 				onLastScrollInView: () => test(),
-				onFirstScrollInView: () => console.log('first section in view'),
+				onFirstScrollInView: () => console.log("hi"),
 				animation: { enabled: true, opacityDistanceFromCenter: 100, animType:'anim-type' },
-				onSectionChange: (section, sections, animationOptions) => {
+				onScroll: (section, sections, animationOptions) => {
+				sec = sections;
+				//console.log(section)
 					//your code here only for pro devs
-					animate.animateTwoWay(section,sections,animationOptions);
+					// animate.animateTwoWay(section,sections,animationOptions);
+					
   				},
+				onSectionChange:(currentsection, sections, animationOptions) =>{
+					console.log(currentsection)
+					//console.log(currentsection,sections,animationOptions);
+					//or do any modification or use as hook
+				}
 				
 			}
+		
 			
 			const x = new SpyScroll(document.getElementById('nav'),options);
 			x.getCurrentSection()
 		
-				
+				function test(){
+					alert('hi')
+				}
 		
 		</script>
 	</body>
@@ -173,16 +184,50 @@
   background-color: red !important;
 }
 	</style>
-	  <link
+	  <!-- <link
 	  rel="stylesheet"
 	  href="../dist/styles/AnimateCss/AnimateCss.css"
-	/>
-	<link
+	/> -->
+	<!-- <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
-  <link
+  /> -->
+  <!-- <link
   rel="stylesheet"
   href="./animation.css"
-/>
+/> -->
 </html>
+
+<!-- 
+const options = {
+	sectionSelector: 'section',  // Query selector to your sections
+	targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
+	topOffset: [
+		{ maxWidth: 767, topOffset: 1800 },
+		{ minWidth: 768, maxWidth: 991, topOffset: 1850 },
+		{ minWidth: 992, maxWidth: 4999, topOffset: 400 },
+		],
+	easing: {
+	enabled: true,
+	type: BrewwAnimations.easeOutBounce
+	},
+	activeClass: ['activer', 'highlight'],
+	onLastScrollInView: () => test(),
+	onFirstScrollInView: () => console.log('first section in view'),
+	animation: { enabled: true, opacityDistanceFromCenter: 100, animType:'anim-type' },
+	onScroll: (section, sections, animationOptions) => {
+	sec = sections;
+		//your code here only for pro devs
+		// animate.animateTwoWay(section,sections,animationOptions);
+		
+	  },
+
+
+	
+}
+
+
+const x = new SpyScroll(document.getElementById('nav'),options);
+x.getCurrentSection()
+
+	 -->

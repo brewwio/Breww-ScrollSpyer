@@ -7,9 +7,9 @@ interface ISpyScrollerOptions {
         minWidth?: number;
         topOffset: number;
     }[];
-    hrefAttribute: string;
     activeClass: string[];
     onSectionChange?: (section: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
+    onScroll?: (currentSection: HTMLElement, sections: NodeListOf<HTMLElement>, animation: object) => void;
     easing: {
         enabled?: boolean;
         type?: string;
@@ -87,6 +87,7 @@ declare class SpyScroller {
      */
     private onScroll;
     private executeSectionChanged;
+    private executeonScroll;
     private executeLastSectionCallbackIfInView;
     private executeFistSectionCallbackIfInView;
     /**

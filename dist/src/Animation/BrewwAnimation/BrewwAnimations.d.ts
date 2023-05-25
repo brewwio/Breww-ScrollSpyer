@@ -21,7 +21,7 @@ declare class BrewwAnimations {
      @NOTE  ---------------------------------------- >>>> :-) :-) -------------------->
      Currently opacity is set to default, it's one of the most famous styles or animations used by worldwide developers, so we implemented it first. Currently, we are planning to add more animations and transforms. But we did not want to give a bad impression, so we have enabled users to use third-party animation libraries. Currently, we support 'animate'.
      **/
-    static Bewwopacity(section: HTMLElement, windowHeight: number, scrollPosition: number, animateDistance: number): void;
+    static Bewwopacity(sections: NodeListOf<HTMLElement>, animateDistance: number): void;
     static linear(p: number): number;
     static easeInQuad(t: number, b: number, c: number, d: number): number;
     static easeOutQuad(t: number, b: number, c: number, d: number): number;
