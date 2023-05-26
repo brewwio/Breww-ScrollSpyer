@@ -275,28 +275,42 @@ export default class SpyScroller {
    * @returns The HTML anchor element of the corresponding menu item
    */
 
-  private getActiveMenuItem(section: HTMLElement): { sectionId: string, element: HTMLAnchorElement } | undefined {
+  private getActiveMenuItem(section: HTMLElement): { sectionId: string, element: HTMLAnchorElement,isLastSection: boolean,isFirstSection:boolean } | undefined {
     if (!section) {
       return;
     }
-  
+    let isLastSection = false;
+    let isFirstSection = false;
     let sectionId = section.getAttribute("id");
     let attribute = this.options.targetSelector;
+    
     if (this.options.targetSelector === "[data-jump]") {
       attribute = "data-jump";
       const items = document.querySelectorAll(`[${attribute}]`);
       const element = Array.from(items).find(
         (item) => item.getAttribute(attribute) === sectionId
       ) as HTMLAnchorElement;
+      const index = Array.from(items).indexOf(element);
+
+      if (Array.from(items).indexOf(element) === 0) {
+        isFirstSection = true;
+      } else if (index === items.length - 1) {
+        isLastSection = true
+      }
+
       return {
         sectionId: sectionId as string,
         element: element,
+        isFirstSection:isFirstSection,
+        isLastSection:isLastSection
       };
     } else {
       const element = this.menuList.querySelector(`[href="#${sectionId}"]`) as HTMLAnchorElement;
       return {
         sectionId: sectionId as string,
-        element: element
+        element: element,
+        isFirstSection:isFirstSection,
+        isLastSection:isLastSection
       };
     }
   }
@@ -384,14 +398,16 @@ export default class SpyScroller {
     }
 
     if (this.options.onLastScrollInView) {
-      this.executeLastSectionCallbackIfInView(activateSectionId,menuItem);
+      if(activeMenuItem.isLastSection) this.options.onLastScrollInView()      
     }
 
     if (this.options.onFirstScrollInView) {
-     // this.executeFistSectionCallbackIfInView(activateSectionId,menuItem);
+      if(activeMenuItem.isFirstSection) this.options.onFirstScrollInView()      
     }
   
   }
+
+  
 
   private executeSectionChanged(
     section: HTMLElement,
@@ -407,21 +423,6 @@ export default class SpyScroller {
     this.options.onScroll(section, sections, this.options.animation);
   }
 
-
-
-  private executeLastSectionCallbackIfInView(activateSectionId: string,menuItem : HTMLAnchorElement) {
-  console.log(activateSectionId,menuItem)
-  }
-  
-
-  private executeFistSectionCallbackIfInView(section: string) {
-    const firstSection = this.sections[0];
-    const firstSectionTop = firstSection.offsetTop;
-    const scrollTop = window.screenY;
-    if (scrollTop <= firstSectionTop) {
-      this.options.onFirstScrollInView();
-    }
-  }
 
   /**
    * Method open To All

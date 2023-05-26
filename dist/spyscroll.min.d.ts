@@ -94,8 +94,6 @@ declare class SpyScroller {
     private onScroll;
     private executeSectionChanged;
     private executeonScroll;
-    private executeLastSectionCallbackIfInView;
-    private executeFistSectionCallbackIfInView;
     /**
      * Method open To All
      * Add an event listener to the window object that calls the boundOnScroll and onSectionScroll methods when the user scrolls.
