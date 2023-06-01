@@ -1,16 +1,14 @@
-// File: AnimationOptionsInterface.ts
-interface AnimationOptionsInterface {
-    animType?: string;
-    enabled?: boolean;
-    animateTwoWay?: boolean;
-    opacityDistanceFromCenter?: number;
-}
+import { AnimationOptionsInterface } from "../../../Animation_Interface-525872c3.js";
 declare class AnimateCss {
-    private static fadeUpAnimation;
-    private static fadeDownAnimation;
+    // private static fadeUpAnimation(element: HTMLElement) {
+    //   // implementation here
+    // }
+    // private static fadeDownAnimation(section: HTMLElement) {
+    //   console.log(section);
+    // }
     private static initAnimation;
     private static revertAnimation;
     animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions: AnimationOptionsInterface): boolean;
     animateOneWay(section: HTMLElement, animationOptions: AnimationOptionsInterface): boolean;
 }
-export { AnimationOptionsInterface, AnimateCss as default };
+export { AnimateCss as default };

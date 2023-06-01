@@ -1,4 +1,4 @@
-import { AnimationOptionsInterface } from "./Animation/Animate-css/AnimateCss.js";
+import { AnimationOptionsInterface } from "../Animation_Interface-525872c3.js";
 interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;

@@ -16,7 +16,7 @@ interface ActiveMenuItem {
 }
 
 interface ISpyScrollerOptions {
-  
+
   sectionSelector: string;
   targetSelector: string;
   topOffset: {
@@ -69,7 +69,7 @@ export default class SpyScroller {
         ? options.topOffset
         : [{ topOffset: 500 }],
 
-     
+
       activeClass: Array.isArray(options.activeClass)
         ? options.activeClass
         : ["active"],
@@ -97,9 +97,19 @@ export default class SpyScroller {
       );
     }
 
+ 
+
     // Validate the options argument and throw an error if it is not an object
     if (typeof options !== "object") {
       throw new TypeError("options can only be of type object");
+    }
+
+    if (typeof options.targetSelector !== "string") {
+      throw new TypeError("targetSelector can only be of type string");
+    }
+
+    if (options.targetSelector == "") {
+      throw new TypeError("targetSelector can not be empty");
     }
 
     // Validate the options argument and throw an error if it is not an object
@@ -168,7 +178,7 @@ export default class SpyScroller {
     }
   }
 
-  private scrollTo(target: any, duration: number, easing: any) {
+  private scrollTo(target: HTMLElement, duration: number, easing: any) {
     const start = window.pageYOffset;
     const startTime =
       "now" in window.performance ? performance.now() : new Date().getTime();
@@ -275,7 +285,7 @@ export default class SpyScroller {
    * @returns The HTML anchor element of the corresponding menu item
    */
 
-  private getActiveMenuItem(section: HTMLElement): { sectionId: string, element: HTMLAnchorElement,isLastSection: boolean,isFirstSection:boolean } | undefined {
+  private getActiveMenuItem(section: HTMLElement): { sectionId: string, element: HTMLAnchorElement, isLastSection: boolean, isFirstSection: boolean } | undefined {
     if (!section) {
       return;
     }
@@ -283,7 +293,7 @@ export default class SpyScroller {
     let isFirstSection = false;
     let sectionId = section.getAttribute("id");
     let attribute = this.options.targetSelector;
-    
+
     if (this.options.targetSelector === "[data-jump]") {
       attribute = "data-jump";
       const items = document.querySelectorAll(`[${attribute}]`);
@@ -301,20 +311,27 @@ export default class SpyScroller {
       return {
         sectionId: sectionId as string,
         element: element,
-        isFirstSection:isFirstSection,
-        isLastSection:isLastSection
+        isFirstSection: isFirstSection,
+        isLastSection: isLastSection
       };
+      
     } else {
       const element = this.menuList.querySelector(`[href="#${sectionId}"]`) as HTMLAnchorElement;
+      const menuItems = Array.from(this.menuList.querySelectorAll('[href^="#"]'));
+      const index = menuItems.findIndex(item => item === element);
+     
+      if (index == 0)  isFirstSection = true;
+      if (menuItems.length - 1 == index) isLastSection = true;
+     
       return {
         sectionId: sectionId as string,
         element: element,
-        isFirstSection:isFirstSection,
-        isLastSection:isLastSection
+        isFirstSection: isFirstSection,
+        isLastSection: isLastSection
       };
     }
   }
-  
+
 
   private removeActiveLink(options: { ignore?: HTMLAnchorElement } = {}): void {
     this.menuList
@@ -331,7 +348,7 @@ export default class SpyScroller {
    */
 
   private ActiveLinkChecker(menuItem: HTMLAnchorElement): void {
-    
+
     if (
       menuItem.matches(this.options.targetSelector) &&
       !this.options.activeClass.some((className) =>
@@ -377,37 +394,37 @@ export default class SpyScroller {
    */
 
   private onScroll(): void {
-  
+
     const section = this.currentActiveSection();
-    if (this.options.onScroll)  this.executeonScroll(section,this.sections)
+    if (this.options.onScroll) this.executeonScroll(section, this.sections)
     if (this.lastActiveSection == section) return;
     this.lastActiveSection = section;
 
-    if(this.options.onSectionChange)   this.executeSectionChanged(section, this.sections);
-   
-  
+    if (this.options.onSectionChange) this.executeSectionChanged(section, this.sections);
+
+
     const activeMenuItem = this.getActiveMenuItem(section)
     const activateSectionId = activeMenuItem.sectionId;
     const menuItem = activeMenuItem.element;
-   
+
     //if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
 
     if (menuItem) {
       this.removeActiveLink({ ignore: menuItem });
-      this.ActiveLinkChecker( menuItem );
+      this.ActiveLinkChecker(menuItem);
     }
 
     if (this.options.onLastScrollInView) {
-      if(activeMenuItem.isLastSection) this.options.onLastScrollInView()      
+      if (activeMenuItem.isLastSection) this.options.onLastScrollInView()
     }
 
     if (this.options.onFirstScrollInView) {
-      if(activeMenuItem.isFirstSection) this.options.onFirstScrollInView()      
+      if (activeMenuItem.isFirstSection) this.options.onFirstScrollInView()
     }
-  
+
   }
 
-  
+
 
   private executeSectionChanged(
     section: HTMLElement,

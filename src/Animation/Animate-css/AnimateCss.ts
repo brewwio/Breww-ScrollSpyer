@@ -10,13 +10,13 @@ const animLibrary = 'animated';
   export default class AnimateCss {
   
 
-  private static fadeUpAnimation(element: HTMLElement) {
-    // implementation here
-  }
+  // private static fadeUpAnimation(element: HTMLElement) {
+  //   // implementation here
+  // }
   
-  private static fadeDownAnimation(section: HTMLElement) {
-    console.log(section);
-  }
+  // private static fadeDownAnimation(section: HTMLElement) {
+  //   console.log(section);
+  // }
 
   private static async initAnimation(section: HTMLElement , animationOptions:AnimationOptionsInterface) {
     

@@ -8,7 +8,8 @@ import ts from 'rollup-plugin-ts';
 import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import alias from '@rollup/plugin-alias';
-
+import typescript from '@rollup/plugin-typescript';
+import dts from "rollup-plugin-dts";
 require('dotenv').config();
 
 const production = process.env.NODE_ENV === 'production';
@@ -61,6 +62,12 @@ export default [
       json(),
       terser(),
     ],
+  },
+  
+  {
+    input: "src/index.ts",
+    output: [{ file: "dist/index.d.ts", format: "es" }],
+    plugins: [dts.default()],
   },
   {
     input: 'src/Animation/Animate-css/AnimateCss.ts',
