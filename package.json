@@ -1,6 +1,6 @@
 {
   "name": "@breww/scroll-spyer",
-  "version": "10.5.5",
+  "version": "10.5.8",
   "description": "A framework for building front-end libraries using TS and SCSS",
   "main": "./dist/cjs/src/index.js",
   "type": "commonjs",

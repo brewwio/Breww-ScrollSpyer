@@ -1,4 +1,4 @@
-import { AnimationOptionsInterface } from "../Animation_Interface-525872c3.js";
+import { AnimationOptionsInterface } from "../Animation_Interface-46efa467.js";
 interface ISpyScrollerOptions {
     sectionSelector: string;
     targetSelector: string;
@@ -28,51 +28,185 @@ declare class SpyScroller {
     private readonly Navmenu;
     // Define a constructor for the SpyScroller class
     constructor(menu?: string | HTMLElement, options?: Partial<ISpyScrollerOptions>);
+    /**
+     * Applies easing to the menu items based on the selected target.
+     * If the target selector is "[data-jump]", it adds click event listeners to each menu item with the target selector,
+     * retrieves the target element using the data-jump attribute, and scrolls to the target element using the specified easing type.
+     * If the target selector is different[HREF], it adds click event listeners to each menu item with the target selector,
+     * retrieves the target element using the item's href attribute, and scrolls to the target element using the specified easing type.
+     *
+     * @private
+     * @function easing
+     * @return {void}
+     * @since 1.0.0
+     */
+    /**
+     * Applies easing to the menu items based on the selected target.
+     * If the target selector is "[data-jump]", it adds click event listeners to each menu item with the target selector,
+     * retrieves the target element using the data-jump attribute, and scrolls to the target element using the specified easing type.
+     * If the target selector is different[HREF], it adds click event listeners to each menu item with the target selector,
+     * retrieves the target element using the item's href attribute, and scrolls to the target element using the specified easing type.
+     *
+     * @private
+     * @function easing
+     * @return {void}
+     * @since 1.0.0
+     */
     private easing;
+    /**
+     * Scrolls the window to a specified target element using the provided duration and easing function.
+     *
+     * @private
+     * @function scrollTo
+     * @param {HTMLElement} target - The target element to scroll to.
+     * @param {number} duration - The duration of the scrolling animation in milliseconds.
+     * @param {any} easing - The easing function to apply during the scrolling animation.
+     * @return {void}
+     * @since 1.0.0
+     */
+    /**
+     * Scrolls the window to a specified target element using the provided duration and easing function.
+     *
+     * @private
+     * @function scrollTo
+     * @param {HTMLElement} target - The target element to scroll to.
+     * @param {number} duration - The duration of the scrolling animation in milliseconds.
+     * @param {any} easing - The easing function to apply during the scrolling animation.
+     * @return {void}
+     * @since 1.0.0
+     */
     private scrollTo;
+    /**
+     * Retrieves the currently active section based on the current scroll position.
+     *
+     * @private
+     * @function currentActiveSection
+     * @returns {HTMLElement | undefined} - The currently active section element, or undefined if no section is active.
+     * @since 1.0.0
+     */
+    /**
+     * Retrieves the currently active section based on the current scroll position.
+     *
+     * @private
+     * @function currentActiveSection
+     * @returns {HTMLElement | undefined} - The currently active section element, or undefined if no section is active.
+     * @since 1.0.0
+     */
     private currentActiveSection;
+    /**
+     * Retrieves the top offset value based on the current screen width and options configuration.
+     *
+     * @private
+     * @function getTopOffset
+     * @returns {number} - The top offset value to be used.
+     * @since 1.0.0
+     */
+    /**
+     * Retrieves the top offset value based on the current screen width and options configuration.
+     *
+     * @private
+     * @function getTopOffset
+     * @returns {number} - The top offset value to be used.
+     * @since 1.0.0
+     */
     private getTopOffset;
+    /**
+     * Retrieves the offset position of the specified element relative to its offset parent.
+     *
+     * @private
+     * @function getOffset
+     * @param {HTMLElement} element - The element for which to retrieve the offset position.
+     * @param {boolean} horizontal - Optional. Indicates whether to retrieve the horizontal offset (default: false).
+     * @returns {number} - The offset position of the element.
+     * @since 1.0.0
+     */
+    /**
+     * Retrieves the offset position of the specified element relative to its offset parent.
+     *
+     * @private
+     * @function getOffset
+     * @param {HTMLElement} element - The element for which to retrieve the offset position.
+     * @param {boolean} horizontal - Optional. Indicates whether to retrieve the horizontal offset (default: false).
+     * @returns {number} - The offset position of the element.
+     * @since 1.0.0
+     */
     private getOffset;
     /**
-     * Returns the active menu item based on the current active section
-     * @since Version 1.0.0
-     * @param section The currently active section
-     * @returns The HTML anchor element of the corresponding menu item
+     * Retrieves the active menu item information based on the specified section element.
+     *
+     * @private
+     * @function getActiveMenuItem
+     * @param {HTMLElement} section - The section element for which to retrieve the active menu item.
+     * @returns {Object | undefined} - The active menu item information, including sectionId, element, isLastSection, and isFirstSection. Returns undefined if the section is not valid.
+     * @since 1.0.0
      */
     /**
-     * Returns the active menu item based on the current active section
-     * @since Version 1.0.0
-     * @param section The currently active section
-     * @returns The HTML anchor element of the corresponding menu item
+     * Retrieves the active menu item information based on the specified section element.
+     *
+     * @private
+     * @function getActiveMenuItem
+     * @param {HTMLElement} section - The section element for which to retrieve the active menu item.
+     * @returns {Object | undefined} - The active menu item information, including sectionId, element, isLastSection, and isFirstSection. Returns undefined if the section is not valid.
+     * @since 1.0.0
      */
     private getActiveMenuItem;
-    private removeActiveLink;
     /**
-     * Check if the menuItem is a match to the targetSelector and doesn't contain activeClass,
-     * if true, add the activeClass to the menuItem and call handleSubmenu function.
-     * @param menuItem - the HTMLAnchorElement to be checked.
-     * @returns void
-     * @since Version 1.0.0
+     * Removes the active class from all menu links, except for the specified element to ignore.
+     *
+     * @private
+     * @function removeActiveLink
+     * @param {Object} options - Optional. An object containing additional options.
+     * @param {HTMLAnchorElement} options.ignore - Optional. The menu link element to ignore and not remove the active class from.
+     * @returns {void}
+     * @since 1.0.0
      */
     /**
-     * Check if the menuItem is a match to the targetSelector and doesn't contain activeClass,
-     * if true, add the activeClass to the menuItem and call handleSubmenu function.
-     * @param menuItem - the HTMLAnchorElement to be checked.
-     * @returns void
-     * @since Version 1.0.0
+     * Removes the active class from all menu links, except for the specified element to ignore.
+     *
+     * @private
+     * @function removeActiveLink
+     * @param {Object} options - Optional. An object containing additional options.
+     * @param {HTMLAnchorElement} options.ignore - Optional. The menu link element to ignore and not remove the active class from.
+     * @returns {void}
+     * @since 1.0.0
+     */
+    private removeActiveLink;
+    /**
+     * Checks and updates the active state of a menu link based on the provided menu item element.
+     *
+     * @private
+     * @function ActiveLinkChecker
+     * @param {HTMLAnchorElement} menuItem - The menu item element to check and update the active state for.
+     * @returns {void}
+     * @since 1.0.0
+     */
+    /**
+     * Checks and updates the active state of a menu link based on the provided menu item element.
+     *
+     * @private
+     * @function ActiveLinkChecker
+     * @param {HTMLAnchorElement} menuItem - The menu item element to check and update the active state for.
+     * @returns {void}
+     * @since 1.0.0
      */
     private ActiveLinkChecker;
     /**
-     * Check if the menuItem is a submenu and add the active class to its parent <li> element if needed.
-     * @param menuItem - the HTMLAnchorElement that represents the menu item to be checked.
-     * @returns boolean - true if the menuItem is a submenu and its parent <li> element was updated, false otherwise.
-     * @since Version 1.0.0
+     * Handles the submenu behavior for a given menu item by adding the active class to its parent list item if applicable.
+     *
+     * @private
+     * @function handleSubmenu
+     * @param {HTMLAnchorElement} menuItem - The menu item element for which to handle the submenu behavior.
+     * @returns {boolean} - Indicates whether the submenu was successfully handled and the active class was added to the parent list item.
+     * @since 1.0.0
      */
     /**
-     * Check if the menuItem is a submenu and add the active class to its parent <li> element if needed.
-     * @param menuItem - the HTMLAnchorElement that represents the menu item to be checked.
-     * @returns boolean - true if the menuItem is a submenu and its parent <li> element was updated, false otherwise.
-     * @since Version 1.0.0
+     * Handles the submenu behavior for a given menu item by adding the active class to its parent list item if applicable.
+     *
+     * @private
+     * @function handleSubmenu
+     * @param {HTMLAnchorElement} menuItem - The menu item element for which to handle the submenu behavior.
+     * @returns {boolean} - Indicates whether the submenu was successfully handled and the active class was added to the parent list item.
+     * @since 1.0.0
      */
     private handleSubmenu;
     /**
@@ -112,6 +246,24 @@ declare class SpyScroller {
      * @since Version 1.0.0
      */
     unbind(): void;
+    /**
+     * Retrieves information about the current active section.
+     *
+     * @public
+     * @function getCurrentSection
+     * @param {boolean} isChild - Optional. Specifies whether to include information about child elements of the current section. Default is false.
+     * @returns {Object} - An object containing information about the current active section.
+     * @since 1.0.0
+     */
+    /**
+     * Retrieves information about the current active section.
+     *
+     * @public
+     * @function getCurrentSection
+     * @param {boolean} isChild - Optional. Specifies whether to include information about child elements of the current section. Default is false.
+     * @returns {Object} - An object containing information about the current active section.
+     * @since 1.0.0
+     */
     getCurrentSection(isChild?: boolean): {
         currentActiveSectionElement: HTMLElement;
         currentActiveSectionIndex: number;
@@ -123,6 +275,22 @@ declare class SpyScroller {
         currentSectionLastChild: Element;
         currentSectiionChildElementNclass: any;
     };
+    /**
+     * Retrieves information about the child elements of the current active section.
+     *
+     * @private
+     * @function currentSectionChild
+     * @returns {Array} - An array of objects containing information about the child elements of the current active section.
+     * @since 1.0.0
+     */
+    /**
+     * Retrieves information about the child elements of the current active section.
+     *
+     * @private
+     * @function currentSectionChild
+     * @returns {Array} - An array of objects containing information about the child elements of the current active section.
+     * @since 1.0.0
+     */
     private currentSectionChild;
 }
 export { SpyScroller as default };

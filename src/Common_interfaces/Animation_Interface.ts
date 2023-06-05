@@ -1,5 +1,3 @@
-// File: AnimationOptionsInterface.ts
-
 export interface AnimationOptionsInterface {
   animType?: string;
   enabled?: boolean;

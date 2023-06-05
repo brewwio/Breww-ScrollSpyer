@@ -1,12 +1,12 @@
 var BrewwAnimations = (function () {
   'use strict';
 
-  // _____   _____    _____   _          __  _          __ 
-  // |  _  \ |  _  \  | ____| | |        / / | |        / / 
-  // | |_| | | |_| |  | |__   | |  __   / /  | |  __   / /  
-  // |  _  { |  _  /  |  __|  | | /  | / /   | | /  | / /   
-  // | |_| | | | \ \  | |___  | |/   |/ /    | |/   |/ /    
-  // |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/     
+  // _____   _____    _____   _          __  _          __
+  // |  _  \ |  _  \  | ____| | |        / / | |        / /
+  // | |_| | | |_| |  | |__   | |  __   / /  | |  __   / /
+  // |  _  { |  _  /  |  __|  | | /  | / /   | | /  | / /
+  // | |_| | | | \ \  | |___  | |/   |/ /    | |/   |/ /
+  // |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/
   //                                                    .io
   var BrewwAnimations = /** @class */ (function () {
       function BrewwAnimations() {
@@ -23,10 +23,14 @@ var BrewwAnimations = (function () {
       Currently opacity is set to default, it's one of the most famous styles or animations used by worldwide developers, so we implemented it first. Currently, we are planning to add more animations and transforms. But we did not want to give a bad impression, so we have enabled users to use third-party animation libraries. Currently, we support 'animate'.
       **/
       BrewwAnimations.Bewwopacity = function (sections, animateDistance) {
-          window.addEventListener('scroll', updateOpacity);
+          window.addEventListener("scroll", updateOpacity);
           function updateOpacity() {
               var windowHeight = window.innerHeight;
-              var scrollPosition = window.scrollY || window.pageYOffset || document.body.scrollTop + ((document.documentElement && document.documentElement.scrollTop) || 0);
+              var scrollPosition = window.scrollY ||
+                  window.pageYOffset ||
+                  document.body.scrollTop +
+                      ((document.documentElement && document.documentElement.scrollTop) ||
+                          0);
               sections.forEach(function (section) {
                   var sectionTop = section.offsetTop;
                   var sectionHeight = section.offsetHeight;
@@ -37,10 +41,10 @@ var BrewwAnimations = (function () {
                   // Calculate the opacity based on the scroll position
                   var opacity = 0;
                   if (distanceToCenter < 0) {
-                      opacity = 1 + (distanceToCenter / maxDistanceToCenter);
+                      opacity = 1 + distanceToCenter / maxDistanceToCenter;
                   }
                   else {
-                      opacity = 1 - (distanceToCenter / maxDistanceToCenter);
+                      opacity = 1 - distanceToCenter / maxDistanceToCenter;
                   }
                   // Ensure opacity is within the valid range of 0 to 1
                   opacity = Math.max(0, Math.min(1, opacity));
@@ -148,22 +152,31 @@ var BrewwAnimations = (function () {
               s = p / 4;
           }
           else {
-              s = p / (2 * Math.PI) * Math.asin(amountOfChange / a);
+              s = (p / (2 * Math.PI)) * Math.asin(amountOfChange / a);
           }
-          return a * Math.pow(2, -10 * elapsed) * Math.sin((elapsed * duration - s) * (2 * Math.PI) / p) + amountOfChange + initialValue;
+          return (a *
+              Math.pow(2, -10 * elapsed) *
+              Math.sin(((elapsed * duration - s) * (2 * Math.PI)) / p) +
+              amountOfChange +
+              initialValue);
       };
       BrewwAnimations.easeOutBounce = function (elapsed, initialValue, amountOfChange, duration) {
           if ((elapsed /= duration) < 1 / 2.75) {
               return amountOfChange * (7.5625 * elapsed * elapsed) + initialValue;
           }
           else if (elapsed < 2 / 2.75) {
-              return amountOfChange * (7.5625 * (elapsed -= 1.5 / 2.75) * elapsed + 0.75) + initialValue;
+              return (amountOfChange * (7.5625 * (elapsed -= 1.5 / 2.75) * elapsed + 0.75) +
+                  initialValue);
           }
           else if (elapsed < 2.5 / 2.75) {
-              return amountOfChange * (7.5625 * (elapsed -= 2.25 / 2.75) * elapsed + 0.9375) + initialValue;
+              return (amountOfChange *
+                  (7.5625 * (elapsed -= 2.25 / 2.75) * elapsed + 0.9375) +
+                  initialValue);
           }
           else {
-              return amountOfChange * (7.5625 * (elapsed -= 2.625 / 2.75) * elapsed + 0.984375) + initialValue;
+              return (amountOfChange *
+                  (7.5625 * (elapsed -= 2.625 / 2.75) * elapsed + 0.984375) +
+                  initialValue);
           }
       };
       return BrewwAnimations;

@@ -6,53 +6,50 @@
 // |_____/ |_|  \_\ |_____| |___/|___/     |___/|___/
 //                                                    .io
 
-import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface";
+import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface"
 
-// import './sass/BrewwAnimation.scss';
-// Define an interface for the options of the SpyScroller class
 interface ActiveMenuItem {
-  sectionId: string;
-  element: HTMLAnchorElement;
+  sectionId: string
+  element: HTMLAnchorElement
 }
 
 interface ISpyScrollerOptions {
-
-  sectionSelector: string;
-  targetSelector: string;
+  sectionSelector: string
+  targetSelector: string
   topOffset: {
-    maxWidth?: number;
-    minWidth?: number;
-    topOffset: number;
-  }[];
+    maxWidth?: number
+    minWidth?: number
+    topOffset: number
+  }[]
 
-  activeClass: string[];
+  activeClass: string[]
   onSectionChange?: (
     section: HTMLElement,
     sections: NodeListOf<HTMLElement>,
     animation: object
-  ) => void;
+  ) => void
   onScroll?: (
     currentSection: HTMLElement,
     sections: NodeListOf<HTMLElement>,
     animation: object
-  ) => void;
+  ) => void
   easing: {
-    enabled?: boolean;
-    type?: string;
-  };
-  onLastScrollInView?: (() => void) | null;
-  onFirstScrollInView?: () => void;
-  animation?: Partial<AnimationOptionsInterface>;
+    enabled?: boolean
+    type?: string
+  }
+  onLastScrollInView?: (() => void) | null
+  onFirstScrollInView?: () => void
+  animation?: Partial<AnimationOptionsInterface>
 }
 
 export default class SpyScroller {
-  private boundOnScroll: () => void;
-  private readonly menuList: HTMLElement;
-  private readonly options: ISpyScrollerOptions;
-  private readonly sections: NodeListOf<HTMLElement>;
-  private lastActiveSection: HTMLElement;
-  public isLastSection: boolean = false;
-  private readonly Navmenu: HTMLElement;
+  private boundOnScroll: () => void
+  private readonly menuList: HTMLElement
+  private readonly options: ISpyScrollerOptions
+  private readonly sections: NodeListOf<HTMLElement>
+  private lastActiveSection: HTMLElement
+  public isLastSection: boolean = false
+  private readonly Navmenu: HTMLElement
 
   // Define a constructor for the SpyScroller class
   constructor(
@@ -69,7 +66,6 @@ export default class SpyScroller {
         ? options.topOffset
         : [{ topOffset: 500 }],
 
-
       activeClass: Array.isArray(options.activeClass)
         ? options.activeClass
         : ["active"],
@@ -85,60 +81,63 @@ export default class SpyScroller {
         enabled: options.easing?.enabled ?? false,
         type: options.easing?.type ?? "",
       },
-    };
+    }
 
-    // Validate the menu argument and throw an error if it is empty or invalid
     if (!menu) {
-      throw new Error("First argument cannot be empty");
+      throw new Error("First argument cannot be empty")
     }
     if (!(typeof menu === "string" || menu instanceof HTMLElement)) {
       throw new TypeError(
         "menu can be either string or an instance of HTMLElement"
-      );
+      )
     }
 
- 
-
-    // Validate the options argument and throw an error if it is not an object
     if (typeof options !== "object") {
-      throw new TypeError("options can only be of type object");
+      throw new TypeError("options can only be of type object")
     }
 
     if (typeof options.targetSelector !== "string") {
-      throw new TypeError("targetSelector can only be of type string");
+      throw new TypeError("targetSelector can only be of type string")
     }
 
     if (options.targetSelector == "") {
-      throw new TypeError("targetSelector can not be empty");
+      throw new TypeError("targetSelector can not be empty")
     }
 
-    // Validate the options argument and throw an error if it is not an object
     if (typeof this.options.animation !== "object") {
-      throw new TypeError("animation in options can only be of type object");
+      throw new TypeError("animation in options can only be of type object")
     }
 
-    // Get the menu element from the menu argument or query the document for it
     this.menuList =
-      menu instanceof HTMLElement ? menu : document.querySelector(menu);
+      menu instanceof HTMLElement ? menu : document.querySelector(menu)
     this.Navmenu =
-      menu instanceof HTMLElement ? menu : document.querySelector(menu);
-    // Throw an error if no menu element is found
+      menu instanceof HTMLElement ? menu : document.querySelector(menu)
+
     if (!this.menuList) {
-      throw new Error(`No menu element found for selector "${menu}"`);
+      throw new Error(`No menu element found for selector "${menu}"`)
     }
 
-    // Get all the section elements from the document using the sectionSelector option
     this.sections = document.querySelectorAll<HTMLElement>(
       this.options.sectionSelector
-    );
+    )
 
-    // Bind the onSectionScroll and boundOnScroll methods to the current instance
-    this.boundOnScroll = this.onScroll.bind(this);
-    this.bind();
-    if (this.options.easing.enabled) this.easing();
-
-    // If smoothScroll option is enabled, call the easing method to enable smooth scrolling behavior
+    this.boundOnScroll = this.onScroll.bind(this)
+    this.bind()
+    if (this.options.easing.enabled) this.easing()
   }
+
+  /**
+   * Applies easing to the menu items based on the selected target.
+   * If the target selector is "[data-jump]", it adds click event listeners to each menu item with the target selector,
+   * retrieves the target element using the data-jump attribute, and scrolls to the target element using the specified easing type.
+   * If the target selector is different[HREF], it adds click event listeners to each menu item with the target selector,
+   * retrieves the target element using the item's href attribute, and scrolls to the target element using the specified easing type.
+   *
+   * @private
+   * @function easing
+   * @return {void}
+   * @since 1.0.0
+   */
 
   private easing(): void {
     if (this.options.targetSelector === "[data-jump]") {
@@ -146,25 +145,25 @@ export default class SpyScroller {
         .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
         .forEach((item: HTMLAnchorElement) => {
           item.addEventListener("click", (event) => {
-            const target = (event.target as Element).closest("[data-jump]");
-            if (!target) return;
+            const target = (event.target as Element).closest("[data-jump]")
+            if (!target) return
 
-            event.preventDefault();
-            const refId = target.getAttribute("data-jump");
+            event.preventDefault()
+            const refId = target.getAttribute("data-jump")
             // console.log(document.getElementById(refId));
             this.scrollTo(
               document.getElementById(refId),
               1000,
               this.options.easing.type
-            );
-          });
-        });
+            )
+          })
+        })
     } else {
       this.menuList
         .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
         .forEach((item: HTMLAnchorElement) => {
           item.addEventListener("click", (event: Event) => {
-            event.preventDefault();
+            event.preventDefault()
             // console.log(item.getAttribute("href").replace("#", ""));
             this.scrollTo(
               document.getElementById(
@@ -172,16 +171,28 @@ export default class SpyScroller {
               ),
               1000,
               this.options.easing.type
-            );
-          });
-        });
+            )
+          })
+        })
     }
   }
 
+  /**
+   * Scrolls the window to a specified target element using the provided duration and easing function.
+   *
+   * @private
+   * @function scrollTo
+   * @param {HTMLElement} target - The target element to scroll to.
+   * @param {number} duration - The duration of the scrolling animation in milliseconds.
+   * @param {any} easing - The easing function to apply during the scrolling animation.
+   * @return {void}
+   * @since 1.0.0
+   */
+
   private scrollTo(target: HTMLElement, duration: number, easing: any) {
-    const start = window.pageYOffset;
+    const start = window.pageYOffset
     const startTime =
-      "now" in window.performance ? performance.now() : new Date().getTime();
+      "now" in window.performance ? performance.now() : new Date().getTime()
 
     const documentHeight = Math.max(
       document.body.scrollHeight,
@@ -189,65 +200,82 @@ export default class SpyScroller {
       document.documentElement.clientHeight,
       document.documentElement.scrollHeight,
       document.documentElement.offsetHeight
-    );
+    )
     const windowHeight =
       window.innerHeight ||
       document.documentElement.clientHeight ||
-      document.getElementsByTagName("body")[0].clientHeight;
+      document.getElementsByTagName("body")[0].clientHeight
     const destinationOffset =
-      typeof target === "number" ? target : target.offsetTop;
+      typeof target === "number" ? target : target.offsetTop
     const destinationOffsetToScroll = Math.round(
       documentHeight - destinationOffset < windowHeight
         ? documentHeight - windowHeight
         : destinationOffset
-    );
+    )
 
     if ("requestAnimationFrame" in window === false) {
-      window.scroll(0, destinationOffsetToScroll);
-      return;
+      window.scroll(0, destinationOffsetToScroll)
+      return
     }
 
     function scroll() {
       const now =
-        "now" in window.performance ? performance.now() : new Date().getTime();
-      const elapsed = now - startTime;
-      const time = Math.min(1, elapsed / duration);
+        "now" in window.performance ? performance.now() : new Date().getTime()
+      const elapsed = now - startTime
+      const time = Math.min(1, elapsed / duration)
 
-      const startValue = 0; // Adjust this value according to your needs
-      const amountOfChange = 1; // Adjust this value according to your needs
-      const timeFunction = easing(time, startValue, amountOfChange, 1);
+      const startValue = 0 // Adjust this value according to your needs
+      const amountOfChange = 1 // Adjust this value according to your needs
+      const timeFunction = easing(time, startValue, amountOfChange, 1)
       window.scroll(
         0,
         Math.ceil(timeFunction * (destinationOffsetToScroll - start) + start)
-      );
+      )
 
       if (
         window.pageYOffset === destinationOffsetToScroll ||
         elapsed > duration
       ) {
-        return;
+        return
       }
 
-      requestAnimationFrame(scroll);
+      requestAnimationFrame(scroll)
     }
 
-    scroll();
+    scroll()
   }
+
+  /**
+   * Retrieves the currently active section based on the current scroll position.
+   *
+   * @private
+   * @function currentActiveSection
+   * @returns {HTMLElement | undefined} - The currently active section element, or undefined if no section is active.
+   * @since 1.0.0
+   */
 
   private currentActiveSection(): HTMLElement | undefined {
     const currentPosition =
       (document.documentElement.scrollTop || document.body.scrollTop) +
-      this.getTopOffset();
+      this.getTopOffset()
     return Array.from(this.sections).find((section) => {
-      const startAt = this.getOffset(section);
-      const endAt = startAt + section.offsetHeight;
-      return currentPosition >= startAt && currentPosition < endAt;
-    });
+      const startAt = this.getOffset(section)
+      const endAt = startAt + section.offsetHeight
+      return currentPosition >= startAt && currentPosition < endAt
+    })
   }
 
+  /**
+   * Retrieves the top offset value based on the current screen width and options configuration.
+   *
+   * @private
+   * @function getTopOffset
+   * @returns {number} - The top offset value to be used.
+   * @since 1.0.0
+   */
   private getTopOffset(): number {
-    const screenWidth = window.innerWidth;
-    let topOffset: number;
+    const screenWidth = window.innerWidth
+    let topOffset: number
     // console.log(this.options.topOffset);
     if (Array.isArray(this.options.topOffset)) {
       for (const option of this.options.topOffset) {
@@ -255,55 +283,76 @@ export default class SpyScroller {
           (!option.minWidth || screenWidth >= option.minWidth) &&
           (!option.maxWidth || screenWidth <= option.maxWidth)
         ) {
-          topOffset = option.topOffset;
-          break; // Added break statement to exit the loop once the matching option is found
+          topOffset = option.topOffset
+          break // Added break statement to exit the loop once the matching option is found
         }
       }
     } else if (typeof this.options.topOffset === "number") {
-      topOffset = this.options.topOffset;
+      topOffset = this.options.topOffset
     }
 
     // console.log("topOffset: " + topOffset);
-    return topOffset;
-  }
-
-  private getOffset(element: HTMLElement, horizontal = false): number {
-    if (!element) {
-      return 0;
-    }
-    const parentElement = element.offsetParent as HTMLElement;
-    return (
-      this.getOffset(parentElement, horizontal) +
-      (horizontal ? element.offsetLeft : element.offsetTop)
-    );
+    return topOffset
   }
 
   /**
-   * Returns the active menu item based on the current active section
-   * @since Version 1.0.0
-   * @param section The currently active section
-   * @returns The HTML anchor element of the corresponding menu item
+   * Retrieves the offset position of the specified element relative to its offset parent.
+   *
+   * @private
+   * @function getOffset
+   * @param {HTMLElement} element - The element for which to retrieve the offset position.
+   * @param {boolean} horizontal - Optional. Indicates whether to retrieve the horizontal offset (default: false).
+   * @returns {number} - The offset position of the element.
+   * @since 1.0.0
    */
 
-  private getActiveMenuItem(section: HTMLElement): { sectionId: string, element: HTMLAnchorElement, isLastSection: boolean, isFirstSection: boolean } | undefined {
-    if (!section) {
-      return;
+  private getOffset(element: HTMLElement, horizontal = false): number {
+    if (!element) {
+      return 0
     }
-    let isLastSection = false;
-    let isFirstSection = false;
-    let sectionId = section.getAttribute("id");
-    let attribute = this.options.targetSelector;
+    const parentElement = element.offsetParent as HTMLElement
+    return (
+      this.getOffset(parentElement, horizontal) +
+      (horizontal ? element.offsetLeft : element.offsetTop)
+    )
+  }
+
+  /**
+   * Retrieves the active menu item information based on the specified section element.
+   *
+   * @private
+   * @function getActiveMenuItem
+   * @param {HTMLElement} section - The section element for which to retrieve the active menu item.
+   * @returns {Object | undefined} - The active menu item information, including sectionId, element, isLastSection, and isFirstSection. Returns undefined if the section is not valid.
+   * @since 1.0.0
+   */
+
+  private getActiveMenuItem(section: HTMLElement):
+    | {
+        sectionId: string
+        element: HTMLAnchorElement
+        isLastSection: boolean
+        isFirstSection: boolean
+      }
+    | undefined {
+    if (!section) {
+      return
+    }
+    let isLastSection = false
+    let isFirstSection = false
+    let sectionId = section.getAttribute("id")
+    let attribute = this.options.targetSelector
 
     if (this.options.targetSelector === "[data-jump]") {
-      attribute = "data-jump";
-      const items = document.querySelectorAll(`[${attribute}]`);
+      attribute = "data-jump"
+      const items = document.querySelectorAll(`[${attribute}]`)
       const element = Array.from(items).find(
         (item) => item.getAttribute(attribute) === sectionId
-      ) as HTMLAnchorElement;
-      const index = Array.from(items).indexOf(element);
+      ) as HTMLAnchorElement
+      const index = Array.from(items).indexOf(element)
 
       if (Array.from(items).indexOf(element) === 0) {
-        isFirstSection = true;
+        isFirstSection = true
       } else if (index === items.length - 1) {
         isLastSection = true
       }
@@ -312,79 +361,92 @@ export default class SpyScroller {
         sectionId: sectionId as string,
         element: element,
         isFirstSection: isFirstSection,
-        isLastSection: isLastSection
-      };
-      
+        isLastSection: isLastSection,
+      }
     } else {
-      const element = this.menuList.querySelector(`[href="#${sectionId}"]`) as HTMLAnchorElement;
-      const menuItems = Array.from(this.menuList.querySelectorAll('[href^="#"]'));
-      const index = menuItems.findIndex(item => item === element);
-     
-      if (index == 0)  isFirstSection = true;
-      if (menuItems.length - 1 == index) isLastSection = true;
-     
+      const element = this.menuList.querySelector(
+        `[href="#${sectionId}"]`
+      ) as HTMLAnchorElement
+      const menuItems = Array.from(
+        this.menuList.querySelectorAll('[href^="#"]')
+      )
+      const index = menuItems.findIndex((item) => item === element)
+
+      if (index == 0) isFirstSection = true
+      if (menuItems.length - 1 == index) isLastSection = true
+
       return {
         sectionId: sectionId as string,
         element: element,
         isFirstSection: isFirstSection,
-        isLastSection: isLastSection
-      };
+        isLastSection: isLastSection,
+      }
     }
   }
 
+  /**
+   * Removes the active class from all menu links, except for the specified element to ignore.
+   *
+   * @private
+   * @function removeActiveLink
+   * @param {Object} options - Optional. An object containing additional options.
+   * @param {HTMLAnchorElement} options.ignore - Optional. The menu link element to ignore and not remove the active class from.
+   * @returns {void}
+   * @since 1.0.0
+   */
 
   private removeActiveLink(options: { ignore?: HTMLAnchorElement } = {}): void {
     this.menuList
       .querySelectorAll<HTMLAnchorElement>(this.options.targetSelector)
-      .forEach((item) => item.classList.remove(...this.options.activeClass));
+      .forEach((item) => item.classList.remove(...this.options.activeClass))
   }
 
   /**
-   * Check if the menuItem is a match to the targetSelector and doesn't contain activeClass,
-   * if true, add the activeClass to the menuItem and call handleSubmenu function.
-   * @param menuItem - the HTMLAnchorElement to be checked.
-   * @returns void
-   * @since Version 1.0.0
+   * Checks and updates the active state of a menu link based on the provided menu item element.
+   *
+   * @private
+   * @function ActiveLinkChecker
+   * @param {HTMLAnchorElement} menuItem - The menu item element to check and update the active state for.
+   * @returns {void}
+   * @since 1.0.0
    */
 
   private ActiveLinkChecker(menuItem: HTMLAnchorElement): void {
-
     if (
       menuItem.matches(this.options.targetSelector) &&
       !this.options.activeClass.some((className) =>
         menuItem.classList.contains(className)
       )
     ) {
-      menuItem.classList.add(...this.options.activeClass);
-      this.handleSubmenu(menuItem); // call handleSubmenu function to check for submenu and add active class
+      menuItem.classList.add(...this.options.activeClass)
+      this.handleSubmenu(menuItem)
     }
-    menuItem.scrollIntoView({ behavior: "smooth" }); // scroll the menuItem into view with smooth behavior
+    menuItem.scrollIntoView({ behavior: "smooth" }) // scroll the menuItem into view with smooth behavior
   }
 
   /**
-   * Check if the menuItem is a submenu and add the active class to its parent <li> element if needed.
-   * @param menuItem - the HTMLAnchorElement that represents the menu item to be checked.
-   * @returns boolean - true if the menuItem is a submenu and its parent <li> element was updated, false otherwise.
-   * @since Version 1.0.0
+   * Handles the submenu behavior for a given menu item by adding the active class to its parent list item if applicable.
+   *
+   * @private
+   * @function handleSubmenu
+   * @param {HTMLAnchorElement} menuItem - The menu item element for which to handle the submenu behavior.
+   * @returns {boolean} - Indicates whether the submenu was successfully handled and the active class was added to the parent list item.
+   * @since 1.0.0
    */
 
   private handleSubmenu(menuItem: HTMLAnchorElement): boolean {
-    // Check if the current section is nested inside a <ul> tag
-    const parentLi = menuItem.closest("li");
+    const parentLi = menuItem.closest("li")
     if (parentLi) {
-      const parentUl = parentLi.closest("ul");
+      const parentUl = parentLi.closest("ul")
       if (parentUl && parentUl.closest("li")) {
-        const parentLi = parentUl.closest("li");
+        const parentLi = parentUl.closest("li")
         if (parentLi) {
-          // Add the active class to the parent <li> element
-          parentLi.classList.add(...this.options.activeClass);
-          // Return true to indicate that the submenu was handled
-          return true;
+          parentLi.classList.add(...this.options.activeClass)
+          return true
         }
       }
     }
-    // Return false to indicate that the submenu was not handled
-    return false;
+    return false
   }
 
   /**
@@ -394,24 +456,23 @@ export default class SpyScroller {
    */
 
   private onScroll(): void {
-
-    const section = this.currentActiveSection();
+    const section = this.currentActiveSection()
     if (this.options.onScroll) this.executeonScroll(section, this.sections)
-    if (this.lastActiveSection == section) return;
-    this.lastActiveSection = section;
+    if (this.lastActiveSection == section) return
+    this.lastActiveSection = section
 
-    if (this.options.onSectionChange) this.executeSectionChanged(section, this.sections);
-
+    if (this.options.onSectionChange)
+      this.executeSectionChanged(section, this.sections)
 
     const activeMenuItem = this.getActiveMenuItem(section)
-    const activateSectionId = activeMenuItem.sectionId;
-    const menuItem = activeMenuItem.element;
+    const activateSectionId = activeMenuItem.sectionId
+    const menuItem = activeMenuItem.element
 
     //if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
 
     if (menuItem) {
-      this.removeActiveLink({ ignore: menuItem });
-      this.ActiveLinkChecker(menuItem);
+      this.removeActiveLink({ ignore: menuItem })
+      this.ActiveLinkChecker(menuItem)
     }
 
     if (this.options.onLastScrollInView) {
@@ -421,25 +482,21 @@ export default class SpyScroller {
     if (this.options.onFirstScrollInView) {
       if (activeMenuItem.isFirstSection) this.options.onFirstScrollInView()
     }
-
   }
-
-
 
   private executeSectionChanged(
     section: HTMLElement,
     sections: NodeListOf<HTMLElement>
   ): void {
-    this.options.onSectionChange(section, sections, this.options.animation);
+    this.options.onSectionChange(section, sections, this.options.animation)
   }
 
   private executeonScroll(
     section: HTMLElement,
     sections: NodeListOf<HTMLElement>
   ): void {
-    this.options.onScroll(section, sections, this.options.animation);
+    this.options.onScroll(section, sections, this.options.animation)
   }
-
 
   /**
    * Method open To All
@@ -449,8 +506,8 @@ export default class SpyScroller {
    */
 
   public bind(): void {
-    this.boundOnScroll = this.onScroll.bind(this);
-    window.addEventListener("scroll", this.boundOnScroll);
+    this.boundOnScroll = this.onScroll.bind(this)
+    window.addEventListener("scroll", this.boundOnScroll)
   }
 
   /**
@@ -460,13 +517,23 @@ export default class SpyScroller {
    */
 
   public unbind(): void {
-    window.removeEventListener("scroll", this.boundOnScroll);
-    this.boundOnScroll = null;
+    window.removeEventListener("scroll", this.boundOnScroll)
+    this.boundOnScroll = null
   }
 
+  /**
+   * Retrieves information about the current active section.
+   *
+   * @public
+   * @function getCurrentSection
+   * @param {boolean} isChild - Optional. Specifies whether to include information about child elements of the current section. Default is false.
+   * @returns {Object} - An object containing information about the current active section.
+   * @since 1.0.0
+   */
+
   public getCurrentSection(isChild: boolean = false) {
-    let childObject: any = null;
-    if (isChild) childObject = this.currentSectionChild();
+    let childObject: any = null
+    if (isChild) childObject = this.currentSectionChild()
 
     let sectioninfo = {
       currentActiveSectionElement: this.currentActiveSection(),
@@ -481,31 +548,40 @@ export default class SpyScroller {
       currentSectionFirstChild: this.currentActiveSection().firstElementChild,
       currentSectionLastChild: this.currentActiveSection().lastElementChild,
       currentSectiionChildElementNclass: childObject,
-    };
+    }
 
-    return sectioninfo;
+    return sectioninfo
   }
 
+  /**
+   * Retrieves information about the child elements of the current active section.
+   *
+   * @private
+   * @function currentSectionChild
+   * @returns {Array} - An array of objects containing information about the child elements of the current active section.
+   * @since 1.0.0
+   */
+
   private currentSectionChild() {
-    const children = this.currentActiveSection().children;
+    const children = this.currentActiveSection().children
     const childObjects: {
-      tag: string;
-      attributes: { [key: string]: string };
-      classes: string[];
-    }[] = [];
+      tag: string
+      attributes: { [key: string]: string }
+      classes: string[]
+    }[] = []
 
     for (let i = 0; i < children.length; i++) {
-      const child = children[i];
+      const child = children[i]
 
-      const attributes: { [key: string]: string } = {};
+      const attributes: { [key: string]: string } = {}
       for (let j = 0; j < child.attributes.length; j++) {
-        const attribute = child.attributes[j];
-        attributes[attribute.name] = attribute.value;
+        const attribute = child.attributes[j]
+        attributes[attribute.name] = attribute.value
       }
 
-      const classes = Array.from(child.classList);
-      const childObject = { tag: child.tagName, attributes, classes };
-      childObjects.push(childObject);
+      const classes = Array.from(child.classList)
+      const childObject = { tag: child.tagName, attributes, classes }
+      childObjects.push(childObject)
     }
   }
 }
