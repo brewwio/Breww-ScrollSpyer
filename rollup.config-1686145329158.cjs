@@ -1,20 +1,25 @@
-import { babel } from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
-import commonjs from '@rollup/plugin-commonjs';
-import eslint from '@rollup/plugin-eslint';
-import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
-import ts from 'rollup-plugin-ts';
-import copy from 'rollup-plugin-copy';
-import postcss from 'rollup-plugin-postcss';
-import alias from '@rollup/plugin-alias';
-import typescript from '@rollup/plugin-typescript';
-import dts from "rollup-plugin-dts";
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+var pluginBabel = require('@rollup/plugin-babel');
+var rollupPluginTerser = require('rollup-plugin-terser');
+var commonjs = require('@rollup/plugin-commonjs');
+var eslint = require('@rollup/plugin-eslint');
+var json = require('@rollup/plugin-json');
+require('@rollup/plugin-node-resolve');
+var ts = require('rollup-plugin-ts');
+var copy = require('rollup-plugin-copy');
+var postcss = require('rollup-plugin-postcss');
+var alias = require('@rollup/plugin-alias');
+require('@rollup/plugin-typescript');
+var dts = require('rollup-plugin-dts');
+
 require('dotenv').config();
 
 const production = process.env.NODE_ENV === 'production';
 
-export default [
+var rollup_config = [
   {
     input: 'src/index.ts',
     output: [
@@ -41,7 +46,7 @@ export default [
         throwOnError: true,
       }),
       ts(),
-      babel({
+      pluginBabel.babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
       }),
@@ -60,7 +65,7 @@ export default [
       }),
       commonjs(),
       json(),
-      terser(),
+      rollupPluginTerser.terser(),
     ],
   },
   
@@ -83,7 +88,7 @@ export default [
         throwOnError: true,
       }),
       ts(),
-      babel({
+      pluginBabel.babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
       }),
@@ -112,7 +117,7 @@ export default [
         throwOnError: true,
       }),
       ts(),
-      babel({
+      pluginBabel.babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
       }),
@@ -141,7 +146,7 @@ export default [
         throwOnError: true,
       }),
       ts(),
-      babel({
+      pluginBabel.babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**',
       }),
@@ -170,7 +175,7 @@ export default [
         throwOnError: true,
       }),
       ts(),
-      babel({
+      pluginBabel.babel({
         babelHelpers: 'bundled',
         exclude: 'node_modules/**'
       }),     
@@ -185,3 +190,5 @@ export default [
     ],
   },
 ];
+
+exports.default = rollup_config;

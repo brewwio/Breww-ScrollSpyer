@@ -1,1 +1,1 @@
-export{default as SpyScroller}from"./SpyScroller.js";export{default as AnimateCss}from"./Animation/Animate-css/AnimateCss.js";export{default as BrewwAnimations}from"./Animation/BrewwAnimation/BrewwAnimations.js";
+export{default as SpyScroller}from"./SpyScroller.js";export{default as AnimateCss}from"./Animation/Animate-css/AnimateCss.js";export{default as BrewwEasings}from"./Animation/BrewwAnimation/BrewwEasings.js";export{default as BrewwAnimations}from"./Animation/BrewwAnimation/BrewwAnimations.js";

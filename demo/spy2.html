@@ -59,7 +59,7 @@
 
 			section {
 				text-align: center;
-				height: 75vh;
+				height: 500px;
 				display: flex;
 				flex-flow: row wrap;
 				align-items: center;
@@ -94,11 +94,11 @@
 		</header>
 	
 		<main>
-			<section id="section1"    anim-type="headShake"  class="section animate__animated rotateRight">
+			<section id="section1"    anim-type="animate__bounce"  class="section animate__animated ">
 				<h1>SLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</h1>
 			</section>
 
-			<section id="section2"  anim-type="" class="section" >
+			<section id="section2"  anim-type="animate__wobble" class="section animate__animated" >
 				<h2> long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum 2</h2>
 			</section>
 
@@ -124,6 +124,7 @@
 		</footer>
 		<script src="../dist/browser/animate-css.min.js"></script>
 		<script src="../dist/browser/BrewwAnimations.js"></script>
+		<script src="../dist/browser/BrewwEasings.js"></script>
 		<script src="../dist/browser/spyscroll.min.js"></script>
 
 		<script>
@@ -132,7 +133,7 @@
 			let sec ;
 			const options = {
 				sectionSelector: 'section',  // Query selector to your sections
-				targetSelector: 'a', // Query selector to your elements that will be added `active` class
+				targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
 				topOffset: [
 					{ maxWidth: 767, topOffset: 300 },
 					{ minWidth: 768, maxWidth: 991, topOffset: 250 },
@@ -140,7 +141,7 @@
 					],
 				easing: {
 				enabled: true,
-				type: BrewwAnimations.easeOutBounce
+				type: BrewwEasings.linear
 				},
 				activeClass: ['activer', 'highlight'],
 				onLastScrollInView: () => console.log("last"),
@@ -148,13 +149,12 @@
 				animation: { enabled: true, opacityDistanceFromCenter: 100, animType:'anim-type' },
 				onScroll: (section, sections, animationOptions) => {
 				sec = sections;
-				//console.log(section)
-					//your code here only for pro devs
-					// animate.animateTwoWay(section,sections,animationOptions);
+				animate.animateTwoWay(section,sections,animationOptions);
+				
 					
   				},
 				onSectionChange:(currentsection, sections, animationOptions) =>{
-					console.log(currentsection)
+				
 					//console.log(currentsection,sections,animationOptions);
 					//or do any modification or use as hook
 				}
@@ -163,8 +163,7 @@
 		
 			
 			const x = new SpyScroll(document.getElementById('nav'),options);
-			x.getCurrentSection()
-		
+			BrewwAnimations.Bewwopacity(x.sections, 300);
 				function test(){
 					alert('hi')
 				}
@@ -184,14 +183,18 @@
   background-color: red !important;
 }
 	</style>
-	  <!-- <link
+	 <!-- <link
+	 rel="stylesheet"
+	 href="../dist/styles/AnimateCss/AnimateCss.css"
+   />
+	  <link
 	  rel="stylesheet"
 	  href="../dist/styles/AnimateCss/AnimateCss.css"
 	/> -->
-	<!-- <link
+	<link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  /> -->
+  />
   <!-- <link
   rel="stylesheet"
   href="./animation.css"

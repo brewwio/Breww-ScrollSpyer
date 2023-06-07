@@ -27,7 +27,7 @@ declare class SpyScroller {
     private boundOnScroll;
     private readonly menuList;
     private readonly options;
-    private readonly sections;
+    readonly sections: NodeListOf<HTMLElement>;
     private lastActiveSection;
     isLastSection: boolean;
     private readonly Navmenu;

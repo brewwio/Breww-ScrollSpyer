@@ -46,7 +46,7 @@ export default class SpyScroller {
   private boundOnScroll: () => void
   private readonly menuList: HTMLElement
   private readonly options: ISpyScrollerOptions
-  private readonly sections: NodeListOf<HTMLElement>
+  public readonly sections: NodeListOf<HTMLElement>
   private lastActiveSection: HTMLElement
   public isLastSection: boolean = false
   private readonly Navmenu: HTMLElement
@@ -150,7 +150,6 @@ export default class SpyScroller {
 
             event.preventDefault()
             const refId = target.getAttribute("data-jump")
-            // console.log(document.getElementById(refId));
             this.scrollTo(
               document.getElementById(refId),
               1000,

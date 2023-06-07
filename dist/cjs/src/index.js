@@ -1,1 +1,1 @@
-"use strict";var e=require("./SpyScroller.js"),r=require("./Animation/Animate-css/AnimateCss.js"),i=require("./Animation/BrewwAnimation/BrewwAnimations.js");exports.SpyScroller=e,exports.AnimateCss=r,exports.BrewwAnimations=i;
+"use strict";var e=require("./SpyScroller.js"),i=require("./Animation/Animate-css/AnimateCss.js"),r=require("./Animation/BrewwAnimation/BrewwEasings.js"),s=require("./Animation/BrewwAnimation/BrewwAnimations.js");exports.SpyScroller=e,exports.AnimateCss=i,exports.BrewwEasings=r,exports.BrewwAnimations=s;

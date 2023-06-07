@@ -28,7 +28,7 @@ declare class SpyScroller {
     private boundOnScroll;
     private readonly menuList;
     private readonly options;
-    private readonly sections;
+    readonly sections: NodeListOf<HTMLElement>;
     private lastActiveSection;
     isLastSection: boolean;
     private readonly Navmenu;
@@ -183,23 +183,12 @@ declare class SpyScroller {
 declare class AnimateCss {
     private static initAnimation;
     private static revertAnimation;
+    Bewwopacity(sections: NodeListOf<HTMLElement>, animateDistance: number): void;
     animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions: AnimationOptionsInterface): boolean;
     animateOneWay(section: HTMLElement, animationOptions: AnimationOptionsInterface): boolean;
 }
 
-declare class BrewwAnimations {
-    /**
-    Sets the opacity of the given section based on scroll position and distance from the center of the viewport.
-    @param section - The section element to apply the opacity effect to.
-    @param windowHeight - The height of the viewport.
-    @param scrollPosition - The current scroll position of the window.
-    @param animateDistance - The distance from the center of the viewport at which the section should start fading.
-    @since 1.0.0
-    #returns void
-    @NOTE  ---------------------------------------- >>>> :-) :-) -------------------->
-    Currently opacity is set to default, it's one of the most famous styles or animations used by worldwide developers, so we implemented it first. Currently, we are planning to add more animations and transforms. But we did not want to give a bad impression, so we have enabled users to use third-party animation libraries. Currently, we support 'animate'.
-    **/
-    static Bewwopacity(sections: NodeListOf<HTMLElement>, animateDistance: number): void;
+declare class BrewwEasings {
     static linear(p: number): number;
     static easeInQuad(t: number, b: number, c: number, d: number): number;
     static easeOutQuad(t: number, b: number, c: number, d: number): number;
@@ -226,4 +215,8 @@ declare class BrewwAnimations {
     static easeOutBounce(elapsed: number, initialValue: number, amountOfChange: number, duration: number): number;
 }
 
-export { AnimateCss, BrewwAnimations, SpyScroller };
+declare class BrewwAnimations {
+    static Bewwopacity(sections: NodeListOf<HTMLElement>, animateDistance: number): void;
+}
+
+export { AnimateCss, BrewwAnimations, BrewwEasings, SpyScroller };
