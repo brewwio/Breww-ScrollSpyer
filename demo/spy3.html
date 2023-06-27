@@ -1,9 +1,10 @@
 <header class="header">
     <nav id="nav">
         <ul class="nav">
-            <li data-jump="section1" class="activer highlight"><a href="#section1">Section 1</a></li>
-            <li data-jump="section2" class=""><a href="#section2">Section 2</a></li>
-            <li data-jump="section3"><a href="#section3">Section 3</a></li>
+            <li data-jump="section1" class="activer highlight"><a href="#section1">Dry-Clean</a></li>
+            <li data-jump="section2" class=""><a href="#section2">Plan A</a></li>
+            <li data-jump="section3"><a href="#section3">Support </a></li>
+            <li data-jump="section3"><a href="#section4">Support </a></li>
 
         </ul>
     </nav>
@@ -71,7 +72,7 @@
             </div>
         </section>
         <hr class="my-80">
-        <section id="section3" anim-type="animate__bounce" class="animate__animated row align-items-center flex-column-reverse flex-md-row">
+        <section id="section3"  anim-type="animate__headShake" class= "animate__animated row align-items-center flex-column-reverse flex-md-row">
             <div class="col-12 col-md-6"><img sizes="(min-width: 768px) 50vw, 100vw" class="img-fluid" width="543"
                     height="400"
                     srcset="https://prod-cdn.laundryheap.com/assets/landing/benefits/3_2x-a9366ba37c73900bc19f0a9a411b8a122e6ac07ba3534fcebb9770060b5ee2e5.jpg  1200w,https://prod-cdn.laundryheap.com/assets/landing/benefits/3_1x-8437695a7dafeb613aa90e22f157da1495fd82cac6b86f517e03880522c52c55.jpg  600w,https://prod-cdn.laundryheap.com/assets/landing/benefits/3_05x-e674b8009b4a7a8ab9441d42c8b5ab52ef23ddae521024aecb98dff1d31cec9c.jpg  400w"
@@ -89,16 +90,41 @@
                 </div>
             </div>
         </section>
+        <hr class="my-80">
+        <section id="section3" anim-type="animate__headShake" class= "animate__animated row align-items-center flex-column-reverse flex-md-row">
+           
+            <div class="col-12 col-md-5 offset-md-1 landing-benefits--content mb-48 mb-md-0">
+                <p class="text-tag upper-title mb-16" id="landingBenefit3Tag">24/7 customer support</p>
+                <h3 class="mb-16" id="landingBenefit3Title">Copy the Code example</h3>
+                <p class="description text-body-main mb-16" id="landingBenefit3Body">Any change in delivery times or
+                    date, or if something goes wrong, we are here. Our online customer support team will assist you day
+                    and night.</p>
+                <div class="support-button-wrapper"><img width="24" height="24" class="me-4"
+                        src="https://prod-cdn.laundryheap.com/assets/icons/support-36f19a43632c1e4cc63b66a16361968b8f45f0f74cece7194a90cd00a2ca24d2.svg">
+                    <p>Chat with us</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6"><img sizes="(min-width: 768px) 50vw, 100vw" class="img-fluid" width="543"
+                height="400"
+                srcset=""
+                src="https://images.unsplash.com/photo-1564865878688-9a244444042a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80">
+        </div>
+        </section>
     </div>
+    <img style="width: 100%;" src="https://media2.giphy.com/media/scZPhLqaVOM1qG4lT9/giphy.gif?cid=ecf05e47kwtki6csbowse5wdmrncdoj4qxdbu85461x710v6&ep=v1_gifs_search&rid=giphy.gif&ct=g" />
 </div>
 <script src="../dist/browser/animate-css.min.js"></script>
 <script src="../dist/browser/BrewwAnimations.js"></script>
 <script src="../dist/browser/BrewwEasings.js"></script>
 <script src="../dist/browser/spyscroll.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
 
 <script>
      
-     var animate = new AnimateCss();
+    var animate = new AnimateCss();
     let sec ;
     const options = {
         sectionSelector: 'section',  // Query selector to your sections
@@ -115,28 +141,30 @@
         activeClass: ['activer', 'highlight'],
         onLastScrollInView: () => console.log("last"),
         onFirstScrollInView: () => console.log("hi"),
-        animation: { enabled: false, opacityDistanceFromCenter: 100, animType:'anim-type' },
+        animation: { enabled: true,  animType:'anim-type' },
         onScroll: (section, sections, animationOptions) => {
-  
-        
-            
-          },
+            sec = sections;
+            console.log(animationOptions)
+				animate.animateTwoWay(section,sections,animationOptions);
+		},
         onSectionChange:(currentsection, sections, animationOptions) =>{
-            animate.animateTwoWay(currentsection,sections,animationOptions);
-            //console.log(currentsection,sections,animationOptions);
-            //or do any modification or use as hook
+           // animate.animateTwoWay(currentsection,sections,animationOptions);
+          
         }
         
     }
 
     
     const x = new SpyScroll(document.getElementById('nav'),options);
-  BrewwAnimations.Bewwopacity(x.sections, 200);
+//   BrewwAnimations.Bewwopacity(x.sections, 200);
         function test(){
             alert('hi')
         }
 
 </script>
+
+
+
 <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -543,14 +571,19 @@
 
 <style>
     section{
-        max-width: 700px;
+        max-width: 100%;
         margin: auto;
     }
-    .activer {
+    .activer {  font-family: 'FoundersGrotesk';
+        
 color: red !important;
 }
+.activer a{
+    padding: 8px 15px;
+}
 .nav > li.activer > a ,li.activer > a{
-color: red !important;
+color: rgb(255, 255, 255) !important;
 background-color: red !important;
+
 }
 </style>
