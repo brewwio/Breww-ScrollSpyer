@@ -8,11 +8,6 @@
 
 import { AnimationOptionsInterface } from "./Common_interfaces/Animation_Interface"
 
-interface ActiveMenuItem {
-  sectionId: string
-  element: HTMLAnchorElement
-}
-
 interface ISpyScrollerOptions {
   sectionSelector: string
   targetSelector: string
@@ -48,7 +43,7 @@ export default class SpyScroller {
   private readonly options: ISpyScrollerOptions
   public readonly sections: NodeListOf<HTMLElement>
   private lastActiveSection: HTMLElement
-  public isLastSection: boolean = false
+  public isLastSection = false
   private readonly Navmenu: HTMLElement
 
   // Define a constructor for the SpyScroller class
@@ -62,9 +57,12 @@ export default class SpyScroller {
     this.options = {
       sectionSelector: options.sectionSelector ?? "section",
       targetSelector: options.targetSelector ?? "[data-jump]",
-      topOffset: Array.isArray(options.topOffset)
-        ? options.topOffset
-        : [{ topOffset: 500 }],
+      
+     topOffset: Array.isArray(options.topOffset)
+  ? options.topOffset
+  : typeof options.topOffset === "string"
+    ? [{ topOffset: parseInt(options.topOffset) }]
+    : [{ topOffset: 500 }],
 
       activeClass: Array.isArray(options.activeClass)
         ? options.activeClass
@@ -106,6 +104,11 @@ export default class SpyScroller {
 
     if (typeof this.options.animation !== "object") {
       throw new TypeError("animation in options can only be of type object")
+    }
+
+    if(typeof this.options.topOffset !== "object")
+    {
+      throw new TypeError("animation in options can only be of type object or string with topoffset")
     }
 
     this.menuList =
@@ -273,24 +276,24 @@ export default class SpyScroller {
    * @since 1.0.0
    */
   private getTopOffset(): number {
+ 
     const screenWidth = window.innerWidth
     let topOffset: number
     // console.log(this.options.topOffset);
     if (Array.isArray(this.options.topOffset)) {
+    
       for (const option of this.options.topOffset) {
         if (
           (!option.minWidth || screenWidth >= option.minWidth) &&
           (!option.maxWidth || screenWidth <= option.maxWidth)
-        ) {
+        )        
+        {        
           topOffset = option.topOffset
+          console.warn(topOffset)
           break // Added break statement to exit the loop once the matching option is found
         }
       }
-    } else if (typeof this.options.topOffset === "number") {
-      topOffset = this.options.topOffset
-    }
-
-    // console.log("topOffset: " + topOffset);
+    } 
     return topOffset
   }
 
@@ -339,7 +342,7 @@ export default class SpyScroller {
     }
     let isLastSection = false
     let isFirstSection = false
-    let sectionId = section.getAttribute("id")
+    const sectionId = section.getAttribute("id")
     let attribute = this.options.targetSelector
 
     if (this.options.targetSelector === "[data-jump]") {
@@ -464,10 +467,8 @@ export default class SpyScroller {
       this.executeSectionChanged(section, this.sections)
 
     const activeMenuItem = this.getActiveMenuItem(section)
-    const activateSectionId = activeMenuItem.sectionId
+   // const activateSectionId = activeMenuItem.sectionId
     const menuItem = activeMenuItem.element
-
-    //if (this.options.animation.enabled) BrewwAnimationHandlerObj.animateInitiater(this.options.animation,section,this.sections,this.options.animationType);
 
     if (menuItem) {
       this.removeActiveLink({ ignore: menuItem })
@@ -534,7 +535,7 @@ export default class SpyScroller {
     let childObject: any = null
     if (isChild) childObject = this.currentSectionChild()
 
-    let sectioninfo = {
+    const sectioninfo = {
       currentActiveSectionElement: this.currentActiveSection(),
       currentActiveSectionIndex: Array.from(this.sections).indexOf(
         this.currentActiveSection()
