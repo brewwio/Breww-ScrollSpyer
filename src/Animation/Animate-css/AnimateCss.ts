@@ -27,7 +27,7 @@ export default class AnimateCss {
     section: HTMLElement,
     sections: NodeListOf<HTMLElement>,
     animationOptions: AnimationOptionsInterface
-  ) {
+  ):void | boolean {
     if (!animationOptions.enabled) return false
     if (!(section instanceof HTMLElement)) {
       throw new Error("First argument must be of type HTMLElement")
@@ -49,7 +49,7 @@ export default class AnimateCss {
   public animateOneWay(
     section: HTMLElement,
     animationOptions: AnimationOptionsInterface
-  ) {
+  ):void | boolean {
     if (!animationOptions.enabled) return false
     if (!(section instanceof HTMLElement)) {
       throw new Error("First argument must be of type HTMLElement")

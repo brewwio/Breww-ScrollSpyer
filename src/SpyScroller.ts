@@ -289,7 +289,6 @@ export default class SpyScroller {
         )        
         {        
           topOffset = option.topOffset
-          console.warn(topOffset)
           break // Added break statement to exit the loop once the matching option is found
         }
       }

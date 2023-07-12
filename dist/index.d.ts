@@ -183,8 +183,8 @@ declare class SpyScroller {
 declare class AnimateCss {
     private static initAnimation;
     private static revertAnimation;
-    animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions: AnimationOptionsInterface): boolean;
-    animateOneWay(section: HTMLElement, animationOptions: AnimationOptionsInterface): boolean;
+    animateTwoWay(section: HTMLElement, sections: NodeListOf<HTMLElement>, animationOptions: AnimationOptionsInterface): void | boolean;
+    animateOneWay(section: HTMLElement, animationOptions: AnimationOptionsInterface): void | boolean;
 }
 
 declare class BrewwEasings {
