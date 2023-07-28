@@ -19,9 +19,8 @@
             </ul>
         </nav>
 
-    </header>
-<div id="maintest">
-    <div id="section1" anim-type="animate__backInUp" class="animate__animated container m-auto pt-lg-5 pt-0 pb-md-5 pb-0 mt-lg-5 mt-md-5 mt-0 mt-4 mb-md-3 mb-0"
+    </header><div id="maintest">
+    <div id="section1" anim-type="animate__backInUp" class="maintest animate__animated container m-auto pt-lg-5 pt-0 pb-md-5 pb-0 mt-lg-5 mt-md-5 mt-0 mt-4 mb-md-3 mb-0"
         data-v-dc115a56="">
         <p class="text-center" style="color:var(--default);font-weight:800;font-size:22px;" data-v-dc115a56="">There’s
             Free Time in Your Future, We Can See It!</p>
@@ -45,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div id="section2" anim-type="animate__heartBeat"  class="animate__animated  container m-auto pt-0 pb-md-5 mt-0 mb-md-3 mb-0 pb-0" data-v-dc115a56="">
+    <div id="section2" anim-type="animate__heartBeat"  class="maintest animate__animated  container m-auto pt-0 pb-md-5 mt-0 mb-md-3 mb-0 pb-0" data-v-dc115a56="">
         <div class="row mt-1 aswqwdad mt-5 mb-5" data-v-dc115a56="">
             <div class="col-lg-5 col-md-5 col-12" data-v-dc115a56="">
                 <div class="card p-5 mt-3 mb-3 hwysw2" data-v-dc115a56="">
@@ -63,7 +62,7 @@
                 data-v-dc115a56=""></div>
         </div>
     </div>
-    <div id="section3" anim-type="animate__swing" class="animate__animated container m-auto pt-lg-5 pt-0 pb-md-5 pb-0 mt-lg-5 mt-md-5 mt-0 mt-4 mb-md-3 mb-0"
+    <div id="section3" anim-type="animate__swing" class="maintest animate__animated container m-auto pt-lg-5 pt-0 pb-md-5 pb-0 mt-lg-5 mt-md-5 mt-0 mt-4 mb-md-3 mb-0"
         data-v-dc115a56="">
         <p class="text-center" style="color:var(--default);font-weight:800;font-size:22px;" data-v-dc115a56="">There’s
             Free Time in Your Future, We Can See It!</p>
@@ -87,7 +86,7 @@
             </div>
         </div>
     </div>
-    <div id="section4" anim-type="animate__headShake" class="animate__animated container m-auto pt-0 pb-md-5 mt-0 mb-md-3 mb-0 pb-0" data-v-dc115a56="">
+    <div id="section4" anim-type="animate__headShake" class="maintest animate__animated container m-auto pt-0 pb-md-5 mt-0 mb-md-3 mb-0 pb-0" data-v-dc115a56="">
         <div class="row mt-1 aswqwdad mt-5 mb-5" data-v-dc115a56="">
             <div class="col-lg-5 col-md-5 col-12" data-v-dc115a56="">
                 <div class="card p-5 mt-3 mb-3 hwysw2" data-v-dc115a56="">
@@ -122,7 +121,7 @@
     var animate = new AnimateCss();
     let sec;
     const options = {
-        sectionSelector: '.animate__animated',  // Query selector to your sections
+        sectionSelector: '.maintest',  // Query selector to your sections
         targetSelector: '[data-jump]', // Query selector to your elements that will be added `active` class
         topOffset: [
             { maxWidth: 767, topOffset: 300 },
@@ -136,20 +135,20 @@
         activeClass: ['activer', 'highlight'],
         onLastScrollInView: () => console.log("last"),
         onFirstScrollInView: () => console.log("hi"),
-        animation: { enabled: true, animType: 'anim-type' },
+        animation: { enabled: false, animType: 'anim-type' },
         onScroll: (section, sections, animationOptions) => {
             sec = sections;
+            console.log(animationOptions)
             animate.animateTwoWay(section, sections, animationOptions);
-          
         },
         onSectionChange: (currentsection, sections, animationOptions) => {
-
+            //your actions
         }
 
     }
-    const x = new SpyScroll(document.getElementById('nav'), options);
-    console.warn(x.section)
-   
+    const spyscroll = new SpyScroll(document.getElementById('nav'), options);
+    BrewwAnimations.Bewwopacity(spyscroll.sections, 400);
+
 </script>
 
 
