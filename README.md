@@ -42,7 +42,7 @@ npm run build:prod
 npm run preview
 ```
 
-Checkout the [deployment documentation](https://grapdevs.gitbook.io/api-docs/) for more information.
+Checkout the [deployment documentation](https://scrollspyer.breww.io/) for more information.
 
 
 

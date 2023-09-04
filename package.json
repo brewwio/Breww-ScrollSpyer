@@ -1,6 +1,6 @@
 {
   "name": "@breww.io/scroll-spyer",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A framework for building front-end libraries using TS and SCSS",
   "main": "./dist/cjs/src/index.js",
   "type": "commonjs",
@@ -19,10 +19,7 @@
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
-  },
+ 
   "keywords": [
     "ScrollSpyer",
     "Scroll Spy",
