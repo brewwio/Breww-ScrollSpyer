@@ -12,7 +12,7 @@ Make sure to install the dependencies:
 ```bash
 npm i @breww.io/scroll-spyer
 
-For browsers
+## For browsers
 https://cdn.jsdelivr.net/npm/@breww.io/scroll-spyer/dist/browser/BrewwAnimations.js
 https://cdn.jsdelivr.net/npm/@breww.io/scroll-spyer/dist/browser/BrewwEasings.js
 https://cdn.jsdelivr.net/npm/@breww.io/scroll-spyer/dist/browser/spyscroll.min.js
