@@ -51,6 +51,7 @@ export default [
         ],
         verbose: true,
         exclude: 'node_modules/**'
+        
       }),
       postcss({
         extract: true,
@@ -75,6 +76,7 @@ export default [
       file: 'dist/browser/animate-css.min.js',
       format: 'iife',
       name: 'AnimateCss',
+      plugins: [terser()],
       // plugins: [terser()],
     },
     plugins: [
@@ -104,7 +106,7 @@ export default [
       file: 'dist/browser/BrewwAnimations.js',
       format: 'iife',
       name: 'BrewwAnimations',
-      // plugins: [terser()],
+      plugins: [terser()],
     },
     plugins: [
       eslint({
@@ -133,7 +135,7 @@ export default [
       file: 'dist/browser/BrewwEasings.js',
       format: 'iife',
       name: 'BrewwEasings',
-      // plugins: [terser()],
+      plugins: [terser()],
     },
     plugins: [
       eslint({
@@ -162,7 +164,7 @@ export default [
       file: 'dist/browser/spyscroll.min.js',
       format: 'iife',
       name: 'SpyScroll',
-      // plugins: [terser()],
+      plugins: [terser()],
     },
     plugins: [
       eslint({
