@@ -1,7 +1,7 @@
 {
   "name": "@breww.io/scroll-spyer",
-  "version": "0.0.4",
-  "description": "A framework for building front-end libraries using TS and SCSS",
+  "version": "0.0.5",
+  "description": "A library that is able to change the feel of scroll spy with custom anitaion (Current 0.5Beta)",
   "main": "./dist/cjs/src/index.js",
   "type": "commonjs",
   "source": "src/index.ts",

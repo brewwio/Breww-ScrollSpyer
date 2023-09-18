@@ -1,5 +1,5 @@
 
-# BrewwScollspyer
+# Breww-Scollspyer Version. 0.5 Beta
 
 Why This ScrollSpyer: We have explored various scrollspy tools available on the internet, but encountered issues with some of them. Specifically, some don't support multiple menus, while others lack animation capabilities. We consider animations to be necessary in any scrollspy tool. If you're unfamiliar with what we're referring to, we invite you to explore our examples with animation for a better understanding.
 
