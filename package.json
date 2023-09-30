@@ -1,6 +1,6 @@
 {
   "name": "@breww.io/scroll-spyer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library that is able to change the feel of scroll spy with custom animation (Current 0.5Beta)",
   "main": "./dist/cjs/src/index.js",
   "type": "commonjs",

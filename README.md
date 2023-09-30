@@ -24,9 +24,6 @@ https://cdn.jsdelivr.net/npm/@breww.io/scroll-spyer/dist/browser/BrewwEasings.js
 ```
 
 
-
-
-
  
 ## Documentation
 
