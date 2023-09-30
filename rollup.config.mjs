@@ -3,12 +3,12 @@ import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 import eslint from '@rollup/plugin-eslint';
 import json from '@rollup/plugin-json';
-import resolve from '@rollup/plugin-node-resolve';
+
 import ts from 'rollup-plugin-ts';
 import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import alias from '@rollup/plugin-alias';
-import typescript from '@rollup/plugin-typescript';
+
 import dts from "rollup-plugin-dts";
 require('dotenv').config();
 

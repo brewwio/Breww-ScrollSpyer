@@ -1,6 +1,6 @@
 {
   "name": "@breww.io/scroll-spyer",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "A library that is able to change the feel of scroll spy with custom animation (Current 0.5Beta)",
   "main": "./dist/cjs/src/index.js",
   "type": "commonjs",
@@ -14,7 +14,7 @@
   "scripts": {
     "build:dev": "rollup -c --environment NODE_ENV:development --watch --bundleConfigAsCjs",
     "build:prod": "rollup -c --environment NODE_ENV:production --bundleConfigAsCjs",
-    "prepublishOnly": "npm run build:prod"   
+    "prepublishOnly": "npm run build:prod"
   },
   "keywords": [
     "ScrollSpyer",
@@ -29,6 +29,9 @@
     "email": "modules@brewwe.io"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@rollup/plugin-alias": "^5.0.0",
+    "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-eslint": "^9.0.4",
     "@rollup/plugin-json": "^6.0.0",
@@ -38,7 +41,10 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "postcss": "^8.4.31",
     "prettier": "^2.7.1",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-dts": "^6.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-ts": "^3.2.0",
@@ -46,6 +52,7 @@
   },
   "dependencies": {
     "@breww.io/scroll-spyer": "^0.0.5",
+    "dotenv": "^16.3.1",
     "lodash": "^4.17.21"
   },
   "directories": {
