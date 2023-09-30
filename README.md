@@ -1,13 +1,3 @@
-
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
-[![MIT License](https://img.shields.io/badge/node%20js-red)](https://choosealicense.com/licenses/mit/)
-[![GPLv3 License](https://img.shields.io/badge/typescript-yellow)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/version%201.0%20Major-orange)](http://www.gnu.org/licenses/agpl-3.0)
-
-
 # Breww Scoll-spyer
 
 Why This ScrollSpyer: We have explored various scrollspy tools available on the internet, but encountered issues with some of them. Specifically, some don't support multiple menus, while others lack animation capabilities. We consider animations to be necessary in any scrollspy tool. If you're unfamiliar with what we're referring to, we invite you to explore our examples with animation for a better understanding.
@@ -126,4 +116,3 @@ DEMO 2 (With Opacity Breww's Custom animation)
 [![portfolio](https://img.shields.io/badge/DEMO!-000?style=for-the-badge&logo=ko-fi&logoColor=white)](DEMO1)
 [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=DEMO@&logoColor=white)](https://www.linkedin.com/)
 [![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/)
-
